@@ -45,7 +45,7 @@ Project set-up
     Create a folder, templates, and subfolder, allauth, from the project level directory
     Then run cmnd: 
     cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates/allauth/
-    
+
     Delete openid and tests folders, as unneeded for this project, deleting will revert use to site_packages templates for same.
 
 
@@ -70,3 +70,13 @@ Plans for Models
 ![model-plans](static/images/model-plans.jpg)
 
 Testing and Errors
+
+    1
+    Issue: Changes made to allauth html files take no effect on rendered pages in development server
+    Resolve: Included the following lines in project settings:
+        TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+        TEMPLATES = [
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [TEMPLATES_DIR],
+                ...
