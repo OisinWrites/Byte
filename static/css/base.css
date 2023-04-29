@@ -12,7 +12,7 @@ body {
 
 .header {
     height: 20vh;
-    color: rgb(11, 79, 108);
+    color: rgb(0, 178, 202);
 }
 
 h1 {
@@ -33,7 +33,7 @@ h1 {
 }
 
 .contact {
-    background-color:	rgb(0, 178, 202);
+    background-color:	rgb(16, 111, 151);
     align-items: flex-start !important;
     padding-left: 20vw;
 }
@@ -78,7 +78,7 @@ h1 {
 }
 
 .contact2 {
-    background-color:	rgb(0, 178, 202);
+    background-color:	rgb(16, 111, 151);
 }
 
 .circles {
