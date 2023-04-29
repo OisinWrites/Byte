@@ -3,7 +3,6 @@ html {
 }
 
 body {
-    color: rgb(125, 207, 182);
     font-family: 'Bebas Neue';
     background: url('/static/media/background.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -13,16 +12,12 @@ body {
 
 .header {
     height: 20vh;
-    background-color:	rgb(11, 79, 108);
+    color: rgb(11, 79, 108);
 }
 
 h1 {
     font-weight: 900;
     font-size: 8rem;
-    background: url('/static/media/background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    -webkit-background-clip: text; /* Set background clip to text */
-    -webkit-text-fill-color: transparent; /* Set text fill color to transparent */
 }
 
 .menu {
@@ -41,14 +36,13 @@ h1 {
     background-color:	rgb(0, 178, 202);
     align-items: flex-start !important;
     padding-left: 20vw;
-    font-size: 6rem !important;
 }
 
 .menu, .book, .contact  {
     height: 20vh;
     display: flex;
     font-weight: 900;
-    font-size: 8rem;
+    font-size: 7rem;
     margin: 1vh;
 }
 
@@ -57,10 +51,50 @@ h1 {
     background-size: cover;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-stretch: expanded;
 }
 
 .footer {
-    height: 20vh;
+    height: 12vh;
     background-color: rgb(219, 83, 117);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: 5vh;
 }
+
+@media (min-width: 767px) {
+    .visible-lg {
+      display: none;
+    }
+    .menu {
+        background-color: 	rgb(251, 209, 162);
+    }
+    
+    .book {
+        background-color:rgb(125, 207, 182);
+    }
+    
+    .contact {
+        background-color:	rgb(0, 178, 202);
+    }
+    
+    .menu, .book, .contact  {
+    }
+  }
+
+@media (max-width: 400px) {
+    .menu, .book, .contact  {
+        height: 20vh;
+        display: flex;
+        font-weight: 700;
+        font-size: 4rem;
+        margin: 1vh;
+    }
+
+    h1 {
+        font-weight: 700;
+        font-size: 6rem;
+    }
+}
+
