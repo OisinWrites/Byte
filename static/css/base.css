@@ -46,11 +46,17 @@ h1 {
     margin: 1vh;
 }
 
-.menu p, .book p, .contact p {
+.menu p, .book p, .contact p,
+.menu2 p, .book2 p, .contact2 p {
     background: url('/static/media/background.jpg') no-repeat center center fixed;
     background-size: cover;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.menu2 p, .book2 p, .contact2 p {
+    margin-top: 2.5vh;
+    font-size: 2rem;
 }
 
 .footer {
@@ -63,25 +69,44 @@ h1 {
     margin-top: 5vh;
 }
 
+.menu2 {
+    background-color: 	rgb(251, 209, 162);
+}
+
+.book2 {
+    background-color:rgb(125, 207, 182);
+}
+
+.contact2 {
+    background-color:	rgb(0, 178, 202);
+}
+
+.circles {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 22.5vh;
+}
+
+.circle  {
+    max-width: 15vw !important;
+    height: 15vw !important;
+    border-radius: 50%;
+    display: flex;
+    justify-content:center ;
+    align-items: center !important;
+}
+
+@media (max-width: 768px) {
+    .visible-sml {
+      display: none;
+    }
+}
+
 @media (min-width: 767px) {
     .visible-lg {
       display: none;
     }
-    .menu {
-        background-color: 	rgb(251, 209, 162);
-    }
-    
-    .book {
-        background-color:rgb(125, 207, 182);
-    }
-    
-    .contact {
-        background-color:	rgb(0, 178, 202);
-    }
-    
-    .menu, .book, .contact  {
-    }
-  }
+}
 
 @media (max-width: 400px) {
     .menu, .book, .contact  {
