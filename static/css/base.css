@@ -1,5 +1,6 @@
 html {
     font-size: 16px;
+    color:rgb(16, 111, 151);
 }
 
 body {
@@ -23,7 +24,7 @@ h1 {
     font-weight: 900;
     font-size: 8rem;
 }
-
+/* block colour on mobile navigation */
 .menu {
     background-color: 	rgb(251, 209, 162);
     align-items: flex-start !important;
@@ -49,7 +50,7 @@ h1 {
     font-size: 7rem;
     margin: 1vh;
 }
-
+/* giving the text of the nav options as "see through" to the background */
 .menu p, .book p, .contact p,
 .menu2 p, .book2 p, .contact2 p {
     background: url('/static/media/background.jpg') no-repeat center center fixed;
@@ -98,6 +99,19 @@ h1 {
     display: flex;
     justify-content:center ;
     align-items: center;
+}
+/* styling the allauth forms uniformally */
+.allauth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255, 0.5);
+    color:rgb(7, 45, 61);
+}
+
+.allauth-form a {
+    color:rgb(7, 45, 61);
 }
 
 @media (max-width: 768px) {
