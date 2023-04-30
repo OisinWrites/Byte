@@ -1,3 +1,4 @@
+/* styling for base elements */
 html {
     font-size: 16px;
     color:rgb(16, 111, 151);
@@ -16,13 +17,24 @@ body {
     color: rgb(0, 178, 202);
 }
 
+.footer {
+    height: 12vh;
+    background-color: rgb(219, 83, 117);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: 5vh;
+}
+
 .text-color {
     color: rgb(0, 178, 202);
 }
 
-h1 {
+.byte {
     font-weight: 900;
     font-size: 8rem;
+    color: rgb(0, 178, 202);
 }
 /* block colour on mobile navigation */
 .menu {
@@ -64,16 +76,6 @@ h1 {
     font-size: 2rem;
 }
 
-.footer {
-    height: 12vh;
-    background-color: rgb(219, 83, 117);
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    margin-top: 5vh;
-}
-
 .menu2 {
     background-color: 	rgb(251, 209, 162);
 }
@@ -106,26 +108,27 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(255, 255, 255, 0.5);
+    background-color: rgb(255, 255, 255, 0.8);
     color:rgb(7, 45, 61);
+    padding: 2rem;
 }
 
 .allauth-form a {
     color:rgb(7, 45, 61);
 }
-
+/* disappears the circles from medium and larger screens */
 @media (max-width: 768px) {
     .visible-sml {
       display: none;
     }
 }
-
+/* disappears the mobile block colours on larger devices */
 @media (min-width: 767px) {
     .visible-lg {
       display: none;
     }
 }
-
+/* responds to smaller mobile devices where main style breaks */
 @media (max-width: 400px) {
     .menu, .book, .contact  {
         height: 20vh;
@@ -135,7 +138,7 @@ h1 {
         margin: 1vh;
     }
 
-    h1 {
+    .byte {
         font-weight: 700;
         font-size: 6rem;
     }
