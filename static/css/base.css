@@ -15,6 +15,10 @@ body {
     color: rgb(0, 178, 202);
 }
 
+.text-color {
+    color: rgb(0, 178, 202);
+}
+
 h1 {
     font-weight: 900;
     font-size: 8rem;
@@ -88,12 +92,12 @@ h1 {
 }
 
 .circle  {
-    max-width: 15vw !important;
-    height: 15vw !important;
+    max-width: 15vw;
+    height: 15vw;
     border-radius: 50%;
     display: flex;
     justify-content:center ;
-    align-items: center !important;
+    align-items: center;
 }
 
 @media (max-width: 768px) {
