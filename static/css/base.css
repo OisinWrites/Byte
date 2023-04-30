@@ -26,10 +26,15 @@ body {
     width: 100%;
     margin-top: 5vh;
 }
-
-.text-color {
+/* header elements */
+.account-logo {
     color: rgb(0, 178, 202);
+    height: 4rem;
 }
+
+.account-logo:hover {
+    color:rgb(251, 209, 162);
+  }
 
 .byte {
     font-weight: 900;
