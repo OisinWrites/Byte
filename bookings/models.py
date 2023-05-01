@@ -31,7 +31,7 @@ class Booking(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     user_email = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE)
+                                   on_delete=models.CASCADE)
     user_name = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name='bookings')
     size_of_party = models.IntegerField()
