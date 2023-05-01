@@ -84,3 +84,16 @@ Testing and Errors
     2
     Issue: Can't render home view. Attempting to run dev server from terminal results in: AttributeError: module 'home.views' has no attribute 'index'
     Resolve: Apps were not registered in project settings. Additional changes to settings made, including targeting media and static. Homepage functional.
+
+
+    env.py content
+
+    import os
+
+os.environ.setdefault("SECRET_KEY", "Oisin")
+os.environ.setdefault("DEBUG", "True")
+os.environ.setdefault("IP", "0.0.0.0.")
+os.environ.setdefault("PORT", "8000")
+os.environ.setdefault("DEVELOPMENT", "True")
+os.environ.setdefault("DB_URL", "sqlite3:///byte")
+os.environ.setdefault("ALLOWED_HOSTS", "localhost")
