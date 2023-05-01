@@ -30,7 +30,7 @@ class Booking(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    email = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user_email = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
     user_name = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name='bookings')
