@@ -39,5 +39,5 @@ class Booking(models.Model):
     def __str__(self):
         return f'{self.user_name.username} ({self.size_of_party} people)' \
                f' - {self.table} ' \
-               f'- {self.start_time.strftime("%d-%m-%Y %H:%M:%S")} to ' \
-               f'{self.end_time.strftime("%d-%m-%Y %H:%M:%S")}'
+               f'- {self.start_time.strftime("%d-%m %H:%M")} to ' \
+               f'{self.end_time.strftime("%d-%m %H:%M")}'

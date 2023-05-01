@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'bookings',
     'home',
 
+    # Other
     'crispy_forms',
 ]
 
@@ -104,6 +105,10 @@ TEMPLATES = [
                 # `allauth` needs this from django
                 'django.template.context_processors.request',
             ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
+            ]
         },
     },
 ]

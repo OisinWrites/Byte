@@ -1,7 +1,7 @@
 /* styling for base elements */
 html {
     font-size: 16px;
-    color:rgb(16, 111, 151);
+    color:rgb(16, 111, 151) !important;
 }
 
 body {
@@ -10,6 +10,7 @@ body {
     background-size: cover;
     background-position: center;
     overflow-x: hidden;
+    color:rgb(16, 111, 151) !important;
 }
 
 .header {
@@ -108,7 +109,7 @@ body {
     align-items: center;
 }
 /* styling the allauth forms uniformally */
-.allauth-form {
+.allauth-form, .booking-form {
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 
-{% block content %}
 {% load crispy_forms_tags %}
+
+{% block content %}
 
 <div class="booking-form">
     <h2>Request a Booking</h2>
-    <form method="post">
+    {% if user.is_authenticated %}
+    <form method="POST" id="booking-form">
       {% csrf_token %}
-      {% crispy form %}
+      {{ form|crispy }}
       <button type="submit">Request Booking</button>
     </form>
+    {% else %}
+    <div>
+        <p>Please sign in to make a booking</p>
+    </div>
+    {% endif %}
   </div>
   
-  <div class="booking-list">
+  <div class="booking-list booking-form">
     <h2>My Bookings</h2>
     <ul>
       {% for booking in bookings %}
