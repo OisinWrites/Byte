@@ -27,14 +27,15 @@ class Table(models.Model):
 # takes in size of party to reflect to admin that a booking at
 # a table of 6 could be for 4 or 5 pax.
 class Booking(models.Model):
-    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True)
     user_email = models.ForeignKey(settings.AUTH_USER_MODEL,
                                    on_delete=models.CASCADE)
     user_name = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name='bookings')
     size_of_party = models.IntegerField()
+    additional = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user_name.username} ({self.size_of_party} people)' \

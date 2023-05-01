@@ -12,6 +12,7 @@ class BookingAdmin(admin.ModelAdmin):
         'user_email',
         'user_name',
         'size_of_party',
+        'additional',
     )
 
 

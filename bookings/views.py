@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from bookings.models import Booking, Table
 from django.contrib import messages
 from bookings.forms import BookingForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def bookings(request):
@@ -9,7 +12,9 @@ def bookings(request):
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
-            booking.user_email = request.user.email
+            user = User.objects.get(email=request.user.email)
+            booking.user_email = user
+            booking.user_name = user
             booking.save()
             messages.success(request, 'Your booking has been made.')
             return redirect('bookings')
