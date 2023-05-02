@@ -42,3 +42,15 @@ class Booking(models.Model):
                f' - {self.table} ' \
                f'- {self.start_time.strftime("%d-%m %H:%M")} to ' \
                f'{self.end_time.strftime("%d-%m %H:%M")}'
+
+
+# This table availability model is to track the tables availability at 
+# given time and date, and presuming a table is otherwise always available in
+# the table model. The old boolean could be used for the admin to 
+# temporarily remove a table from being available for bookings, eg:
+# reserved for walk-ins.
+class TableAvailability(models.Model):
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    is_available = models.BooleanField(default=True)

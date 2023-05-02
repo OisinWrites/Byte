@@ -11,6 +11,7 @@ class BookingForm(forms.ModelForm):
         model = Booking
         fields = ['start_time', 'size_of_party', 'additional']
         widgets = {
+            'user': forms.HiddenInput(),
             'start_time': DateTimeInput(attrs={'type': 'datetime-local'})
         }
 

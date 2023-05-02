@@ -85,6 +85,9 @@ Testing and Errors
     Issue: Can't render home view. Attempting to run dev server from terminal results in: AttributeError: module 'home.views' has no attribute 'index'
     Resolve: Apps were not registered in project settings. Additional changes to settings made, including targeting media and static. Homepage functional.
 
+    3.
+    Issue: Bookings toggle the table model boolean of availability to a constant false. However, we only want this toggled for the time and day of a booking.
+
 
     env.py content
 
