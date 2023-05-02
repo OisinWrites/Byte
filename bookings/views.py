@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseBadRequest
+from django.db.models import Q
 
 from datetime import timedelta
 
@@ -10,6 +11,7 @@ from .models import Booking, Table, TableAvailability
 
 
 def bookings(request):
+    successful_bookings = []
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
@@ -43,7 +45,8 @@ def bookings(request):
                         end_time=end_time
                     )
                     table_availability.save()
-                    form.add_error(None, 'Your booking has been made.')
+                    successful_bookings.append(booking)
+                    messages.success(request, 'Your booking has been made.')
                     return redirect('bookings')
             form.add_error('size_of_party', 'No table is available'
                            ' for the requested'
@@ -54,10 +57,13 @@ def bookings(request):
     else:
         form = BookingForm()
     current_bookings = Booking.objects.filter(
-        start_time__gte=timezone.now(),
-        user_email=request.user
-    ).order_by('start_time')
-    context = {'form': form, 'current_bookings': current_bookings}
+        Q(start_time__gte=timezone.now()) | Q(
+            user_email=request.user)).order_by('start_time')
+    context = {
+        'form': form,
+        'current_bookings': current_bookings,
+        'successful_bookings': successful_bookings,
+        }
     return render(request, 'bookings/bookings.html', context)
 
 

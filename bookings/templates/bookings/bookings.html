@@ -30,14 +30,17 @@
   
   {% if user.is_authenticated %}
   <div class="booking-list booking-form">
-    <h2>My Bookings</h2>
-    <ul>
-      {% for booking in bookings %}
-        <li>{{ booking.size_of_party }} - {{ booking.start_time|date:"d-m-Y H:i:s" }} to {{ booking.end_time|date:"d-m-Y H:i:s" }}</li>
-      {% empty %}
-        <li>No bookings yet.</li>
-      {% endfor %}
-    </ul>
+    <h3>My Bookings</h3>
+    {% for booking in current_bookings %}
+      <p>
+        {{ booking.start_time|date:"M d" }} at 
+        {{ booking.start_time|time:"g:i A" }} for 
+        {{ booking.size_of_party }}
+        {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
+      </p>
+    {% empty %}
+      <p>You haven't made any bookings yet.</p>
+    {% endfor %}
   </div>
   {% endif %}
 

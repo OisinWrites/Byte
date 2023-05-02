@@ -1,10 +1,15 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from bookings.models import Booking
+from django.core.validators import MinValueValidator
+from django.forms.widgets import DateTimeInput
+
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
-from django.forms.widgets import DateTimeInput
+
 from datetime import datetime, time
+
+from bookings.models import Booking
 
 
 class BookingForm(forms.ModelForm):
@@ -32,6 +37,9 @@ class BookingForm(forms.ModelForm):
 
         # Set validators for start_time field
         self.fields['start_time'].validators.append(self.validate_start_time)
+
+        # Set validator for size_of_party field
+        self.fields['size_of_party'].validators.append(MinValueValidator(1))
 
     def validate_start_time(self, value):
         """
