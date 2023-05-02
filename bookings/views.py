@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
+from django.http import HttpResponseBadRequest
+
 from datetime import timedelta
+
 from .forms import BookingForm
 from .models import Booking, Table, TableAvailability
 
@@ -14,6 +17,12 @@ def bookings(request):
             booking.user_email = request.user
             booking.user_name = request.user
             start_time = form.cleaned_data['start_time']
+            if start_time < timezone.now():
+                form.add_error('start_time',
+                               "Whoops! You're already late"
+                               " for dinner. "
+                               "Choose a day that hasn't happened yet."
+                               )
             end_time = start_time + timedelta(minutes=105)
             size_of_party = form.cleaned_data['size_of_party']
             tables = Table.objects.filter(size__gte=size_of_party) \
