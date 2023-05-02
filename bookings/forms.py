@@ -35,13 +35,13 @@ class BookingForm(forms.ModelForm):
 
     def validate_start_time(self, value):
         """
-        Custom validator for start_time field to limit
-        available days to all but Monday and Tuesday
+        Custom validator for start_time field to limit available days
+        to all but Monday and Tuesday
         and set start times from 17:00 to 21:00.
         """
         if value.weekday() in [0, 1]:  # Monday is 0, Tuesday is 1
-            raise ValidationError("Bookings are not available\
-                 on Monday or Tuesday.")
+            raise ValidationError("Bookings are not available"
+                                  " on Monday or Tuesday.")
         if value.time() < time(hour=17) or value.time() >= time(hour=21):
-            raise ValidationError("Seating is only\
-                 available from 17:00 to 21:00.")
+            raise ValidationError("Bookings are only available"
+                                  " from 17:00 to 21:00.")

@@ -7,6 +7,13 @@
 <div class="booking-form">
     <h2>Request a Booking</h2>
     {% if user.is_authenticated %}
+    <p class="text-center">
+      We accept bookings from  <br>  
+      Wednesday to Sunday<br>
+      5pm to 9pm<br>
+      <u>Subject to Availability</u>
+
+    </p>
     <form method="POST" id="booking-form">
       {% csrf_token %}
       {{ form|crispy }}

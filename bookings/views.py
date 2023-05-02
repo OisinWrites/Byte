@@ -20,8 +20,8 @@ def bookings(request):
             for table in tables:
                 table_availabilities = TableAvailability.objects.filter(
                     table=table,
-                    start_time__gte=start_time,
-                    start_time__lte=end_time
+                    start_time__lt=end_time,
+                    end_time__gt=start_time
                 )
                 if not table_availabilities:
                     booking.table = table
