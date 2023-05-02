@@ -87,6 +87,11 @@ Testing and Errors
 
     3.
     Issue: Bookings toggle the table model boolean of availability to a constant false. However, we only want this toggled for the time and day of a booking.
+    Resolve: Create a new model to better handle identifying available times.
+
+    4.
+    Issue: Form only accepts party sizes that match the table size. We want a party of three to be assigned to a table of 4, but a party of 2 assigned to a table of 2 before a 4.
+    Resolve: View now searches for tables with availability that have an occupancy greater or equal to the party size, and searches for the smallest possible table first.
 
 
     env.py content
