@@ -9,11 +9,14 @@ class BookingAdmin(admin.ModelAdmin):
         'table',
         'start_time',
         'end_time',
-        'user_email',
-        'user_name',
+        'user_id',
         'size_of_party',
         'additional',
     )
+
+    def get_username(self, obj):
+        return obj.user_name.username
+    get_username.short_description = 'User'
 
 
 class TableAdmin(admin.ModelAdmin):

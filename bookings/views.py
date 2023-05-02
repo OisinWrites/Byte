@@ -13,11 +13,10 @@ from .models import Booking, Table, TableAvailability
 def bookings(request):
     successful_bookings = []
     if request.method == 'POST':
-        form = BookingForm(request.POST)
+        form = BookingForm(request, request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
-            booking.user_email = request.user
-            booking.user_name = request.user
+            booking.user = request.user
             start_time = form.cleaned_data['start_time']
             if start_time < timezone.now():
                 form.add_error('start_time',
@@ -55,10 +54,10 @@ def bookings(request):
         else:
             form.add_error(None, 'There was an error with your booking.')
     else:
-        form = BookingForm()
+        form = BookingForm(request)
     current_bookings = Booking.objects.filter(
         Q(start_time__gte=timezone.now()) | Q(
-            user_email=request.user)).order_by('start_time')
+            user_id=request.user.id)).order_by('start_time')
     context = {
         'form': form,
         'current_bookings': current_bookings,
@@ -71,7 +70,7 @@ def update_table_availability():
     now = datetime.now()
     tables = Table.objects.all()
     for table in tables:
-        bookings = Booking.objects.filter(table=table, end_time__gte=now)
+        bookings = Booking.objects.filter(table=table, start_time__gte=now)
         if bookings:
             table.is_available = False
         else:

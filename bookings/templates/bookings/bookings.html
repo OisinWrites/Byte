@@ -32,12 +32,14 @@
   <div class="booking-list booking-form">
     <h3>My Bookings</h3>
     {% for booking in current_bookings %}
+      {% if booking.user.id == request.user.id %}
       <p>
         {{ booking.start_time|date:"M d" }} at 
         {{ booking.start_time|time:"g:i A" }} for 
         {{ booking.size_of_party }}
         {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
       </p>
+      {% endif %}
     {% empty %}
       <p>You haven't made any bookings yet.</p>
     {% endfor %}

@@ -23,12 +23,21 @@
       <div class="menu2 col-4 circle">
         <p>MENU</p>
       </div>
-      <div class="book2 col-4 circle">
+      <div class="book2 col-4 circle text-center">
+        {% if user.is_authenticated %}
         <a href="{% url 'bookings' %}">
             <p>
               BOOK
             </p>
         </a>
+    {% else %}
+        <a href="{% url 'account_signup' %}">
+            <p>
+              SIGN UP<br>
+              TO BOOK
+            </p>
+        </a>
+    {% endif %}
       </div>
       <div class="contact2 col-4 circle">
         <p>CONTACT</p>

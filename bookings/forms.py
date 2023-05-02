@@ -13,22 +13,18 @@ from bookings.models import Booking
 
 
 class BookingForm(forms.ModelForm):
+    user_id = forms.IntegerField(widget=forms.HiddenInput())
+
     class Meta:
         model = Booking
         fields = ['start_time', 'size_of_party', 'additional']
         widgets = {
-            'user': forms.HiddenInput(),
             'start_time': DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
-        crispy_layout = Layout(
-            Field('start_time', css_class='form-control'),
-            Field('size_of_party', css_class='form-control'),
-            Field('additional', css_class='form-control'),
-        )
-
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['user_id'].initial = request.user.id
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
         self.helper.form_method = 'post'
