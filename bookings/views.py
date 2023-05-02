@@ -76,3 +76,15 @@ def update_table_availability():
         else:
             table.is_available = True
         table.save()
+
+
+def delete_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    table_availability = TableAvailability.objects.filter(
+        table=booking.table,
+        start_time=booking.start_time,
+        end_time=booking.end_time
+    ).delete()
+    booking.delete()
+    messages.success(request, 'Your booking has been deleted.')
+    return redirect('bookings')

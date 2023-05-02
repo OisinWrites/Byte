@@ -9,7 +9,7 @@ class BookingAdmin(admin.ModelAdmin):
         'table',
         'start_time',
         'end_time',
-        'user_id',
+        'user',
         'size_of_party',
         'additional',
     )
