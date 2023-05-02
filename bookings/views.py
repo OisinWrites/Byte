@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.http import HttpResponseBadRequest
 from django.db.models import Q
 
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 
 from .forms import BookingForm
 from .models import Booking, Table, TableAvailability
