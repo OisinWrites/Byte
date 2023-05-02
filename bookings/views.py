@@ -16,7 +16,8 @@ def bookings(request):
             start_time = form.cleaned_data['start_time']
             end_time = start_time + timedelta(minutes=105)
             size_of_party = form.cleaned_data['size_of_party']
-            tables = Table.objects.filter(size=size_of_party)
+            tables = Table.objects.filter(size__gte=size_of_party) \
+                .order_by('size')
             for table in tables:
                 table_availabilities = TableAvailability.objects.filter(
                     table=table,
