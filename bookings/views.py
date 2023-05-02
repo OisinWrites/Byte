@@ -43,13 +43,14 @@ def bookings(request):
                         end_time=end_time
                     )
                     table_availability.save()
-                    messages.success(request, 'Your booking has been made.')
+                    form.add_error(None, 'Your booking has been made.')
                     return redirect('bookings')
-            messages.error(request, 'No table is available for the requested'
-                                    ' time and party size.'
-                                    ' Please select a new time.')
+            form.add_error('size_of_party', 'No table is available'
+                           ' for the requested'
+                           ' time and party size.'
+                           ' Please select a new time.')
         else:
-            messages.error(request, 'There was an error with your booking.')
+            form.add_error(None, 'There was an error with your booking.')
     else:
         form = BookingForm()
     current_bookings = Booking.objects.filter(
