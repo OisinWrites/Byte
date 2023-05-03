@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load any_in %}
+
 {% block content %}
 
 <div class="row">
@@ -30,7 +32,8 @@
   </div>
   
   {% if user.is_authenticated %}
-    {% if current_bookings|any_in:user.email %}
+    {% if current_bookings %}
+      {% if current_bookings|any_in:user.email %}
         <div class="booking-list booking-form col-md-6">
           <h3>My Bookings</h3>
           {% for booking in current_bookings %}
@@ -49,6 +52,7 @@
             <p>You don't have any bookings yet.</p>
           {% endfor %}
         </div>
+      {% endif %}
     {% endif %}
   {% endif %}
 {% endblock %}
