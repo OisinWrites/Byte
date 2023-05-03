@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+
 <div class="row">
   <div class="booking-form col-md-6">
     <h2>Request a Booking</h2>
@@ -29,25 +30,25 @@
   </div>
   
   {% if user.is_authenticated %}
-  <div class="booking-list booking-form col-md-6">
-    <h3>My Bookings</h3>
-    {% for booking in current_bookings %}
-      {% if booking.user.id == request.user.id %}
-      <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn btn-primary">
-        {{ booking.start_time|date:"M d" }} at 
-        {{ booking.start_time|time:"g:i A" }} for 
-        {{ booking.size_of_party }}
-        {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
-      </a>
-      <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">
-        Cancel
-      </a>
-      {% endif %}
-    {% empty %}
-      <p>You haven't made any bookings yet.</p>
-    {% endfor %}
-  </div>
+    {% if current_bookings|any_in:user.email %}
+        <div class="booking-list booking-form col-md-6">
+          <h3>My Bookings</h3>
+          {% for booking in current_bookings %}
+            {% if booking.user.email == user.email %}
+            <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn btn-primary">
+              {{ booking.start_time|date:"M d" }} at 
+              {{ booking.start_time|time:"g:i A" }} for 
+              {{ booking.size_of_party }}
+              {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
+            </a>
+            <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">
+              Cancel
+            </a>
+            {% endif %}
+          {% empty %}
+            <p>You don't have any bookings yet.</p>
+          {% endfor %}
+        </div>
+    {% endif %}
   {% endif %}
-</div>
-
 {% endblock %}

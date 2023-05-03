@@ -101,6 +101,10 @@ Testing and Errors
     Resolve: Firstly, the url was not confirgured correctly, sharing, and therefore overridden by the edit url.
     Additionally, on successfuly deletion user was brought to an error page because the delete view redirect was sending them to the edit url for the now deleted object. To circumvent this the delete call is added to the bookings page, not edit page, and redirects to itself, which is not dependant on a object/id url.
 
+    7.
+    Issue: I'm trying to get the second div in bookings to disappear if there are no bookings for the current user. However it is currently working as only disappearing if there are no existing bookings for any user, i.e. booking in current booking.
+    Resolve:
+
 
     env.py content
 
