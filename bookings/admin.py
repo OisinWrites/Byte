@@ -7,6 +7,7 @@ from .models import Booking, Table
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
         'user',
+        'email',
         'id',
         'table',
         'start_time',

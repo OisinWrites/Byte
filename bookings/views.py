@@ -66,9 +66,13 @@ def bookings(request, booking_id=None):
         Q(start_time__gte=timezone.now()) | Q(
             user_id=request.user.id)).order_by('start_time')
 
+    user_bookings = Booking.objects.filter(
+        user=request.user).order_by('start_time')
+
     context = {
         'form': form,
         'current_bookings': current_bookings,
+        'user_bookings': user_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
         # pass the booking to the template if it exists

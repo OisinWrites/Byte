@@ -33,6 +33,11 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     size_of_party = models.IntegerField()
     additional = models.CharField(max_length=200, blank=True, null=True)
+    email = models.EmailField(null=True)
+
+    def save(self, *args, **kwargs):
+        self.email = self.user.email
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user.username} ({self.size_of_party} people)' \
@@ -41,9 +46,9 @@ class Booking(models.Model):
                f'{self.end_time.strftime("%d-%m %H:%M")}'
 
 
-# This table availability model is to track the tables availability at 
+# This table availability model is to track the tables availability at
 # given time and date, and presuming a table is otherwise always available in
-# the table model. The old boolean could be used for the admin to 
+# the table model. The old boolean could be used for the admin to
 # temporarily remove a table from being available for bookings, eg:
 # reserved for walk-ins.
 class TableAvailability(models.Model):
