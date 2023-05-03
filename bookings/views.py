@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.db.models import Q
 from django.urls import reverse
+from django.utils.timezone import make_aware
 
 from datetime import datetime, time, timedelta
 
@@ -157,10 +158,44 @@ def delete_booking(request, booking_id):
     return redirect(reverse('bookings'))
 
 
-def booking_list(request):
+def next_day(day):
+    """Returns the date of the next day from the given day."""
+    return (day + timedelta(days=1)).date()
+
+
+def bookings_management(request):
+    # Get search query from request
     search_query = request.GET.get('search', '')
-    bookings = Booking.objects.filter(
-        Q(user__email__icontains=search_query) |
-        Q(table__number__icontains=search_query)
-    )
-    return render(request, 'bookings_management.html', {'bookings': bookings})
+
+    # Get filter query from request
+    filter_query = request.GET.get('filter', '')
+
+    # Set the date range for filter
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    next_week = today + timedelta(days=7)
+
+    # Filter bookings by not earlier than the current day
+    bookings = Booking.objects.filter(start_time__gte=today)
+
+    # Filter bookings by user name if search query is provided
+    if search_query:
+        bookings = bookings.filter(user__username__icontains=search_query)
+
+    # Filter bookings by day or week if filter query is provided
+    if filter_query == 'day':
+        start_date = today
+        end_date = next_day(start_date)
+        bookings = bookings.filter(start_time__range=(start_date, end_date))
+    elif filter_query == 'week':
+        start_date = today
+        end_date = start_date + timedelta(days=7)
+        bookings = bookings.filter(start_time__range=(start_date, end_date))
+    elif filter_query == 'all':
+
+        # Order the bookings by user name, size of party, start time and date
+        bookings = bookings.order_by('user__username',
+                                     'size_of_party', 'start_time')
+
+    return render(request, 'bookings/bookings_management.html',
+                  {'bookings': bookings})
