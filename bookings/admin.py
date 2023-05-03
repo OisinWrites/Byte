@@ -6,16 +6,17 @@ from .models import Booking, Table
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
+        'user',
+        'id',
         'table',
         'start_time',
         'end_time',
-        'user',
         'size_of_party',
         'additional',
     )
 
     def get_username(self, obj):
-        return obj.user_name.username
+        return obj.user.username
     get_username.short_description = 'User'
 
 

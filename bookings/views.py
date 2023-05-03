@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseBadRequest
 from django.db.models import Q
+from django.urls import reverse
 
 from datetime import datetime, time, timedelta
 
@@ -149,4 +150,4 @@ def delete_booking(request, booking_id):
     ).delete()
     booking.delete()
     messages.success(request, 'Your booking has been deleted.')
-    return redirect('bookings')
+    return redirect(reverse('bookings'))

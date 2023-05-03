@@ -35,7 +35,7 @@ class Booking(models.Model):
     additional = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user_name.username} ({self.size_of_party} people)' \
+        return f'{self.user.username} ({self.size_of_party} people)' \
                f' - {self.table} ' \
                f'- {self.start_time.strftime("%d-%m %H:%M")} to ' \
                f'{self.end_time.strftime("%d-%m %H:%M")}'

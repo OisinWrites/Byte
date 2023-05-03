@@ -39,6 +39,9 @@
         {{ booking.size_of_party }}
         {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
       </a>
+      <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">
+        Cancel
+      </a>
       {% endif %}
     {% empty %}
       <p>You haven't made any bookings yet.</p>
