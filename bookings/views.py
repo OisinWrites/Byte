@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.db.models import Q
 from django.urls import reverse
 
@@ -155,3 +155,12 @@ def delete_booking(request, booking_id):
     booking.delete()
     messages.success(request, 'Your booking has been deleted.')
     return redirect(reverse('bookings'))
+
+
+def booking_list(request):
+    search_query = request.GET.get('search', '')
+    bookings = Booking.objects.filter(
+        Q(user__email__icontains=search_query) |
+        Q(table__number__icontains=search_query)
+    )
+    return render(request, 'bookings_management.html', {'bookings': bookings})

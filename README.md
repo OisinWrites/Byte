@@ -108,7 +108,7 @@ Testing and Errors
 
     env.py content
 
-    import os
+import os
 
 os.environ.setdefault("SECRET_KEY", "Oisin")
 os.environ.setdefault("DEBUG", "True")
