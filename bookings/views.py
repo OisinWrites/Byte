@@ -198,4 +198,4 @@ def bookings_management(request):
                                      'size_of_party', 'start_time')
 
     return render(request, 'bookings/bookings_management.html',
-                  {'bookings': bookings})
+                  {'bookings': bookings, 'filter_query': filter_query})

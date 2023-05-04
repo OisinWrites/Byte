@@ -9,7 +9,7 @@ from crispy_forms.layout import Submit, Layout, Field
 
 from datetime import datetime, time
 
-from bookings.models import Booking
+from bookings.models import Booking, Table
 
 
 class BookingForm(forms.ModelForm):
@@ -49,3 +49,9 @@ class BookingForm(forms.ModelForm):
         if value.time() < time(hour=17) or value.time() >= time(hour=21):
             raise ValidationError("Bookings are only available"
                                   " from 17:00 to 21:00.")
+
+
+class TableForm(forms.ModelForm):
+    class Meta:
+        model = Table
+        fields = ('number', 'size', 'is_available')

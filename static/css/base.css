@@ -68,6 +68,25 @@ body {
     font-size: 7rem;
     margin: 1vh;
 }
+
+.booking-list-scroller {
+    max-height: 60vh; /* set maximum height to the viewport height */
+    overflow-y: auto; /* add vertical scrollbar when content overflows */
+    scrollbar-width: none;
+}
+
+.booking-list-scroller::-webkit-scrollbar {
+    width: 0.5em; /* set the width of the scrollbar */
+  }
+
+.booking-list-scroller::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* set the color of the scrollbar thumb */
+  }
+
+.booking-list-scroller::-webkit-scrollbar-track {
+    background-color: transparent; /* set the color of the scrollbar track */
+  }
+
 /* giving the text of the nav options as "see through" to the background */
 .menu p, .book p, .contact p,
 .menu2 p, .book2 p, .contact2 p {

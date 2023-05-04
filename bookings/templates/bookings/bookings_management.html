@@ -4,21 +4,21 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row my-20">
   <div class="booking-form col-md-6">
-    <h2>manage somehow</h2>
+    <h2>Manage Bookings</h2>
     <form class="form-inline float-right">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search by user name" name="search">
-      <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
+      <button class="btn my-2 my-sm-0" type="submit">Search</button>
     </form>
-    
+
     <div class="btn-group mr-2" role="group">
-      <a href="?filter=all" class="btn btn-secondary">All</a>
-      <a href="?filter=day" class="btn btn-secondary">Today</a>
-      <a href="?filter=week" class="btn btn-secondary">This week</a>
+      <a href="?filter=all" class="btn">All</a>
+      <a href="?filter=day" class="btn">Today</a>
+      <a href="?filter=week" class="btn">This week</a>
     </div>
     {% if bookings %}
-    <div class="table-responsive">
+    <div class="table-responsive booking-list-scroller">
       <table class="table">
         <thead>
           <tr>
@@ -40,8 +40,12 @@
         </tbody>
       </table>
     </div>
+    {% else %}
+    <p>No bookings found.</p>
     {% endif %}
   </div>
+</div>
+
 
 
 {% endblock %}
