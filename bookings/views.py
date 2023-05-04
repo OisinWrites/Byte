@@ -8,7 +8,7 @@ from django.utils.timezone import make_aware
 
 from datetime import datetime, time, timedelta
 
-from .forms import BookingForm
+from .forms import BookingForm, TableForm
 from .models import Booking, Table, TableAvailability
 
 
@@ -39,17 +39,27 @@ def bookings(request, booking_id=None):
                 table_availabilities = TableAvailability.objects.filter(
                     table=table,
                     start_time__lt=end_time,
-                    end_time__gt=start_time
+                    end_time__gt=start_time,
                 )
                 if not table_availabilities:
                     booking.table = table
                     booking.end_time = end_time
                     booking.save()
-                    table_availability = TableAvailability(
-                        table=table,
-                        start_time=start_time,
-                        end_time=end_time
-                    )
+                    if booking:
+                        booking_id = booking.id
+                        table_availability = TableAvailability(
+                            table=table,
+                            start_time=start_time,
+                            end_time=end_time,
+                            booking_id=booking_id
+                        )
+                    else:
+                        table_availability = TableAvailability(
+                            table=table,
+                            start_time=start_time,
+                            end_time=end_time,
+                            booking_id=booking_id
+                        )
                     table_availability.save()
                     successful_bookings.append(booking)
                     messages.success(request, 'Your booking has been made.')
@@ -111,8 +121,17 @@ def edit_booking(request, booking_id):
                     end_time__gt=start_time
                 )
                 if not table_availabilities:
+                    if booking.start_time != start_time:
+                        # Booking start time has been changed,
+                        # so delete the old table availability
+                        TableAvailability.objects.filter(
+                            table=booking.table,
+                            start_time=booking.start_time,
+                            end_time=booking.end_time
+                        ).delete()
                     booking.table = table
                     booking.end_time = end_time
+                    booking.start_time = start_time
                     booking.save()
                     table_availability = TableAvailability(
                         table=table,

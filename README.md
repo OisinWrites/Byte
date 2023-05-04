@@ -103,7 +103,11 @@ Testing and Errors
 
     7.
     Issue: I'm trying to get the second div in bookings to disappear if there are no bookings for the current user. However it is currently working as only disappearing if there are no existing bookings for any user, i.e. booking in current booking.
-    Resolve:
+    Resolve: Not resolved. The div exists because there are bookings in current bookings, and bookings by all customers exist in that list, not just the current user. To fix this later we would have to create a new list in the view of current users bookings in current_bookings and then run the template with if bookings in current user's bookings.
+
+    8:
+    Issue: When a table is edited by its start time it leaves behind the table availability instance, which only collapses with a delete.
+    Resolve: The code I've tried is attempting to delete old instances of availability, but I believe its tracking them using the id of the edited booking which has changed from the original booking.
 
 
     env.py content

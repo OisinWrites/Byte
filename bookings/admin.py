@@ -1,7 +1,17 @@
 from django.contrib import admin
-from .models import Booking, Table
+from .models import Booking, Table, TableAvailability
 
 # Register your models here.
+
+
+class TableAvailabilityAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'table',
+        'start_time',
+        'end_time',
+        'booking_id',
+    )
 
 
 class BookingAdmin(admin.ModelAdmin):
@@ -31,3 +41,4 @@ class TableAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Booking, BookingAdmin,)
 admin.site.register(Table, TableAdmin,)
+admin.site.register(TableAvailability, TableAvailabilityAdmin,)

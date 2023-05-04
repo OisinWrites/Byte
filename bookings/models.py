@@ -49,10 +49,13 @@ class Booking(models.Model):
     size_of_party = models.IntegerField()
     additional = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(null=True)
+    booking_id = models.CharField(max_length=10, null=True)
 
     def save(self, *args, **kwargs):
         self.email = self.user.email
         super().save(*args, **kwargs)
+        self.booking_id = str(self.id)
+        super().save(update_fields=['booking_id'])
 
     def __str__(self):
         return f'{self.user.username} ({self.size_of_party} people)' \
@@ -71,3 +74,8 @@ class TableAvailability(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     is_available = models.BooleanField(default=True)
+    booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE,
+                                   null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Table Availabilities'
