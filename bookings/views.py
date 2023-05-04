@@ -45,23 +45,15 @@ def bookings(request, booking_id=None):
                     booking.table = table
                     booking.end_time = end_time
                     booking.save()
-                    if booking:
-                        booking_id = booking.id
-                        table_availability = TableAvailability(
-                            table=table,
-                            start_time=start_time,
-                            end_time=end_time,
-                            booking_id=booking_id
-                        )
-                    else:
-                        table_availability = TableAvailability(
-                            table=table,
-                            start_time=start_time,
-                            end_time=end_time,
-                            booking_id=booking_id
-                        )
-                    table_availability.save()
                     successful_bookings.append(booking)
+                    booking_instance = Booking.objects.get(id=booking.id)
+                    table_availability = TableAvailability(
+                        table=table,
+                        start_time=start_time,
+                        end_time=end_time,
+                        booking_id=booking
+                    )
+                    table_availability.save()
                     messages.success(request, 'Your booking has been made.')
                     return redirect('bookings')
             form.add_error('size_of_party', 'No table is available'
@@ -121,22 +113,21 @@ def edit_booking(request, booking_id):
                     end_time__gt=start_time
                 )
                 if not table_availabilities:
-                    if booking.start_time != start_time:
-                        # Booking start time has been changed,
-                        # so delete the old table availability
-                        TableAvailability.objects.filter(
-                            table=booking.table,
-                            start_time=booking.start_time,
-                            end_time=booking.end_time
-                        ).delete()
+                    # Booking start time has been changed,
+                    # so delete the old table availability
+                    TableAvailability.objects.filter(
+                        id_of_booking=booking.id).delete()
+
+                    booking.end_time = start_time + timedelta(minutes=105)
                     booking.table = table
-                    booking.end_time = end_time
                     booking.start_time = start_time
                     booking.save()
+
                     table_availability = TableAvailability(
                         table=table,
                         start_time=start_time,
-                        end_time=end_time
+                        end_time=booking.end_time,
+                        booking_id=booking,
                     )
                     table_availability.save()
                     successful_bookings.append(booking)

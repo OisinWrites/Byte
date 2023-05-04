@@ -76,6 +76,12 @@ class TableAvailability(models.Model):
     is_available = models.BooleanField(default=True)
     booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE,
                                    null=True, blank=True)
+    id_of_booking = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Table Availabilities'
+
+    def save(self, *args, **kwargs):
+        if self.booking_id:
+            self.id_of_booking = self.booking_id.id
+        super(TableAvailability, self).save(*args, **kwargs)

@@ -10,7 +10,7 @@ class TableAvailabilityAdmin(admin.ModelAdmin):
         'table',
         'start_time',
         'end_time',
-        'booking_id',
+        'id_of_booking',
     )
 
 
@@ -19,6 +19,7 @@ class BookingAdmin(admin.ModelAdmin):
         'user',
         'email',
         'id',
+        'booking_id',
         'table',
         'start_time',
         'end_time',
