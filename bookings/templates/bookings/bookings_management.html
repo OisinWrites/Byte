@@ -5,7 +5,7 @@
 {% block content %}
 {% if user.is_superuser %}
 <div class="row">
-  <div class="booking-form col-md-6 my-20">
+  <div class="booking-form col-md-6">
     <h2>Manage Bookings</h2>
     <form class="form-inline float-right">
       <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
@@ -45,20 +45,16 @@
     <p>No bookings found.</p>
     {% endif %}
   </div>
-  <div class="booking-list booking-form col-md-6">
-    <h3>Seating plan</h3>
+  <div class="booking-form col-md-6">
+    <h2>Seating plan</h2>
     <form method="POST" id="table-form">
       {% csrf_token %}
       {{ table_form|crispy }}
       <button type="submit">Add Table</button>
     </form>
-    {% for table in tables %}
-      <div>
-        <tr>
-          <td>{{ table.size }}</td>
-          <td>{{ table.number }}</td>
-        </tr>
-      </div>
+      <div class="container table-list">
+        {% for table in tables %}
+        <div class="table-item">T {{ table.number }}|Seating for {{ table.size }}</div>
     {% endfor %}
   </div>
 </div>

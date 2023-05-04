@@ -141,6 +141,20 @@ body {
 .allauth-form a {
     color:rgb(7, 45, 61);
 }
+
+.table-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.table-item {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* disappears the circles from medium and larger screens */
 @media (max-width: 768px) {
     .visible-sml {
