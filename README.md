@@ -36,6 +36,19 @@
 10. USER STORY: Customers should be able to attach a message to their booking for the owner to see
 11. USER STORY: Any of the customers data manipulations should be confirmed with relevant feedback
 
+# Credits
+
+- Favicon 
+https://favicon.io/favicon-generator/
+Creating custom icon for project
+
+- Coolors
+https://coolors.co/
+Creating complimentary palette for project
+
+- StackOverflow
+- CHATGPT
+For error query and solving
 
 # Deployment
 
@@ -237,7 +250,7 @@ Testing and Errors
     Issue: When a table is edited by its start time it leaves behind the table availability instance, which only collapses with a delete.
     Resolve: The code I've tried is attempting to delete old instances of availability, but I believe its tracking them using the id of the edited booking which has changed from the original booking.
     - The table availability model doesn't take in the booking's id. In fact the booking only gets an id on its instansiation, which naturally is after the table availability instansiation since it is a requirement for the booking to exist. Maybe I can edit the table availability instance after the booking is created.
-    - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warrantd a new time slot in the form of the table availability object.
+    - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warranted a new time slot in the form of the table availability object.
 
 
     env.py content
