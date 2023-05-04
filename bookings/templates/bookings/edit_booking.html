@@ -19,6 +19,13 @@
       <button type="submit">Update Booking</button>
     </form>
     {% endif %}
+    <div>
+    {% if additional_message %}
+      {{ additional_message }}
+      {% else %}
+      <p>No additional message</p>
+    {% endif %}
+    </div>
   </div>
 
   {% if user.is_authenticated %}

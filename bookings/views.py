@@ -153,6 +153,7 @@ def edit_booking(request, booking_id):
         'edit_booking': booking,
         # pass the booking to the template if it exists
     }
+
     return render(request, 'bookings/edit_booking.html', context)
 
 

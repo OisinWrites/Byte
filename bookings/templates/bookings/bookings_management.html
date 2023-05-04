@@ -26,6 +26,7 @@
             <th>Size of party</th>
             <th>Table ID</th>
             <th>Start time</th>
+            <th>Messages</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +36,14 @@
             <td>{{ booking.size_of_party }}</td>
             <td>{{ booking.table.number }}</td>
             <td>{{ booking.start_time }}</td>
+            <td class="hover-message">
+              <p>see message</p>
+              <div class="hover-message-appear">
+                <p>
+                  {{ booking.additional }}
+                </p>
+              </div>
+            </td>
             <td><a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">Cancel</a></td>
           </tr>
           {% endfor %}

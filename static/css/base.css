@@ -61,6 +61,15 @@ body {
     position: absolute;
     max-height: 4vh;
 }
+
+.hover-message-appear {
+    display: none;
+}
+
+.hover-message:hover .hover-message-appear {
+    display: block;
+}
+
 /* block colour on mobile navigation */
 .menu {
     background-color: 	rgb(251, 209, 162);
