@@ -178,6 +178,8 @@ def bookings_management(request):
     else:
         form = TableForm()
 
+    tables = Table.objects.all().order_by('number')
+
     # Get search query from request
     search_query = request.GET.get('search', '')
 
@@ -215,7 +217,8 @@ def bookings_management(request):
         'table_form': form,
         'bookings': bookings,
         'filter_query': filter_query,
-        'search_query': search_query
+        'search_query': search_query,
+        'tables': tables
     }
 
     return render(request, 'bookings/bookings_management.html', context)
