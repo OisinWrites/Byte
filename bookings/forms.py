@@ -14,8 +14,11 @@ from bookings.models import Booking, Table
 
 
 class BookingForm(forms.ModelForm):
+    """Hides user id as a hidden form input, uneditable."""
     user_id = forms.IntegerField(widget=forms.HiddenInput())
 
+    """Sets form fields
+        Uses widget for calendar and time"""
     class Meta:
         model = Booking
         fields = ['start_time', 'size_of_party', 'additional']
@@ -23,6 +26,7 @@ class BookingForm(forms.ModelForm):
             'start_time': DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
+    """Sets behaviour for instance of booking"""
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['user_id'].initial = request.user.id
@@ -32,16 +36,21 @@ class BookingForm(forms.ModelForm):
         self.helper.form_action = 'bookings'
         self.helper.form_class = 'form-horizontal'
 
-        # Set validators for start_time field
+        """Set validators for start_time field"""
         self.fields['start_time'].validators.append(self.validate_start_time)
 
-        # Set validator for size_of_party field
+        """Set validator for the minimum size_of_party field"""
         self.fields['size_of_party'].validators.append(MinValueValidator(1))
 
+        """Set validator for maximum size_of_party field"""
         self.fields['size_of_party'].validators.append(
             MaxValueValidator(6, message="We do not currently"
                               " cater to groups larger than 6."))
 
+        """Has field auto set to 2 as most likely,
+            and offering for party of 1 diminishes the
+            positive experience of the site
+            in a subtle, soft, sense"""
         self.fields['size_of_party'].initial = 2
         self.fields['size_of_party'].widget.attrs['min'] = 1
         self.fields['size_of_party'].widget.attrs['max'] = 6
@@ -58,6 +67,9 @@ class BookingForm(forms.ModelForm):
         if value.time() < time(hour=17) or value.time() >= time(hour=21):
             raise ValidationError("Bookings are only available"
                                   " from 17:00 to 21:00.")
+
+
+"""Form to create tables in the management view"""
 
 
 class TableForm(forms.ModelForm):

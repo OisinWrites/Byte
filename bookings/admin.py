@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Booking, Table, TableAvailability
 
-# Register your models here.
+# Models for the admin django display
 
 
 class TableAvailabilityAdmin(admin.ModelAdmin):
