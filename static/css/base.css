@@ -52,6 +52,15 @@ body {
     font-size: 8rem;
     color: rgb(0, 178, 202);
 }
+
+.messages-spacing-ghost {
+    height: 6vh;
+}
+
+.pop-up {
+    position: absolute;
+    max-height: 4vh;
+}
 /* block colour on mobile navigation */
 .menu {
     background-color: 	rgb(251, 209, 162);
