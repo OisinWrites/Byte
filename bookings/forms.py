@@ -6,6 +6,7 @@ from django.forms.widgets import DateTimeInput
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.layout import Row, Column
 
 from datetime import datetime, time
 
@@ -52,6 +53,18 @@ class BookingForm(forms.ModelForm):
 
 
 class TableForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Row(
+                Column('size', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+        )
+
     class Meta:
         model = Table
         fields = ('size',)

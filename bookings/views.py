@@ -222,3 +222,10 @@ def bookings_management(request):
     }
 
     return render(request, 'bookings/bookings_management.html', context)
+
+
+def delete_table(request, table_id):
+    table = get_object_or_404(Table, id=table_id)
+    table.delete()
+    messages.success(request, 'Your table has been deleted.')
+    return redirect(reverse('bookings_management'))

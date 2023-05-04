@@ -155,6 +155,17 @@ body {
     justify-content: center;
 }
 
+.delete-button {
+    background-color:rgb(219, 83, 117) !important;
+    color:white;
+    margin: .5rem;
+    max-width: 1.6rem;
+    max-height: 1.6rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* disappears the circles from medium and larger screens */
 @media (max-width: 768px) {
     .visible-sml {

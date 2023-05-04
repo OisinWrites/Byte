@@ -54,7 +54,12 @@
     </form>
       <div class="container table-list">
         {% for table in tables %}
-        <div class="table-item">T {{ table.number }}|Seating for {{ table.size }}</div>
+        <div class="table-item">
+          T {{ table.number }}|Seating for {{ table.size }} 
+          <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
+            X
+          </a>
+        </div>
     {% endfor %}
   </div>
 </div>

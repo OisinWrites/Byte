@@ -12,6 +12,7 @@
       We accept bookings from  <br>  
       Wednesday to Sunday<br>
       5pm to 9pm<br>
+      We accomodate up to groups of 6<br>
       <u>Subject to Availability</u>
 
     </p>
@@ -34,13 +35,17 @@
     <h3>My Bookings</h3>
     {% for booking in user_bookings %}
       {% if booking.user.id == request.user.id %}
-      <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn btn-primary">
-        {{ booking.start_time|date:"M d" }} at 
-        {{ booking.start_time|time:"g:i A" }} for 
-        {{ booking.size_of_party }}
-        {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
-      </a>
-      <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">Cancel</a>
+      <div class="row">
+        <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn">
+          {{ booking.start_time|date:"M d" }} at 
+          {{ booking.start_time|time:"g:i A" }} for 
+          {{ booking.size_of_party }}
+          {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
+        </a>
+        <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+          X
+        </a>
+      </div>
       {% endif %}
     {% empty %}
       <p>You haven't made any bookings yet.</p>
