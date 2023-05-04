@@ -54,4 +54,12 @@ class BookingForm(forms.ModelForm):
 class TableForm(forms.ModelForm):
     class Meta:
         model = Table
-        fields = ('number', 'size', 'is_available')
+        fields = ('size',)
+
+
+class TableDeleteForm(forms.Form):
+    table_id = forms.IntegerField(widget=forms.HiddenInput())
+
+    def delete_table(self):
+        table_id = self.cleaned_data['table_id']
+        Table.objects.filter(id=table_id).delete()

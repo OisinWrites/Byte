@@ -3,6 +3,14 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 
+class TableManager(models.Manager):
+    def get_lowest_available_number(self):
+        used_numbers = self.values_list('number', flat=True)
+        for i in range(1, len(used_numbers) + 2):
+            if i not in used_numbers:
+                return i
+
+
 # The table model
 # Three different sizes of tables, unique ids, and boolean for availability
 class Table(models.Model):
@@ -11,12 +19,19 @@ class Table(models.Model):
         ('4', '4-seater'),
         ('6', '6-seater'),
     )
-    number = models.IntegerField(unique=True)
+    number = models.IntegerField(unique=True, blank=True,
+                                 null=True, editable=False)
     size = models.CharField(max_length=1, choices=TABLE_SIZES)
-    is_available = models.BooleanField(default=True)
+
+    objects = TableManager()
 
     def __str__(self):
         return f'Table {self.number} ({self.get_size_display()})'
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.number = Table.objects.get_lowest_available_number()
+        super().save(*args, **kwargs)
 
 
 # The booking model

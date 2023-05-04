@@ -23,9 +23,8 @@ class BookingAdmin(admin.ModelAdmin):
 
 class TableAdmin(admin.ModelAdmin):
     list_display = (
-        'number',
         'size',
-        'is_available',
+        'number',
     )
 
 
