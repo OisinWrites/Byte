@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row my-40">
   <div class="booking-form col-md-6">
     <h2>Request a Booking</h2>
     {% if user.is_authenticated %}
@@ -33,6 +33,8 @@
   {% if user.is_authenticated %}
   <div class="booking-list booking-form col-md-6">
     <h3>My Bookings</h3>
+    <p>Select a booking to edit it</p>
+    <hr>
     {% for booking in user_bookings %}
       {% if booking.user.id == request.user.id %}
       <div class="row">
