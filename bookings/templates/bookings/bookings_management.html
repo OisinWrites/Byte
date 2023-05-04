@@ -49,17 +49,13 @@
     <h3>Seating plan</h3>
     {% for table in tables %}
       <div>
-          {{ table }}
-          <form method="post" action="">
-              {% csrf_token %}
-              <input type="hidden" name="table_id" value="{{ table.id }}">
-              <button type="submit">Delete</button>
-          </form>
-          <a href="">Edit</a>
+        <tr>
+          <td>{{ table.size }}</td>
+          <td>{{ table.number }}</td>
+        </tr>
       </div>
     {% endfor %}
-    </div>
-    </div>
+  </div>
 </div>
 {% else %}
     <script>
