@@ -21,7 +21,7 @@
     <div class="table-responsive booking-list-scroller">
       <table class="table">
         <thead>
-          <tr>
+          <tr >
             <th>User name</th>
             <th>Size of party</th>
             <th>Table ID</th>
@@ -30,12 +30,13 @@
         </thead>
         <tbody>
           {% for booking in bookings %}
-            <tr>
-              <td>{{ booking.user.username }}</td>
-              <td>{{ booking.size_of_party }}</td>
-              <td>{{ booking.table.number }}</td>
-              <td>{{ booking.start_time }}</td>
-            </tr>
+          <tr>
+            <td><a href="{% url 'edit_booking' booking_id=booking.id %}">{{ booking.user.username }}</a></td>
+            <td>{{ booking.size_of_party }}</td>
+            <td>{{ booking.table.number }}</td>
+            <td>{{ booking.start_time }}</td>
+            <td><a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">Cancel</a></td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
