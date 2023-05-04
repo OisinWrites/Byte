@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.forms.widgets import DateTimeInput
 
 
@@ -38,6 +38,14 @@ class BookingForm(forms.ModelForm):
         # Set validator for size_of_party field
         self.fields['size_of_party'].validators.append(MinValueValidator(1))
 
+        self.fields['size_of_party'].validators.append(
+            MaxValueValidator(6, message="We do not currently"
+                              " cater to groups larger than 6."))
+
+        self.fields['size_of_party'].initial = 2
+        self.fields['size_of_party'].widget.attrs['min'] = 1
+        self.fields['size_of_party'].widget.attrs['max'] = 6
+
     def validate_start_time(self, value):
         """
         Custom validator for start_time field to limit available days
@@ -72,11 +80,3 @@ class TableForm(forms.ModelForm):
         widgets = {
             'size': forms.Select(attrs={'class': 'form-control'}),
         }
-
-
-class TableDeleteForm(forms.Form):
-    table_id = forms.IntegerField(widget=forms.HiddenInput())
-
-    def delete_table(self):
-        table_id = self.cleaned_data['table_id']
-        Table.objects.filter(id=table_id).delete()
