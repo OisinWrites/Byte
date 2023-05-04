@@ -174,6 +174,7 @@ def bookings_management(request):
         if form.is_valid():
             table = form.save(commit=False)
             table.save()
+            messages.success(request, 'New table added to seating plan.')
             return redirect('bookings_management')
     else:
         form = TableForm()
