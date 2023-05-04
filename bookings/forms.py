@@ -55,6 +55,10 @@ class TableForm(forms.ModelForm):
     class Meta:
         model = Table
         fields = ('size',)
+        labels = {'size': 'Table Size'}
+        widgets = {
+            'size': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 
 class TableDeleteForm(forms.Form):

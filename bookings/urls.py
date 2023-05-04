@@ -9,6 +9,4 @@ urlpatterns = [
           views.delete_booking, name='delete_booking'),
      path('bookings/manage/',
           views.bookings_management, name='bookings_management'),
-     path('bookings/manage/tables',
-          views.tables, name='tables'),
 ]

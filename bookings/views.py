@@ -169,6 +169,15 @@ def delete_booking(request, booking_id):
 
 
 def bookings_management(request):
+    if request.method == 'POST':
+        form = TableForm(request.POST)
+        if form.is_valid():
+            table = form.save(commit=False)
+            table.save()
+            return redirect('bookings_management')
+    else:
+        form = TableForm()
+
     # Get search query from request
     search_query = request.GET.get('search', '')
 
@@ -202,22 +211,11 @@ def bookings_management(request):
         bookings = bookings.order_by('user__username',
                                      'size_of_party', 'start_time')
 
-    return render(request, 'bookings/bookings_management.html',
-                  {'bookings': bookings, 'filter_query': filter_query})
-
-
-def tables(request):
-    if request.method == 'POST':
-        form = TableForm(request.POST)
-        if form.is_valid():
-            table = form.save(commit=False)
-            table.save()
-            return redirect('table_list')
-    else:
-        form = TableForm()
-
     context = {
-        'form': form
-        }
+        'table_form': form,
+        'bookings': bookings,
+        'filter_query': filter_query,
+        'search_query': search_query
+    }
 
     return render(request, 'bookings/bookings_management.html', context)
