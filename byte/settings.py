@@ -33,9 +33,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 ALLOWED_HOSTS = ['byte-restaurant-bookings.herokuapp.com']
 
-# Allowed hosts from env.py
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
-
 
 # Application definition
 
