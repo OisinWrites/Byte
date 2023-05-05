@@ -253,17 +253,26 @@ Testing and Errors
     - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warranted a new time slot in the form of the table availability object.
 
 ## Testing
+![](static/media/test-1.png)
 
 
-
-    env.py content
-
-import os
-
-os.environ.setdefault("SECRET_KEY", "Oisin")
-os.environ.setdefault("DEBUG", "True")
-os.environ.setdefault("IP", "0.0.0.0.")
-os.environ.setdefault("PORT", "8000")
-os.environ.setdefault("DEVELOPMENT", "True")
-os.environ.setdefault("DB_URL", "sqlite3:///byte")
-os.environ.setdefault("ALLOWED_HOSTS", "localhost")
+![date-handling](static/media/test-2.png)
+![](static/media/test-3.png)
+![](static/media/test-4.png)
+![](static/media/test-5.png)
+![](static/media/test-6.png)
+![](static/media/test-7.png)
+![](static/media/test-8.png)
+![](static/media/test-9.png)
+![](static/media/test-10.png)
+![](static/media/test-11.png)
+![](static/media/test-12.png)
+![](static/media/test-13.png)
+![](static/media/test-14.png)
+![](static/media/test-15.png)
+![](static/media/test-16.png)
+![](static/media/test-17.png)
+![](static/media/test-18.png)
+![](static/media/test-19.png)
+![](static/media/test-20.png)
+![](static/media/test-21.png)
