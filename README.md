@@ -253,26 +253,48 @@ Testing and Errors
     - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warranted a new time slot in the form of the table availability object.
 
 ## Testing
-![](static/media/test-1.png)
+- Booking of same time chooses new table, not same
+- ![](static/media/test-1.png)
 
+- Handling for past dates
+- ![date-handling](static/media/test-2.png)
 
-![date-handling](static/media/test-2.png)
-![](static/media/test-3.png)
-![](static/media/test-4.png)
-![](static/media/test-5.png)
-![](static/media/test-6.png)
-![](static/media/test-7.png)
-![](static/media/test-8.png)
-![](static/media/test-9.png)
-![](static/media/test-10.png)
-![](static/media/test-11.png)
-![](static/media/test-12.png)
-![](static/media/test-13.png)
-![](static/media/test-14.png)
-![](static/media/test-15.png)
-![](static/media/test-16.png)
-![](static/media/test-17.png)
-![](static/media/test-18.png)
-![](static/media/test-19.png)
-![](static/media/test-20.png)
-![](static/media/test-21.png)
+- Creating a new table chooses the lowest number available as number attribute eg table 3 below
+- ![](static/media/test-3.png)
+- Test to confirm booking is made
+Booking object shown in site
+- ![](static/media/test-4.png)
+- Same object in django admin, shows auto fill of end time for slot
+- ![](static/media/test-6.png)
+- Matching table availability model
+- ![](static/media/test-5.png)
+- Deleting a table, show in terminal
+- ![](static/media/test-8.png)
+- Availability cascades with deleted object
+- ![](static/media/test-7.png)
+- Test edit a booking. New booking object:
+- ![](static/media/test-9.png)
+- Edit view editing date to may 13th
+- ![](static/media/test-10.png)
+- Revert to bookings page from edit, may 13th booking shows
+- ![](static/media/test-11.png)
+- Object in admin, shows old booking object replaced
+- ![](static/media/test-12.png)
+- Object for table availability also replaced
+- ![](static/media/test-13.png)
+- Test table management. Seen on right, only one table of 6 exists, T7
+- ![](static/media/test-17.png)
+- Booking exists for may 5th for 6 ppl
+- ![](static/media/test-15.png)
+- Only one table with seating of 6 exists, so handling is returned for request
+- ![](static/media/test-16.png)
+- Today filter selected
+- ![](static/media/test-18.png)
+- This week filter results
+- ![](static/media/test-19.png)
+- Results for all
+- ![](static/media/test-17.png)
+- Message pop up for attribute 'additional'
+- ![](static/media/test-20.png)
+- Second message of 'next week' on last booking
+- ![](static/media/test-21.png)
