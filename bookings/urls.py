@@ -11,4 +11,4 @@ urlpatterns = [
           views.delete_table, name='delete_table'),
      path('bookings/manage/',
           views.bookings_management, name='bookings_management'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
