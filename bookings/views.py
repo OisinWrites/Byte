@@ -218,6 +218,12 @@ def bookings_management(request):
     else:
         form = TableForm()
 
+    def next_day(date):
+        """Returns the next day from a given date."""
+        next_day = date + timedelta(days=1)
+        return make_aware(datetime(next_day.year,
+                          next_day.month, next_day.day, 0, 0, 0))
+
     tables = Table.objects.all().order_by('number')
 
     """Get search query from request"""
@@ -251,6 +257,7 @@ def bookings_management(request):
 
         """Order the bookings by user name,
             size of party, start time and date"""
+            
         bookings = bookings.order_by('user__username',
                                      'size_of_party', 'start_time')
 

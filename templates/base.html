@@ -49,7 +49,7 @@
                 <a class="navbar-toggler-icon nav-link burger" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="drop">
-                  <a class="nav-link burger" ref="{% url 'home' %}" class="nav-link">
+                  <a class="nav-link burger" href="{% url 'home' %}" class="nav-link">
                     Home
                   </a>
                   <a class="nav-link burger" href="{% url 'menu' %}">
@@ -92,7 +92,7 @@
               <div class="dropdown-menu border-0" aria-labelledby="user-options">
                   {% if request.user.is_authenticated %}
                       {% if request.user.is_superuser %}
-                          <a href="{% url 'bookings_management' %}" class="dropdown-item">Bookings Management</a>
+                      <a href="{% url 'bookings_management' %}" class="dropdown-item">Bookings Management</a>
                       {% endif %}
                       <a href="" class="dropdown-item">My Profile</a>
                       <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
