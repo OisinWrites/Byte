@@ -44,7 +44,7 @@
       <div class="header container d-flex justify-content-around align-items-center">
         <button class="navbar-toggler account-logo" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon account-logo">
-            <a href="{% url 'home' %}" class="nav-link main-logo-link mx-auto">Home</a>
+            
           </span>
         </button>
         <a href="{% url 'home' %}" class="nav-link main-logo-link mx-auto">
@@ -104,7 +104,25 @@
     {% endblock %}
 
     <footer>
-      <div class="footer col-12 d-flex flex-column justify-content-center align-items-center">
+      <div class="footer container d-flex justify-content-around align-items-center">
+        <div>
+          <a href="{% url 'home' %}" class="footer-logo">www.BYTE.Restaurant.com</a>
+        </div>
+        <div>
+          <a href="https://www.facebook.com" rel="noopener" aria-label="Facebook" target="_blank">
+          <i class="fab fa-facebook-square ms-3 foot-icon"></i>
+          </a>          
+        </div>
+        <div>
+          <a href="https://www.instagram.com" rel="noopener" aria-label="Instagram" target="_blank">
+          <i class="fab fa-instagram-square ms-3 foot-icon"></i>
+          </a>
+        </div>
+        <div>
+          <a href="https://www.twitter.com" rel="noopener" aria-label="Twitter" target="_blank">
+          <i class="fab fa-twitter-square ms-3 foot-icon"></i>
+          </a>
+        </div>
       </div>
     </footer>
     {% block postloadjs %}
