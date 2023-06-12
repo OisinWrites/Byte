@@ -6,7 +6,7 @@ html {
 
 body {
     font-family: 'Bebas Neue';
-    background: url('/static/media/background.jpg') no-repeat center center fixed;
+    background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
     background-size: cover;
     background-position: center;
     overflow-x: hidden;
