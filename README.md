@@ -166,60 +166,9 @@ Save, add, commit, and push the project.
 
 In the Heroku Dashboard, click on the Deploy tab, click on the option to Deploy through Github, this may need to be set up if its your first time. Search your repositories for the project. Scroll to the bottom of the page and select Deploy Branch.
 
+Once the the app is deployed successfully, the Open App button will bring you to the working application.
 
-Project set-up
-
-    cmnd:  django-admin startproject 'project name' .
-
-    Adding app for bookings
-        cmnd:   python3 manage.py startapp 'app name'
-        Register app name under installed_apps in settings.py
-
-    Allauth set up
-       cmnd: pip3 install allauth
-        Add lines 
-                    # `allauth` needs this from django
-                    'django.template.context_processors.request',
-        under templates in settings.py
-        Add lines
-                    'django.contrib.sites',
-
-                    'allauth',
-                    'allauth.account',
-                    'allauth.socialaccount',
-        under installed_apps in settings.py
-
-        Create section in settings above templates
-                    AUTHENTICATION_BACKENDS = [
-                    # Needed to login by username in Django admin, regardless of `allauth`
-                    'django.contrib.auth.backends.ModelBackend',
-
-                    # `allauth` specific authentication methods, such as login by e-mail
-                    'allauth.account.auth_backends.AuthenticationBackend',
-                    ]
-        Under installed apps
-                    SITE_ID = 1
-        In urls.py
-                    from django.urls import path, include
-                    from django.conf import settings
-
-
-                    urlpatterns = [
-                        path('accounts/', include('allauth.urls')),
-                    ]
-        
-        allauth customisation
-
-    To copy and paste folders and files from allauth site-packages first determine python version installed using cmnd: python --version In this case python3 3.8
-    Create a folder, templates, and subfolder, allauth, from the project level directory
-    Then run cmnd: 
-    cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates/allauth/
-
-    Delete openid and tests folders, as unneeded for this project, deleting will revert use to site_packages templates for same.
-
-
-
-UX/UI
+# UX/UI
 
 Example sites for restaurant home pages
 ![example-site-mobile](static/media/model-site-mobile-min.jpg)
@@ -230,7 +179,7 @@ Wireframes for project mock-up
 ![wireframe-mobile](static/media/mobile-wireframe-min.jpg)
 ![wireframe-desktop](static/media/desktop-wireframe-min.jpg)
 
-Logic
+# Logic
 
 Booking logic Flowchart
 ![booking-logic-flowchart](static/media/booking-logic-flowchart.jpg)
@@ -238,7 +187,9 @@ Booking logic Flowchart
 Plans for Models
 ![model-plans](static/media/model-plans.jpg)
 
-Testing and Errors
+# Testing
+
+## Error Log
 
     1
     Issue: Changes made to allauth html files take no effect on rendered pages in development server
@@ -280,49 +231,57 @@ Testing and Errors
     - The table availability model doesn't take in the booking's id. In fact the booking only gets an id on its instansiation, which naturally is after the table availability instansiation since it is a requirement for the booking to exist. Maybe I can edit the table availability instance after the booking is created.
     - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warranted a new time slot in the form of the table availability object.
 
-## Testing
-- Booking of same time chooses new table, not same
-- ![](static/media/test-1.png)
+## Testing each user story
 
-- Handling for past dates
-- ![date-handling](static/media/test-2.png)
+    E1: User-Friendly Restaurant Booking Site
 
-- Creating a new table chooses the lowest number available as number attribute eg table 3 below
-- ![](static/media/test-3.png)
-- Test to confirm booking is made
-Booking object shown in site
-- ![](static/media/test-4.png)
-- Same object in django admin, shows auto fill of end time for slot
-- ![](static/media/test-6.png)
-- Matching table availability model
-- ![](static/media/test-5.png)
-- Deleting a table, show in terminal
-- ![](static/media/test-8.png)
-- Availability cascades with deleted object
-- ![](static/media/test-7.png)
-- Test edit a booking. New booking object:
-- ![](static/media/test-9.png)
-- Edit view editing date to may 13th
-- ![](static/media/test-10.png)
-- Revert to bookings page from edit, may 13th booking shows
-- ![](static/media/test-11.png)
-- Object in admin, shows old booking object replaced
-- ![](static/media/test-12.png)
-- Object for table availability also replaced
-- ![](static/media/test-13.png)
-- Test table management. Seen on right, only one table of 6 exists, T7
-- ![](static/media/test-17.png)
-- Booking exists for may 5th for 6 ppl
-- ![](static/media/test-15.png)
-- Only one table with seating of 6 exists, so handling is returned for request
-- ![](static/media/test-16.png)
-- Today filter selected
-- ![](static/media/test-18.png)
-- This week filter results
-- ![](static/media/test-19.png)
-- Results for all
-- ![](static/media/test-17.png)
-- Message pop up for attribute 'additional'
-- ![](static/media/test-20.png)
-- Second message of 'next week' on last booking
-- ![](static/media/test-21.png)
+Stories:
+    1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
+    2: As a user, I want a responsive design that adapts to different devices and screen sizes.
+    3: As a user, I want clear and consistent navigation throughout the site.
+    4: As a user, I want a user-friendly booking form with intuitive inputs.
+    5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
+    6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
+
+    E2: Table Booking Functionality
+
+Stories:
+    1: As a user, I want to be able to book a table for a specific time and party size.
+    2: As a user, I want to see the availability of tables for a specific date and time.
+    3: As a user, I want to receive real-time availability updates when selecting a date and time.
+    4: As a user, I want the option to choose from available tables based on my party size.
+    5: As a user, I want to be able to select additional preferences or requirements for my booking.
+
+    E3: Booking Management
+
+Stories:
+    1: As a user, I want to view my bookings and their details.
+    2: As a user, I want to edit or update my existing bookings.
+    3: As a user, I want to cancel or delete my bookings.
+    4: As an owner, I want to view all bookings made at my restaurant.
+    5: As an owner, I want to confirm or reject bookings made by users.
+    6: As an owner, I want to manage and update the availability of tables for different time slots.
+
+    E4: Intelligent Booking System
+
+Stories:
+    1: As an owner, I want to prevent double bookings of tables and time slots.
+    2: As an owner, I want to handle concurrent booking requests without conflicts.
+    3: As an owner, I want to implement automatic table assignment based on availability and party size.
+    4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
+
+    E5: Security and Privacy
+
+Stories:
+    1: As a user and owner, I want secure authentication and authorization mechanisms.
+    2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
+    3: As a user and owner, I want secure communication over HTTPS.
+    4: As a user and owner, I want protection against common security vulnerabilities
+
+    E6: Error Handling and Feedback
+
+Stories:
+    1: As a user and owner, I want meaningful and descriptive error messages for input validation.
+    2: As a user and owner, I want informative feedback messages for successful actions.
+    3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
+    4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
