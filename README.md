@@ -231,57 +231,71 @@ Plans for Models
     - The table availability model doesn't take in the booking's id. In fact the booking only gets an id on its instansiation, which naturally is after the table availability instansiation since it is a requirement for the booking to exist. Maybe I can edit the table availability instance after the booking is created.
     - Changed the booking view block for making a table availability object. Table availability object now takes in the whole booking object and generates an attribute 'id_of_booking' from the objects id. The edit view now finds the objects that have that attribute = to its own booking objects id and deletes them before creating a new one. It does this now whether or not the edit involved the start date, and thus warranted a new time slot in the form of the table availability object.
 
-## Testing each user story
+## Testing for all user stories
 
-    E1: User-Friendly Restaurant Booking Site
+### E1: User-Friendly Restaurant Booking Site
 
-Stories:
-    1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
-    2: As a user, I want a responsive design that adapts to different devices and screen sizes.
-    3: As a user, I want clear and consistent navigation throughout the site.
-    4: As a user, I want a user-friendly booking form with intuitive inputs.
-    5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
-    6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
 
-    E2: Table Booking Functionality
+1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
+Current interface across devices
 
-Stories:
-    1: As a user, I want to be able to book a table for a specific time and party size.
-    2: As a user, I want to see the availability of tables for a specific date and time.
-    3: As a user, I want to receive real-time availability updates when selecting a date and time.
-    4: As a user, I want the option to choose from available tables based on my party size.
-    5: As a user, I want to be able to select additional preferences or requirements for my booking.
+| Mobile | Tablet | Desktop |
+|--------|--------|---------|
+| ![Mobile Interface Current](/static/media/epic_and_user_story_testing/epic1/mobile_interface_current-min.png) | ![Tablet Interface Current](static/media/epic_and_user_story_testing/epic1/tablet_interface_current-min.png) | ![Desktop Interface Current](/static/media/epic_and_user_story_testing/epic1/desktop_interface_current-min.png) |
+| ![Mobile Interface Dropdown Current](/static/media/epic_and_user_story_testing/epic1/mobile_interface_dropdown_current-min.png) | ![Tablet Interface Dropdown Current](/static/media/epic_and_user_story_testing/epic1/tablet_interface_dropdown_current-min.png) | ![Desktop Interface Dropdown Current](/static/media/epic_and_user_story_testing/epic1/desktop_interface_dropdown_current-min.png) |
+| While the user is signed in already, the signed in element is replaced with the link to 'BOOK' which fits tidly into its element. We should have this elements font size reduce when the user is not signed in yet. The hamburger dropdown element disappears on smaller device sizes, so this needs to be corrected. The icons in the footer, as well as the account icon, are all too small. | On medium screens the 'MENU' link is illegible against the background image. Finding a graceful solution that allows us to maintain the effect with the background and cut out divs would be ideal. Additionally the dropdown, though the reduced opacity is part of our website's theme, doesn't homogenise well with the rest of the screen here. It's too small and its floating right of the hamburger inexplicably. | The page is looking best on desktop, though the hamburger dropdown should be replaced with a navbar, though its contents are already the main elements of the page. But we should have other pages, such as reviews, or an about us section to link to. |
+|--------|--------|---------|
 
-    E3: Booking Management
+| Mobile | Tablet | Desktop |
+|--------|--------|---------|
+| ![Mobile Interface Updated]() | ![Tablet Interface Updated]() | ![Desktop Interface Updated]() |
+| ![Mobile Interface Dropdown Updated]() | ![Tablet Interface Dropdown Updated]() | ![Desktop Interface Dropdown Updated]() |
+ 
+        2: As a user, I want a responsive design that adapts to different devices and screen sizes.
+        3: As a user, I want clear and consistent navigation throughout the site.
+        4: As a user, I want a user-friendly booking form with intuitive inputs.
+        5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
+        6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
 
-Stories:
-    1: As a user, I want to view my bookings and their details.
-    2: As a user, I want to edit or update my existing bookings.
-    3: As a user, I want to cancel or delete my bookings.
-    4: As an owner, I want to view all bookings made at my restaurant.
-    5: As an owner, I want to confirm or reject bookings made by users.
-    6: As an owner, I want to manage and update the availability of tables for different time slots.
+        E2: Table Booking Functionality
 
-    E4: Intelligent Booking System
+    Stories:
+        1: As a user, I want to be able to book a table for a specific time and party size.
+        2: As a user, I want to see the availability of tables for a specific date and time.
+        3: As a user, I want to receive real-time availability updates when selecting a date and time.
+        4: As a user, I want the option to choose from available tables based on my party size.
+        5: As a user, I want to be able to select additional preferences or requirements for my booking.
 
-Stories:
-    1: As an owner, I want to prevent double bookings of tables and time slots.
-    2: As an owner, I want to handle concurrent booking requests without conflicts.
-    3: As an owner, I want to implement automatic table assignment based on availability and party size.
-    4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
+        E3: Booking Management
 
-    E5: Security and Privacy
+    Stories:
+        1: As a user, I want to view my bookings and their details.
+        2: As a user, I want to edit or update my existing bookings.
+        3: As a user, I want to cancel or delete my bookings.
+        4: As an owner, I want to view all bookings made at my restaurant.
+        5: As an owner, I want to confirm or reject bookings made by users.
+        6: As an owner, I want to manage and update the availability of tables for different time slots.
 
-Stories:
-    1: As a user and owner, I want secure authentication and authorization mechanisms.
-    2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
-    3: As a user and owner, I want secure communication over HTTPS.
-    4: As a user and owner, I want protection against common security vulnerabilities
+        E4: Intelligent Booking System
 
-    E6: Error Handling and Feedback
+    Stories:
+        1: As an owner, I want to prevent double bookings of tables and time slots.
+        2: As an owner, I want to handle concurrent booking requests without conflicts.
+        3: As an owner, I want to implement automatic table assignment based on availability and party size.
+        4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
 
-Stories:
-    1: As a user and owner, I want meaningful and descriptive error messages for input validation.
-    2: As a user and owner, I want informative feedback messages for successful actions.
-    3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
-    4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
+        E5: Security and Privacy
+
+    Stories:
+        1: As a user and owner, I want secure authentication and authorization mechanisms.
+        2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
+        3: As a user and owner, I want secure communication over HTTPS.
+        4: As a user and owner, I want protection against common security vulnerabilities
+
+        E6: Error Handling and Feedback
+
+    Stories:
+        1: As a user and owner, I want meaningful and descriptive error messages for input validation.
+        2: As a user and owner, I want informative feedback messages for successful actions.
+        3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
+        4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.

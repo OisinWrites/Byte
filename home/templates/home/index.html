@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-  <div class="visible-lg container-fluid h-100">
-    <div class="image-container row h-100">
+  <div class="visible-sml h-100 w-100">
+    <div class="image-container h-100">
       <div class="menu col-12 d-flex flex-column justify-content-center align-items-center">
         <a href="{% url 'menu' %}">
           <p>Menu</p>
@@ -22,8 +22,7 @@
        {% else %}
         <a href="{% url 'account_signup' %}">
             <p>
-              SIGN UP<br>
-              TO BOOK
+              SIGN UP
             </p>
         </a>
       {% endif %}
@@ -33,10 +32,11 @@
           <p>Contact</p>
         </a>
       </div>
+      <div class="footer-space"></div>
     </div>
   </div>
-  <div class="visible-sml container-fluid h-100">
-    <div class="circles row">
+  <div class="visible-lg container-fluid h-100 w-100">
+    <div class="circles">
       <div class="menu2 col-4 circle">
         <a href="{% url 'menu' %}">
           <p>Menu</p>
