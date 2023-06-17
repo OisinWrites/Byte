@@ -17,24 +17,52 @@
 
 ## Epics and User Stories
 
-### Restaurant Owner Epics
-- The site should be able to supply all information the customers could need. It should be laid out clearly and rationally. It should be easy, and enticing, for customers to make bookings. Bookings should be made with sophistacted logic, taking into account the restaurants capacity, opening times/days, and to not double book a table, but to also host multiple sittings per table.
+    Epic 1: User-Friendly Restaurant Booking Site
 
-1. USER STORY: Restaurant owner needs to see what bookings have been made
-2. USER STORY: Restaurant owner should be able to have full CRUD capability for all bookings
-3. USER STORY: Double bookings should not occur
-4. USER STORY: Customers contact details need to be given to the owner
-5. USER STORY: Passwords, bookings, contact information should all be secure, and not visible to other customers
+    User Story 1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
+    User Story 2: As a user, I want a responsive design that adapts to different devices and screen sizes.
+    User Story 3: As a user, I want clear and consistent navigation throughout the site.
+    User Story 4: As a user, I want a user-friendly booking form with intuitive inputs.
+    User Story 5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
+    User Story 6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
 
-### Customer Epics
-- The site should be clearly laid out, easy to navigate, on any device. I want to see the menu, contact details and location, nearby parking etc. I want to be able to make a booking for any number of people, and to be able to choose a suitable time.
+    Epic 2: Table Booking Functionality
 
-6. USER STORY: The menu, contact details, and location of the restaurant should be present
-7. USER STORY: The site should be easy to understand, navigate and use
-8. USER STORY: Customers need CRUD capability
-9. USER STORY: Customers should be able to find an available booking slot for their party size
-10. USER STORY: Customers should be able to attach a message to their booking for the owner to see
-11. USER STORY: Any of the customers data manipulations should be confirmed with relevant feedback
+    User Story 1: As a user, I want to be able to book a table for a specific time and party size.
+    User Story 2: As a user, I want to see the availability of tables for a specific date and time.
+    User Story 3: As a user, I want to receive real-time availability updates when selecting a date and time.
+    User Story 4: As a user, I want the option to choose from available tables based on my party size.
+    User Story 5: As a user, I want to be able to select additional preferences or requirements for my booking.
+
+    Epic 3: Booking Management
+
+    User Story 1: As a user, I want to view my bookings and their details.
+    User Story 2: As a user, I want to edit or update my existing bookings.
+    User Story 3: As a user, I want to cancel or delete my bookings.
+    User Story 4: As an owner, I want to view all bookings made at my restaurant.
+    User Story 5: As an owner, I want to confirm or reject bookings made by users.
+    User Story 6: As an owner, I want to manage and update the availability of tables for different time slots.
+
+    Epic 4: Intelligent Booking System
+
+    User Story 1: As an owner, I want to prevent double bookings of tables and time slots.
+    User Story 2: As an owner, I want to handle concurrent booking requests without conflicts.
+    User Story 3: As an owner, I want to implement automatic table assignment based on availability and party size.
+    User Story 4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
+
+    Epic 5: Security and Privacy
+
+    User Story 1: As a user and owner, I want secure authentication and authorization mechanisms.
+    User Story 2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
+    User Story 3: As a user and owner, I want secure communication over HTTPS.
+    User Story 4: As a user and owner, I want protection against common security vulnerabilities
+
+    Epic 6: Error Handling and Feedback
+
+    User Story 1: As a user and owner, I want meaningful and descriptive error messages for input validation.
+    User Story 2: As a user and owner, I want informative feedback messages for successful actions.
+    User Story 3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
+    User Story 4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
 
 # Credits
 

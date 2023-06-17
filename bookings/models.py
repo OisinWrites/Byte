@@ -19,6 +19,7 @@ class TableManager(models.Manager):
             if i not in used_numbers:
                 return i
 
+
 """
 The table model could be changed from the table size options
 which are limiting, to a more fluid model. This would allow
@@ -62,8 +63,9 @@ class Booking(models.Model):
     Booking model wants to know
     where, when, until, who, how many, anything else, verify,
     and assign itself a unique id.
-    In this case the id's are not necessarily unique but generating sequentially
-    from 1, and being uneditable are not clashing with sames instances.
+    In this case the id's are not necessarily unique but
+    generating sequentially from 1, and being uneditable
+    are not clashing with sames instances.
     """
     table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
     start_time = models.DateTimeField()
