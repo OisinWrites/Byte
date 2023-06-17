@@ -66,7 +66,7 @@ a {
     height: 4rem;
 }
 
-.account-logo:hover {
+.account-logo:hover, .byte:hover{
     color:rgb(219, 83, 117);
   }
 
@@ -266,6 +266,10 @@ color:rgb(219, 83, 117) !important;
     .visible-sml {
       display: none;
     }
+
+    .byte-site-icon {
+        display: none;
+    }
 }
 /* responds to smaller mobile devices where main style breaks */
 @media (max-width: 400px) {
@@ -281,6 +285,19 @@ color:rgb(219, 83, 117) !important;
     .byte {
         font-weight: 700;
         font-size: 6rem;
+    }
+
+    .foot-icon, .footer-logo:hover, .account-logo {
+        font-size: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .account-logo p {
+        display: none;
+    }
+
+    .byte-site {
+        display: none;
     }
 }
 
