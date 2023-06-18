@@ -89,7 +89,7 @@
                       {% endif %}
                   </div>
                 </a>
-                <div class="dropdown-menu drop border-0" aria-labelledby="user-options">
+                <div class="dropdown-menu drop border-0 account-drop" aria-labelledby="user-options">
                     {% if request.user.is_authenticated %}
                         {% if request.user.is_superuser %}
                         <a href="{% url 'bookings_management' %}" class="dropdown-item burger">Bookings Management</a>
@@ -133,27 +133,29 @@
         <div class="byte-site">
           <a href="{% url 'home' %}" class="footer-logo">www.BYTE.Restaurant.com</a>
         </div>
-        <div class="byte-site-icon">
-          <a href="{% url 'home' %}" class="footer-logo">
-            <i class="fa-solid fa-earth-europe foot-icon"></i>
-          </a>
-        </div>        
-        <div>
-          <a href="https://www.facebook.com" rel="noopener" aria-label="Facebook" target="_blank">
-          <i class="fab fa-facebook-square ms-3 foot-icon"></i>
-          </a>          
+        <div class="social-icons container d-flex justify-content-around align-items-flexend">
+          <div class="byte-site-icon">
+            <a href="{% url 'home' %}" class="footer-logo">
+              <i class="fa-solid fa-earth-europe foot-icon"></i>
+            </a>
+          </div>        
+          <div>
+            <a href="https://www.facebook.com" rel="noopener" aria-label="Facebook" target="_blank">
+            <i class="fab fa-facebook-square ms-3 foot-icon"></i>
+            </a>          
+          </div>
+          <div>
+            <a href="https://www.instagram.com" rel="noopener" aria-label="Instagram" target="_blank">
+            <i class="fab fa-instagram-square ms-3 foot-icon"></i>
+            </a>
+          </div>
+          <div>
+            <a href="https://www.twitter.com" rel="noopener" aria-label="Twitter" target="_blank">
+            <i class="fab fa-twitter-square ms-3 foot-icon"></i>
+            </a>
+          </div>
         </div>
-        <div>
-          <a href="https://www.instagram.com" rel="noopener" aria-label="Instagram" target="_blank">
-          <i class="fab fa-instagram-square ms-3 foot-icon"></i>
-          </a>
         </div>
-        <div>
-          <a href="https://www.twitter.com" rel="noopener" aria-label="Twitter" target="_blank">
-          <i class="fab fa-twitter-square ms-3 foot-icon"></i>
-          </a>
-        </div>
-      </div>
     </footer>
     {% block postloadjs %}
     <script>

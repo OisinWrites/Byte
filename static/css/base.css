@@ -72,19 +72,32 @@ a {
 }
 
 .drop {
+    border-radius: 0;
     margin-top: 2rem;
     background-color:rgb(219, 83, 117);
     font-size: 2rem;
+}
+
+.account-drop {
+    margin-top: 3rem;
 }
 
 .burger {
     color: rgb(0, 178, 202) !important;
 }
 
+.burger:hover {
+    background-color:rgba(255, 255, 255, 0.1);
+}
+
 .byte {
     font-weight: 900;
     font-size: 8rem;
     color: rgb(0, 178, 202);
+}
+
+.account-logo {
+    font-size: 2.2rem;
 }
 
 .messages-spacing-ghost {
@@ -208,9 +221,12 @@ a {
     align-items: center;
 }
 
+.social-icons {
+    margin-bottom: 3rem;
+}
 
-.foot-icon, .account-logo {
-    font-size: 2rem;
+.foot-icon {
+    font-size: 4rem;
     padding-bottom: 2rem;
 }
 
@@ -301,6 +317,11 @@ a {
         font-weight: 700;
         font-size: 6rem;
     }
+
+    .foot-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
 }
 
 @media (max-width: 899px) {
@@ -315,8 +336,31 @@ a {
     }
 
     .byte {
-        margin-left: -42vw;
+        margin-left: -40vw;
         margin-top: 2vh;
         font-size: 12rem;
     }
+
+    .visible-lg {
+        max-width: 900px;
+    }
+
+    .social-icons {
+        max-width: 445.86px;
+        justify-self: flex-end;
+    }
+}
+
+@media (min-width: 1200px) {
+    
+    .circle {
+        max-width: 11.5rem;
+        max-height: 11.5rem;
+    }
+
+    .menu2 p, .book2 p, .contact2 p {
+        margin-top: 2.5vh;
+        font-size: 2.23rem;
+    }
+    
 }
