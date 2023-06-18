@@ -66,19 +66,14 @@ a {
     height: 4rem;
 }
 
-.account-logo:hover, .byte:hover{
-    color:rgb(219, 83, 117) !important;
-  }
-
 .burger-icon {
     background-color: rgb(0, 178, 202) !important;
     color:rgb(0, 178, 202) !important;
 }
 
-#drop {
+.drop {
     margin-top: 2rem;
     background-color:rgb(219, 83, 117);
-    height: 40vh;
     font-size: 2rem;
 }
 
@@ -165,8 +160,8 @@ a {
   }
 
 /* giving the text of the nav options as "see through" to the background */
-.menu p, .book p, .contact p,
-.menu2 p, .book2 p, .contact2 p, .foot-icon,
+.menu p:hover, .book p:hover, .contact p:hover,
+.menu2 p:hover, .book2 p:hover, .contact2 p:hover, .foot-icon,
 .footer-logo:hover {
     background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -176,7 +171,14 @@ a {
 
 .menu2 p, .book2 p, .contact2 p {
     margin-top: 2.5vh;
-    font-size: 2rem;
+    font-size: 3vw;
+}
+
+.menu p, .book p, .contact p,
+.menu2 p, .book2 p, .contact2 p,
+.account-logo:hover, .byte:hover {
+    color:rgb(219, 83, 117) !important;
+    -webkit-text-fill-color: rgb(219, 83, 117);
 }
 
 .menu2 {
@@ -194,7 +196,7 @@ a {
 .circles {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 22.5vh;
+    margin: 2rem;
 }
 
 .circle  {
@@ -301,3 +303,20 @@ a {
     }
 }
 
+@media (max-width: 899px) {
+    .header-lg {
+        display: none;
+    }
+}
+
+@media (min-width: 900px) {
+    .burger-icon {
+        display: none;
+    }
+
+    .byte {
+        margin-left: -42vw;
+        margin-top: 2vh;
+        font-size: 12rem;
+    }
+}

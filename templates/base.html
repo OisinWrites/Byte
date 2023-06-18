@@ -43,64 +43,67 @@
 </head>
 <body>
     <header>
-      <div class="header container d-flex justify-content-around align-items-center">
 
-        <div class="navbar-light d-flex justify-content-center">
-          <button class="btn burger-icon" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="drop">
-            <a class="nav-link burger" href="{% url 'home' %}">
-              Home
-            </a>
-            <a class="nav-link burger" href="{% url 'menu' %}">
-              Menu
-            </a>
-            <a class="nav-link burger" href="{% url 'bookings' %}">
-              Bookings
-            </a>
-            <a class="nav-link burger" href="{% url 'contact' %}">
-              Contact
-            </a>
-            {% if user.is_superuser %}
-            <a class="nav-link burger" href="{% url 'bookings_management' %}">
-              Bookings Management
-            </a>
-            {% endif %}
+        <div class="header container d-flex justify-content-around align-items-center">
+
+          <div class="navbar-light d-flex justify-content-center">
+            <button class="btn burger-icon" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="dropdown-menu drop" aria-labelledby="navbarDropdownMenuLink">
+              <a class="nav-link burger" href="{% url 'home' %}">
+                Home
+              </a>
+              <a class="nav-link burger" href="{% url 'menu' %}">
+                Menu
+              </a>
+              <a class="nav-link burger" href="{% url 'bookings' %}">
+                Bookings
+              </a>
+              <a class="nav-link burger" href="{% url 'contact' %}">
+                Contact
+              </a>
+              {% if user.is_superuser %}
+              <a class="nav-link burger" href="{% url 'bookings_management' %}">
+                Bookings Management
+              </a>
+              {% endif %}
+            </div>
           </div>
-        </div>
-
-        <a href="{% url 'home' %}" class="nav-link main-logo-link mx-auto">
-          <h1 class="byte">
-            BYTE
-          </h1>
-        </a>
-        <ul class="list-inline list-unstyled text-center text-lg-right my-0">
-          <li class="list-inline-item dropdown">
-              <a class="account-logo nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="text-center">
-                    <div><i class="fas fa-user fa-lg"></i></div>
+  
+          <a href="{% url 'home' %}" class="nav-link main-logo-link mx-auto">
+            <h1 class="byte">
+              BYTE
+            </h1>
+          </a>
+  
+          <ul class="list-inline list-unstyled text-center text-lg-right my-0">
+            <li class="list-inline-item dropdown">
+                <a class="account-logo nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <div class="text-center">
+                      <div><i class="fas fa-user fa-lg"></i></div>
+                      {% if request.user.is_authenticated %}
+                      <p class="my-0">{{ user.username }}</p>
+                      {% else %}
+                      <p class="my-0">My Account</p>
+                      {% endif %}
+                  </div>
+                </a>
+                <div class="dropdown-menu drop border-0" aria-labelledby="user-options">
                     {% if request.user.is_authenticated %}
-                    <p class="my-0">{{ user.username }}</p>
+                        {% if request.user.is_superuser %}
+                        <a href="{% url 'bookings_management' %}" class="dropdown-item burger">Bookings Management</a>
+                        {% endif %}
+                        <a href="{% url 'account_logout' %}" class="dropdown-item burger">Logout</a>
                     {% else %}
-                    <p class="my-0">My Account</p>
+                        <a href="{% url 'account_signup' %}" class="dropdown-item burger">Register</a>
+                        <a href="{% url 'account_login' %}" class="dropdown-item burger">Login</a>
                     {% endif %}
                 </div>
-              </a>
-              <div class="dropdown-menu border-0" aria-labelledby="user-options">
-                  {% if request.user.is_authenticated %}
-                      {% if request.user.is_superuser %}
-                      <a href="{% url 'bookings_management' %}" class="dropdown-item">Bookings Management</a>
-                      {% endif %}
-                      <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
-                  {% else %}
-                      <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
-                      <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
-                  {% endif %}
-              </div>
-          </li>
-        </ul>
-      </div>
+            </li>
+          </ul>
+        </div>
+
     </header>
     <div>
       {% if messages %}
