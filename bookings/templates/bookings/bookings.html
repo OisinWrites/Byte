@@ -5,6 +5,11 @@
 {% block content %}
 
 <div class="row">
+  <div class="booking-form col-md-2">
+    <div class="booking-heading">
+      <p>Bookings</p>
+    </div>
+  </div>
   <div class="booking-form col-md-6">
     <h2>Request a Booking</h2>
     {% if user.is_authenticated %}
@@ -31,7 +36,7 @@
   </div>
   
   {% if user.is_authenticated %}
-  <div class="booking-list booking-form col-md-6">
+  <div class="booking-list booking-form col-md-4">
     <h3>My Bookings</h3>
     <p>Select a booking to edit it</p>
     <hr>

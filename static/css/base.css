@@ -155,6 +155,15 @@ a {
     margin-bottom: 1vh;
 }
 
+/* ---- bookings page stylings ------ */
+
+.booking-heading {
+    transform: rotate(270deg);
+    font-size: 8rem;
+    margin-top: 10vw;
+    margin-left: 1rem;
+}
+
 .booking-list-scroller {
     max-height: 60vh; /* set maximum height to the viewport height */
     overflow-y: auto; /* add vertical scrollbar when content overflows */
@@ -297,6 +306,10 @@ a {
 @media (max-width: 767px) {
     .visible-md {
       display: none;
+    }
+
+    .booking-heading {
+        display: none;
     }
 
     .footer div {
