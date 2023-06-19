@@ -80,6 +80,7 @@ a {
 
 .account-drop {
     margin-top: 3rem;
+    margin-right: 20rem;
 }
 
 .burger {
@@ -275,7 +276,7 @@ a {
 
 /* disappears the circles from medium and larger screens */
 @media (max-width: 768px) {
-    .visible-lg {
+    .visible-md {
       display: none;
     }
 
@@ -341,7 +342,7 @@ a {
         font-size: 12rem;
     }
 
-    .visible-lg {
+    .visible-md {
         max-width: 900px;
     }
 
@@ -351,11 +352,33 @@ a {
     }
 }
 
+@media (max-width: 1199px) {
+    .visible-lg {
+        display: none;
+    }
+}
+
 @media (min-width: 1200px) {
+
+    .visible-md {
+        display: none;
+    }
+
+    .visible-lg {
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+    }
+
+    .circles {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+    }
     
     .circle {
-        max-width: 11.5rem;
-        max-height: 11.5rem;
+        width: 11.5rem;
+        min-height: 11.5rem;
     }
 
     .menu2 p, .book2 p, .contact2 p {

@@ -1,0 +1,35 @@
+<div class="circles">
+    <div class="menu2 col-4 circle">
+      <a href="{% url 'menu' %}">
+        <p class="d-flex flex-column align-items-center">
+          <i class="fa-solid fa-utensils align-self-center mb-0"></i>
+          Menu
+        </p>
+      </a>
+    </div>
+    <div class="book2 col-4 circle text-center">
+      {% if user.is_authenticated %}
+      <a href="{% url 'bookings' %}">
+        <p class="d-flex flex-column align-items-center">
+          <i class="fa-solid fa-book-open align-self-center mb-0"></i>
+          Book
+        </p>
+      </a>
+      {% else %}
+      <a href="{% url 'account_signup' %}">
+          <p>
+            SIGN UP<br>
+            TO BOOK
+          </p>
+      </a>
+      {% endif %}
+    </div>
+    <div class="contact2 col-4 circle">
+      <a href="{% url 'contact' %}">
+        <p class="d-flex flex-column align-items-center">
+          <i class="fa-solid fa-phone-flip align-self-center mb-0"></i>
+          Contact
+        </p>
+      </a>
+    </div>
+  </div>
