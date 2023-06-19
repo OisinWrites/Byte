@@ -47,10 +47,6 @@ a {
     max-width: 100vw;
 }
 
-.footer-space {
-    height: 20vh;
-}
-
 .footer div {
    font-size: 3rem;
    margin-top: 3rem;
@@ -80,7 +76,6 @@ a {
 
 .account-drop {
     margin-top: 3rem;
-    margin-right: 20rem;
 }
 
 .burger {
@@ -275,7 +270,7 @@ a {
 }
 
 /* disappears the circles from medium and larger screens */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .visible-md {
       display: none;
     }
@@ -294,7 +289,7 @@ a {
 }
 
 /* disappears the mobile block colours on larger devices */
-@media (min-width: 767px) {
+@media (min-width: 768px) {
     .visible-sml {
       display: none;
     }
@@ -359,6 +354,22 @@ a {
 }
 
 @media (min-width: 1200px) {
+
+    .header-account {
+        position: fixed;
+        right: 3rem;
+    }
+
+    .account {
+        background-color: rgb(219, 83, 117);
+    }
+
+    .account:hover span, .account:hover p {
+        background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
+        background-size: cover;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
     .visible-md {
         display: none;
