@@ -11,6 +11,8 @@ body {
     background-position: center;
     overflow-x: hidden;
     color:rgb(16, 111, 151) !important;
+    padding-bottom: 40vh; 
+    overflow-y: auto;
 }
 
 a {
@@ -157,6 +159,10 @@ a {
 
 /* ---- bookings page stylings ------ */
 
+.btn {
+    transition: none !important;
+}
+
 .booking-heading {
     transform: rotate(270deg);
     font-size: 8rem;
@@ -181,6 +187,14 @@ a {
 .booking-list-scroller::-webkit-scrollbar-track {
     background-color: transparent; /* set the color of the scrollbar track */
   }
+
+.edit-booking-btn:hover {
+    color: rgb(219, 83, 117);
+}
+
+.current_bookings a {
+    font-size: 1.2rem;
+}
 
 /* giving the text of the nav options as "see through" to the background */
 .menu p:hover, .book p:hover, .contact p:hover,
@@ -292,14 +306,7 @@ a {
 }
 
 .delete-button {
-    background-color:rgb(219, 83, 117) !important;
-    color:white;
-    margin: .5rem;
-    max-width: 1.6rem;
-    max-height: 1.6rem;
-    display:flex;
-    align-items: center;
-    justify-content: center;
+    color:rgb(219, 83, 117);
 }
 
 /* disappears the circles from medium and larger screens */
@@ -364,6 +371,11 @@ a {
 }
 
 @media (min-width: 900px) {
+
+    .split-booking-line {
+        display: none;
+    }
+
     .burger-icon {
         display: none;
     }

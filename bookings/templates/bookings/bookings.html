@@ -22,8 +22,15 @@
 
     </p>
     <form method="POST" id="booking-form">
-      {% csrf_token %}
-      {{ form|crispy }}
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
       <button type="submit">Request Booking</button>
     </form>
     {% else %}
@@ -36,27 +43,45 @@
   </div>
   
   {% if user.is_authenticated %}
-  <div class="booking-list booking-form col-md-4">
-    <h3>My Bookings</h3>
-    <p>Select a booking to edit it</p>
-    <hr>
-    {% for booking in current_bookings %}
-      <div class="row">
-        <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn">
-          {{ booking.start_time|date:"M d" }} at 
-          {{ booking.start_time|time:"g:i A" }} for 
-          {{ booking.size_of_party }}
-          {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
-        </a>
-        <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
-          X
-        </a>
+    <div class="booking-list booking-form col-md-4">
+      <div>
+        {% if current_bookings|filter(user=request.user)|length > 0 %}
+          <h3>My Bookings</h3>
+          <p>Select a booking to edit it</p>
+          <hr>
+        {% else %}
+          <p>You haven't made any bookings yet.</p>
+        {% endif %}
       </div>
-    {% empty %}
-      <p>You haven't made any bookings yet.</p>
-    {% endfor %}
-  </div>
+      <h3>My Bookings</h3>
+      <p>Select a booking to edit it</p>
+      <hr>
+      {% if current_bookings %}
+        {% for booking in current_bookings %}
+          {% if booking.user == request.user %}
+            <div class="row my-0 current_bookings">
+              <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn edit-booking-btn">
+                {{ booking.start_time|date:"M d" }} at 
+                {{ booking.start_time|time:"g:i A" }} 
+                <br class="split-booking-line">
+                for 
+                {{ booking.size_of_party }}
+                {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
+              </a>
+              <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+                <i class="fa-solid fa-delete-left"></i>
+              </a>
+            </div>
+          {% endif %}
+        {% empty %}
+          <p>You haven't made any bookings yet.</p>
+        {% endfor %}
+      {% else %}
+        <p>You haven't made any bookings yet.</p>
+      {% endif %}
+    </div>
   {% endif %}
+
 </div>
 
 {% endblock %}

@@ -21,6 +21,9 @@ def bookings(request, booking_id=None):
     if booking_id:
         booking = get_object_or_404(Booking, id=booking_id)
 
+    all_bookings = Booking.objects.filter(user_id=request.user.id
+                                          ).order_by('start_time')
+
     """Code triggeered by form submission.
         Saves instance of the form as the booking variable,
         takes in the current user."""
@@ -32,28 +35,30 @@ def bookings(request, booking_id=None):
             """Validate start time and add error if fails"""
             start_time = form.cleaned_data['start_time']
             if start_time < timezone.now():
-                form.add_error('start_time',
+                messages.error(request,
                                "Whoops! You're already late"
                                " for dinner. "
                                "Choose a day that hasn't happened yet."
                                )
-            """Generates end time from start time for use by availabilities
-                model to create a time slot"""
-            end_time = start_time + timedelta(minutes=105)
-            size_of_party = form.cleaned_data['size_of_party']
-            """Order tables by size so that the smallest suitable
-                table possible is selected first"""
-            tables = Table.objects.filter(size__gte=size_of_party) \
-                .order_by('size')
-            """Checks if booking request clashes with existing booking slot"""
-            for table in tables:
-                table_availabilities = TableAvailability.objects.filter(
-                    table=table,
-                    start_time__lt=end_time,
-                    end_time__gt=start_time,
-                )
-                """If not then saves the bookings and
-                    creates and saved a slot"""
+            else:
+                """Generates end time from start time for use by availabilities
+                    model to create a time slot"""
+                end_time = start_time + timedelta(minutes=105)
+                size_of_party = form.cleaned_data['size_of_party']
+                """Order tables by size so that the smallest suitable
+                    table possible is selected first"""
+                tables = Table.objects.filter(size__gte=size_of_party) \
+                    .order_by('size')
+                """Checks if booking request clashes
+                    with existing booking slot"""
+                for table in tables:
+                    table_availabilities = TableAvailability.objects.filter(
+                        table=table,
+                        start_time__lt=end_time,
+                        end_time__gt=start_time,
+                    )
+                    """If not then saves the bookings and
+                        creates and saved a slot"""
                 if not table_availabilities:
                     booking.table = table
                     booking.end_time = end_time
@@ -70,13 +75,13 @@ def bookings(request, booking_id=None):
                     messages.success(request, 'Your booking has been made.')
                     return redirect('bookings')
                     """Else error handling"""
-            form.add_error('size_of_party', 'No table is available'
+            messages.error(request, 'No table is available'
                            ' for the requested'
                            ' time and party size.'
                            ' Please select a new time.')
         else:
             """Error handling if form invalid"""
-            form.add_error(None, 'There was an error with your booking.')
+            messages.error(request, 'There was an error with your booking.')
     else:
         """Where no id is found form returns to initial state"""
         form = BookingForm(request, instance=booking)
@@ -106,6 +111,9 @@ def edit_booking(request, booking_id):
     """Searches for id"""
     booking = get_object_or_404(Booking, id=booking_id)
 
+    all_bookings = Booking.objects.filter(user_id=request.user.id
+                                          ).order_by('start_time')
+
     """Handles a foreign user attempt to view the booking
         through url search with object id"""
     if booking.user != request.user:
@@ -118,7 +126,7 @@ def edit_booking(request, booking_id):
             booking = form.save(commit=False)
             start_time = form.cleaned_data['start_time']
             if start_time < timezone.now():
-                form.add_error('start_time',
+                messages.error(request,
                                "Whoops! You're already late"
                                " for dinner. "
                                "Choose a day that hasn't happened yet."
@@ -157,12 +165,12 @@ def edit_booking(request, booking_id):
                     successful_bookings.append(booking)
                     messages.success(request, 'Your booking has been updated.')
                     return redirect('bookings')
-            form.add_error('size_of_party', 'No table is available'
+            messages.error(request, 'No table is available'
                            ' for the requested'
                            ' time and party size.'
                            ' Please select a new time.')
         else:
-            form.add_error(None, 'There was an error with your booking.')
+            messages.error(request, 'There was an error with your booking.')
     else:
         form = BookingForm(request, instance=booking)
 
@@ -257,7 +265,7 @@ def bookings_management(request):
 
         """Order the bookings by user name,
             size of party, start time and date"""
-            
+
         bookings = bookings.order_by('user__username',
                                      'size_of_party', 'start_time')
 
