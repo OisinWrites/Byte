@@ -24,6 +24,8 @@ def bookings(request, booking_id=None):
     all_bookings = Booking.objects.filter(user_id=request.user.id
                                           ).order_by('start_time')
 
+    users_bookings = Booking.objects.filter(user=request.user)
+
     """Code triggeered by form submission.
         Saves instance of the form as the booking variable,
         takes in the current user."""
@@ -94,6 +96,9 @@ def bookings(request, booking_id=None):
 
     """Context list to call on these variables from the template"""
     context = {
+        'booking': booking,
+        'all_bookings': all_bookings,
+        'users_bookings': users_bookings,
         'form': form,
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,

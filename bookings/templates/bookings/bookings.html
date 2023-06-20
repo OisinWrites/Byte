@@ -45,17 +45,15 @@
   {% if user.is_authenticated %}
     <div class="booking-list booking-form col-md-4">
       <div>
-        {% if current_bookings|filter(user=request.user)|length > 0 %}
+        {% if users_bookings %}
           <h3>My Bookings</h3>
           <p>Select a booking to edit it</p>
           <hr>
         {% else %}
-          <p>You haven't made any bookings yet.</p>
+          <p>HI</p>
         {% endif %}
       </div>
-      <h3>My Bookings</h3>
-      <p>Select a booking to edit it</p>
-      <hr>
+      
       {% if current_bookings %}
         {% for booking in current_bookings %}
           {% if booking.user == request.user %}
