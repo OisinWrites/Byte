@@ -23,7 +23,8 @@ class BookingForm(forms.ModelForm):
         model = Booking
         fields = ['start_time', 'size_of_party', 'additional']
         widgets = {
-            'start_time': DateTimeInput(attrs={'type': 'datetime-local'})
+            'start_time': DateTimeInput(attrs={'type': 'datetime-local'}),
+            'additional': forms.Textarea(attrs={'rows': 5, 'cols': 30}),
         }
 
     """Sets behaviour for instance of booking"""
