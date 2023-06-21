@@ -120,6 +120,24 @@ a {
     display: block;
     position: absolute;
 }
+/* Navigation bar styling */
+
+nav {
+    background-color:rgb(219, 83, 117);
+    padding: 0.5rem;
+    padding-left: 2rem;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0; 
+  }
+  
+  li {
+    display: inline-block;
+    margin-right: 2rem;
+  }
 
 /* block colour on mobile navigation */
 .menu {
@@ -364,12 +382,20 @@ a {
 }
 
 @media (max-width: 899px) {
-    .header-lg {
+    .header-lg, nav {
         display: none;
+    }
+
+    body {
+        margin-bottom: 20vh;
     }
 }
 
 @media (min-width: 900px) {
+
+    .footer-space {
+        display: none;
+    }
 
     .split-booking-line {
         display: none;
