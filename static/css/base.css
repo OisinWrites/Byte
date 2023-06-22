@@ -128,16 +128,17 @@ nav {
     padding-left: 2rem;
   }
   
-  ul {
+nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0; 
-  }
-  
-  li {
+    }
+
+nav ul li {
     display: inline-block;
     margin-right: 2rem;
-  }
+    font-size: 1.5rem;
+    }
 
 /* block colour on mobile navigation */
 .menu {

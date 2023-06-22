@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.forms.widgets import DateTimeInput
-
+from django.forms.widgets import NumberInput
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
@@ -24,6 +24,8 @@ class BookingForm(forms.ModelForm):
         fields = ['start_time', 'size_of_party', 'additional']
         widgets = {
             'start_time': DateTimeInput(attrs={'type': 'datetime-local'}),
+            'size_of_party': NumberInput(
+                attrs={'type': 'range', 'min': 1, 'max': 6}),
             'additional': forms.Textarea(attrs={'rows': 5, 'cols': 30}),
         }
 
@@ -39,22 +41,6 @@ class BookingForm(forms.ModelForm):
 
         """Set validators for start_time field"""
         self.fields['start_time'].validators.append(self.validate_start_time)
-
-        """Set validator for the minimum size_of_party field"""
-        self.fields['size_of_party'].validators.append(MinValueValidator(1))
-
-        """Set validator for maximum size_of_party field"""
-        self.fields['size_of_party'].validators.append(
-            MaxValueValidator(6, message="We do not currently"
-                              " cater to groups larger than 6."))
-
-        """Has field auto set to 2 as most likely,
-            and offering for party of 1 diminishes the
-            positive experience of the site
-            in a subtle, soft, sense"""
-        self.fields['size_of_party'].initial = 2
-        self.fields['size_of_party'].widget.attrs['min'] = 1
-        self.fields['size_of_party'].widget.attrs['max'] = 6
 
     def validate_start_time(self, value):
         """

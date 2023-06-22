@@ -241,10 +241,21 @@ Plans for Models
 ### E1: User-Friendly Restaurant Booking Site
 
 
-1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
-Current interface across devices
+#### 1: As a user, I want a visually appealing and intuitive interface for the restaurant booking site.
+#### 3: As a user, I want clear and consistent navigation throughout the site.
 
-2: As a user, I want a responsive design that adapts to different devices and screen sizes.
+| Small Screens | Medium Screens | Larger Screens | 
+|---------------|----------------|----------------|
+| ![small-menu](/static/media/epic_and_user_story_testing/epic1/small_menu.png) | ![medium-menu](/static/media/epic_and_user_story_testing/epic1/medium_menu.png)  | ![large-menu](/static/media/epic_and_user_story_testing/epic1/large_menu.png) |
+|On mobile screens the main menu, as links to the primary sites of the websites, are large, block colour divs. | On larger screens these divs are replaced by circular counterparts, revealing the attractive background image, purporting to be the interior of our imaginary restaurant, Byte. | On the largest screens, the circular divs stack to the left to allow for a better balance of content and interface across the screen |
+
+| Navigation Bar | Burger Dropdown | Account Dropdown | Return Home Links |
+|----------------|-----------------|------------------|-------------------|
+| ![Nav Bar](/static/media/epic_and_user_story_testing/epic1/navigation_bar.png) | ![Burger](/static/media/epic_and_user_story_testing/epic1/hamburger_element.png) | ![Account Dropdown](/static/media/epic_and_user_story_testing/epic1/account_dropdown.jpg) | ![Home links](/static/media/epic_and_user_story_testing/epic1/return_home.png) |
+| The navigation bar has been added in as a substitute for the hamburger dropdown menu on larger screens. It is made a bit superfluous by the circular divs to regular uses who don't need a link to booking management, and just see the same options in both, however with the inclusion of more site pages, such as an about us, or gallery section then the navigation bar will add more value. | The burger dropdown has links to all pages of the site, and adjust depending on the scope of the logged in user's access, or whether they are logged in at all. It is replaced by the navbar for larger media queries. | The account dropdown offers the standard options of sign in up out for users, and additionally repeats links to admin pages. The reason for repeating here is that being the account area, and the admin's abilities are directly related to their account type it feels like a relevant route that an admin might intuitively take to find their account specific accesses. Additionally the account text is replaced by the logged in user's name, reflecting their logged in status. This text disappears on mobile to optimise screen space usage. | The restaurant and site logo, BYTE, and the website address in the footer are present at all screen sizes and for all pages, and serve as a link for users to the homepage. |
+
+
+#### 2: As a user, I want a responsive design that adapts to different devices and screen sizes.
 
 | Mobile | Tablet | Desktop |
 |--------|--------|---------|
@@ -254,16 +265,15 @@ Current interface across devices
 | ![Mobile Interface Updated](/static/media/epic_and_user_story_testing/epic1/mobile_updated.jpg) | ![Tablet Interface Updated](/static/media/epic_and_user_story_testing/epic1/tablet_updated.png) | ![Desktop Interface Updated](/static/media/epic_and_user_story_testing/epic1/desktop_updated.jpg) |
 | ![Mobile Interface Dropdown Updated](/static/media/epic_and_user_story_testing/epic1/mobile_drop_updated.jpg) | ![Tablet Interface Dropdown Updated](/static/media/epic_and_user_story_testing/epic1/tablet_drop_updated.jpg) | ![Desktop Interface Dropdown Updated](/static/media/epic_and_user_story_testing/epic1/desktop_drop_updated.jpg) |
 | 1. The hamburger dropdown menu is now working properly. 2. All icons have been made larger, and the text beneath account is removed at this screen size, the website name in the footer is changed to an icon also. 3. The "sign up to book" text has been reduced to the text "sign up" in order to fit. | 1. The text in the circle divs has been changed to the hot pink of the theme's color palette, but, as shown on the contact option, they revert to the cut out style on hover. 2. The website icon reverts to the site name at medium screen sizes also. 3. The dropdown from the hamburger is more legible, instead of the opaque theme, it repeats the pink and blue of palette and the font is larger. Its also given a tidier margin from the burger icon. | 1. For desktop the burger has been removed as a nav bar would be more appropriate, but not yet implemented. 2. The circle divs have had their responsive scaling capped at 1200px screen width. As have the footer icons. 3. Additionally, the account icon should be further right. The circle divs could stack to the left under the h1, the space could be used to show reviews or the content from other pages. The footer icons would look better if they were bunched to the right of the screen. |
- 
-        3: As a user, I want clear and consistent navigation throughout the site.
+
+
         4: As a user, I want a user-friendly booking form with intuitive inputs.
         5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
         6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
 
-        E2: Table Booking Functionality
+### E2: Table Booking Functionality
 
-    Stories:
-        1: As a user, I want to be able to book a table for a specific time and party size.
+#### 1: As a user, I want to be able to book a table for a specific time and party size.
         2: As a user, I want to see the availability of tables for a specific date and time.
         3: As a user, I want to receive real-time availability updates when selecting a date and time.
         4: As a user, I want the option to choose from available tables based on my party size.
