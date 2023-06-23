@@ -280,8 +280,16 @@ nav ul li {
 
 .booking-book {
     display: flex;
-    align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
+}
+
+.booking-card {
+    padding: .5rem;
+}
+
+.booking-card a div {
+    color:rgb(219, 83, 117) !important;
 }
 
 .edit-booking-btn:hover {
@@ -368,7 +376,6 @@ nav ul li {
 .card {
     background-color: rgb(125, 207, 182, 0.9);
     margin: 0.5rem;
-    margin-top: 5rem;
 }
 
 .card-title {

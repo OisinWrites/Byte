@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseBadRequest, HttpResponse
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.urls import reverse
 from django.utils.timezone import make_aware
+from django.db.models.functions import Trunc
 
 from datetime import datetime, time, timedelta
 
@@ -239,19 +240,21 @@ def bookings_management(request):
 
     tables = Table.objects.all().order_by('number')
 
-    """Get search query from request"""
-    search_query = request.GET.get('search', '')
-
-    """Get filter query from request"""
-    filter_query = request.GET.get('filter', '')
-
     """Set the date range for filter"""
     now = datetime.now()
     today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
     next_week = today + timedelta(days=7)
 
     """Filter bookings by not earlier than the current day"""
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
     bookings = Booking.objects.filter(start_time__gte=today)
+
+    """Get search query from request"""
+    search_query = request.GET.get('search', '')
+
+    """Get filter query from request"""
+    filter_query = request.GET.get('filter', '')
 
     """Filter bookings by user name if search query is provided"""
     if search_query:
@@ -260,7 +263,7 @@ def bookings_management(request):
     """Filter bookings by day or week if filter query is provided"""
     if filter_query == 'day':
         start_date = today
-        end_date = next_day(start_date)
+        end_date = start_date + timedelta(days=1)
         bookings = bookings.filter(
             start_time__range=(start_date, end_date)).order_by('start_time')
     elif filter_query == 'week':
@@ -268,16 +271,27 @@ def bookings_management(request):
         end_date = start_date + timedelta(days=7)
         bookings = bookings.filter(
             start_time__range=(start_date, end_date)).order_by('start_time')
-    elif filter_query == 'all':
-        bookings = bookings.order_by('start_time')
+
+    """
+    Annotate the query set
+    with a truncated start_time field
+    (day-level precision)
+    """
+    bookings = bookings.annotate(day=Trunc('start_time', 'day'))
+
+    """Perform grouping by day and count the number of bookings per day"""
+    grouped_results = bookings.values('day').annotate(count=Count('id'))
+
+    for result in grouped_results:
+        result['bookings'] = bookings.filter(start_time__date=result['day'])
 
     context = {
-            'table_form': form,
-            'bookings': bookings,
-            'filter_query': filter_query,
-            'search_query': search_query,
-            'tables': tables
-        }
+        'table_form': form,
+        'grouped_results': grouped_results,
+        'filter_query': filter_query,
+        'search_query': search_query,
+        'tables': tables
+    }
 
     return render(request, 'bookings/bookings_management.html', context)
 

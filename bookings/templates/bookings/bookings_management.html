@@ -12,7 +12,7 @@
           <h2>Manage Bookings</h2>
           <form class="form-inline float-right">
             <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
-            <button class="btn my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn my-2 my-sm-0" type="submit">Find Booking</button>
           </form>
         </div>
 
@@ -21,29 +21,32 @@
           <a href="?filter=day" class="btn">Today</a>
           <a href="?filter=week" class="btn">This week</a>
         </div>
+        <hr>
 
-        {% if bookings %}
-        <div class="booking-list-scroller">
-          <div class="container booking-book">
-              {% for booking in bookings %}
-              <div class="card booking-card">
-                <a href="{% url 'edit_booking' booking_id=booking.id %}">
-
-                  <div>{{ booking.start_time|date:"M d" }}</div>
-                  <div>{{ booking.user.username|slice:"-10:" }}</div>
-                  <div>Table # {{ booking.table.number }}</div>
-                  <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>                
-                  <div>{{ booking.start_time|time:"g:i A" }}</div>
-                
-                </a>
-              </div>             
+        {% if grouped_results %}
+          <div class="booking-list-scroller">
+            <div class="container">
+              {% for result in grouped_results %}
+              <h3>{{ result.day|date:"F d" }}</h3>
+              <div class="booking-book">
+                {% for booking in result.bookings %}
+                  <div class="card booking-card">
+                      <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                        <div>{{ booking.user.username|slice:"-10:" }}</div>
+                        <div>Table # {{ booking.table.number }}</div>
+                        <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
+                        <div>{{ booking.start_time|time:"g:i A" }}</div>
+                      </a>
+                  </div>
+                {% endfor %}
+              </div>
+              <hr>
               {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        {% else %}
-        <p>No bookings found.</p>
-        {% endif %}
+            </div>
+          </div>
+          {% else %}
+          <p>No bookings found.</p>
+          {% endif %}
 
       </div>
     </div> 
