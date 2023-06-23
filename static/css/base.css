@@ -4,6 +4,21 @@ html {
     color:rgb(16, 111, 151) !important;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.header-spacer {
+    padding-top: 236.59px;
+}
+
 body {
     font-family: 'Bebas Neue';
     background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
@@ -269,6 +284,8 @@ nav ul li {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+
 
 .menu2 p, .book2 p, .contact2 p {
     margin-top: 2.5vh;

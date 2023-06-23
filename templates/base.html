@@ -108,21 +108,23 @@
           </div>
         </div>
 
+        <nav>
+          <ul>
+            <li><a class="burger" href="{% url 'home' %}">Home</a></li>
+            <li><a class="burger" href="{% url 'menu' %}">Menu</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="burger" href="{% url 'bookings' %}">Bookings</a></li>
+            {% endif %}
+            <li><a class="burger" href="{% url 'contact' %}">Contact</a></li>
+            {% if user.is_superuser %}
+            <li><a class="burger" href="{% url 'bookings_management' %}">Bookings Management</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+
     </header>
 
-    <nav>
-      <ul>
-        <li><a class="burger" href="{% url 'home' %}">Home</a></li>
-        <li><a class="burger" href="{% url 'menu' %}">Menu</a></li>
-        {% if user.is_authenticated %}
-        <li><a class="burger" href="{% url 'bookings' %}">Bookings</a></li>
-        {% endif %}
-        <li><a class="burger" href="{% url 'contact' %}">Contact</a></li>
-        {% if user.is_superuser %}
-        <li><a class="burger" href="{% url 'bookings_management' %}">Bookings Management</a></li>
-        {% endif %}
-      </ul>
-    </nav>
+    <div class="header-spacer"></div>
 
     <div>
       {% if messages %}
