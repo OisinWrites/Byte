@@ -39,6 +39,12 @@ class BookingForm(forms.ModelForm):
             'additional': forms.Textarea(attrs={'rows': 5, 'cols': 30}),
         }
 
+        labels = {
+            'start_time': 'Time of Reservation ',
+            'size_of_party': 'Guests ',
+            'additional': 'Additional information & dietary requirements',
+        }
+
     """Sets behaviour for instance of booking"""
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,6 +55,9 @@ class BookingForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'bookings'
         self.helper.form_class = 'form-horizontal'
+
+        # Remove asterisks from mandatory fields
+        self.helper.form_show_labels = False
 
         """Set validators for start_time field"""
         self.fields['start_time'].validators.append(self.validate_start_time)

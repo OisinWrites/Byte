@@ -5,13 +5,14 @@
 {% block content %}
 
 <div class="row">
-  <div class="booking-page col-md-2">
+  <div class="booking-page bh-hide col-md-2 col-xs-1">
     <div class="booking-heading">
       <p>Bookings</p>
     </div>
   </div>
-  <div class="booking-page col-md-6">
-    <h2>Request a Booking</h2>
+  <div class="booking-page col-sx-12 col-md-6">
+    <div class="text-center">
+      <h2>Request a Booking</h2>
     {% if user.is_authenticated %}
       <p class="text-center">
         We accept bookings from  <br>  
@@ -43,21 +44,22 @@
           to make a booking</p>
       </div>
     {% endif %}
+    </div>
   </div>
   
   {% if user.is_authenticated %}
     <div class="booking-list booking-page col-md-4">
-      <div>
+      <div class="text-center">
         {% if users_bookings %}
           <h3>My Bookings</h3>
           <p>Select a booking to edit it</p>
-          <hr>
         {% else %}
-          <p>HI</p>
+          <p>You've no current bookings</p>
         {% endif %}
       </div>
-      
-      {% if current_bookings %}
+
+      <div class="text-right">
+        {% if current_bookings %}
         {% for booking in current_bookings %}
           {% if booking.user == request.user %}
             <div class="row my-0 current_bookings">
@@ -80,6 +82,8 @@
       {% else %}
         <p>You haven't made any bookings yet.</p>
       {% endif %}
+      </div>
+    
     </div>
   {% endif %}
 

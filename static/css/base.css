@@ -87,6 +87,7 @@ a {
 
 .burger {
     color: rgb(0, 178, 202) !important;
+    padding-inline: .5rem;
 }
 
 .burger:hover {
@@ -194,6 +195,19 @@ nav ul li {
     max-height: 40vh;
 }
 
+.asteriskField {
+    display: none;
+}
+
+.booking-form label {
+    color:rgb(219, 83, 117);
+}
+
+#id_start_time {
+    margin-inline: 15%; 
+    width: 70%;
+}
+
 #id_size_of_party {
     width: 70%;
     display: inline-block;
@@ -213,6 +227,10 @@ nav ul li {
 }
 
 .booking-submit-button {
+    float: right;
+}
+
+.booking-list a {
     float: right;
 }
 
@@ -323,11 +341,11 @@ nav ul li {
 .allauth-form, .booking-page {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background-color: rgb(255, 255, 255, 0.8);
     color:rgb(7, 45, 61);
     padding: 2rem;
+    margin-bottom: 3rem;
 }
 
 .allauth-form a {
@@ -357,7 +375,7 @@ nav ul li {
       display: none;
     }
 
-    .booking-heading {
+    .bh-hide {
         display: none;
     }
 
