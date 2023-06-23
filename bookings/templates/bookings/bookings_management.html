@@ -66,9 +66,9 @@
 
       <div id="room-map">
         <img class="col-12" id="floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
-        <div class="draggable-item">Item 1</div>
-        <div class="draggable-item">Item 2</div>
-        <div class="draggable-item">Item 3</div>
+        <div class="draggable-item" id="table_1">Item 1</div>
+        <div class="draggable-item" id="table_2">Item 2</div>
+        <div class="draggable-item" id="table_3">Item 3</div>
       </div>
 
         <div class="container table-list">
@@ -101,13 +101,26 @@
 {% endif %}
     <script>
       $(document).ready(function() {
-        $(".draggable-item").draggable({
-          containment: "#room-map",
-          snap: "#room-map",
-          drag: function(event, ui) {
-            ui.position.left = Math.round(ui.position.left / 10) * 10;
-            ui.position.top = Math.round(ui.position.top / 10) * 10;
+        $(".draggable-item").each(function() {
+          var itemId = $(this).attr("id");
+          var storedPosition = localStorage.getItem(itemId);
+          if (storedPosition) {
+            var position = JSON.parse(storedPosition);
+            $(this).css({ left: position.left, top: position.top });
           }
+
+          $(this).draggable({
+            containment: "#room-map",
+            grid: [10, 10],
+            snap: true,
+            snapTolerance: 10,
+            stop: function(event, ui) {
+              var itemId = $(this).attr("id");
+              var leftPosition = ui.position.left;
+              var topPosition = ui.position.top;
+              localStorage.setItem(itemId, JSON.stringify({ left: leftPosition, top: topPosition }));
+            }
+          });
         });
       });
     </script>
