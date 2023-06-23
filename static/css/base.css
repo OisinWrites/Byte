@@ -307,6 +307,23 @@ nav ul li {
     margin: 3rem;
 }
 
+#room-map {
+    width:fit-content
+}
+
+#floor-plan {
+    max-height:60vh;
+}
+  
+.draggable-item {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    position: absolute;
+    cursor: move;
+}
+
 /* giving the text of the nav options as "see through" to the background */
 .menu p:hover, .book p:hover, .contact p:hover,
 .menu2 p:hover, .book2 p:hover, .contact2 p:hover, .foot-icon,

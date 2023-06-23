@@ -2,6 +2,11 @@
 
 {% load crispy_forms_tags %}
 
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+{% endblock %}
+
 {% block content %}
 
 {% if user.is_superuser %}
@@ -50,7 +55,32 @@
 
       </div>
     </div> 
-  </div>
+
+    <div class="booking-page col-sx-12 col-md-6">
+      <h2>Seating plan</h2>
+      <form method="POST" id="table-form">
+        {% csrf_token %}
+        {{ table_form|crispy }}
+        <button type="submit">Add Table</button>
+      </form>
+
+      <div id="room-map">
+        <img class="col-12" id="floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
+        <div class="draggable-item">Item 1</div>
+        <div class="draggable-item">Item 2</div>
+        <div class="draggable-item">Item 3</div>
+      </div>
+
+        <div class="container table-list">
+          {% for table in tables %}
+          <div class="table-item">
+            T {{ table.number }}|Seating for {{ table.size }} 
+            <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
+              X
+            </a>
+          </div>
+      {% endfor %}
+    </div>
 
   </div>
     <script>  
@@ -69,7 +99,16 @@
         window.location.href = "{% url 'home' %}";
     </script>
 {% endif %}
-
-
-
+    <script>
+      $(document).ready(function() {
+        $(".draggable-item").draggable({
+          containment: "#room-map",
+          snap: "#room-map",
+          drag: function(event, ui) {
+            ui.position.left = Math.round(ui.position.left / 10) * 10;
+            ui.position.top = Math.round(ui.position.top / 10) * 10;
+          }
+        });
+      });
+    </script>
 {% endblock %}
