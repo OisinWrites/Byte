@@ -26,7 +26,7 @@ body {
     background-position: center;
     overflow-x: hidden;
     color:rgb(16, 111, 151) !important;
-    padding-bottom: 40vh; 
+    padding-bottom: 8vh;
     overflow-y: auto;
 }
 
@@ -545,4 +545,20 @@ nav ul li {
         font-size: 2.23rem;
     }
     
+}
+
+@media (max-height: 850px) {
+    .foot-icon {
+        font-size: 300%;
+    }
+}
+
+@media (max-height: 650px) {
+    .foot-icon {
+        font-size: 200%;
+    }
+
+    .footer {
+        min-height: 3.25rem;
+    }
 }
