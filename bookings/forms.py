@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.forms.widgets import DateTimeInput
 from django.forms.widgets import NumberInput
+from django.utils.safestring import mark_safe
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
@@ -11,6 +12,14 @@ from crispy_forms.layout import Row, Column
 from datetime import datetime, time
 
 from bookings.models import Booking, Table
+
+
+class SliderNumberInput(NumberInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        input_html = super().render(name, value, attrs, renderer)
+        slider_value_html = '<div id="slider_value"> </div>\
+               <i class="fa-solid fa-user-group"></i>'
+        return mark_safe(f'{input_html}{slider_value_html}')
 
 
 class BookingForm(forms.ModelForm):
@@ -24,8 +33,9 @@ class BookingForm(forms.ModelForm):
         fields = ['start_time', 'size_of_party', 'additional']
         widgets = {
             'start_time': DateTimeInput(attrs={'type': 'datetime-local'}),
-            'size_of_party': NumberInput(
-                attrs={'type': 'range', 'min': 1, 'max': 6}),
+            'size_of_party': SliderNumberInput(
+                attrs={'type': 'range', 'min': 1, 'max': 6,
+                       'class': 'party-size-slider'}),
             'additional': forms.Textarea(attrs={'rows': 5, 'cols': 30}),
         }
 
@@ -33,6 +43,7 @@ class BookingForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['user_id'].initial = request.user.id
+        self.fields['size_of_party'].initial = 2  # Set initial value to 2
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
         self.helper.form_method = 'post'

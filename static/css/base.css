@@ -189,6 +189,33 @@ nav ul li {
     margin-left: 1rem;
 }
 
+.booking-form {
+    justify-content:flex-start;
+    max-height: 40vh;
+}
+
+#id_size_of_party {
+    width: 70%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#slider_value {
+    display: inline-block;
+    vertical-align: middle;
+    color:rgb(219, 83, 117)!important;
+    font-size: 1.2rem;
+    margin-left: 1.2rem;
+}
+
+.fa-user-group {
+    margin-left: .4rem;
+}
+
+.booking-submit-button {
+    float: right;
+}
+
 .booking-list-scroller {
     max-height: 60vh; /* set maximum height to the viewport height */
     overflow-y: auto; /* add vertical scrollbar when content overflows */
@@ -293,7 +320,7 @@ nav ul li {
     color: rgb(219, 83, 117);
 }
 /* styling the allauth forms uniformally */
-.allauth-form, .booking-form {
+.allauth-form, .booking-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -301,10 +328,6 @@ nav ul li {
     background-color: rgb(255, 255, 255, 0.8);
     color:rgb(7, 45, 61);
     padding: 2rem;
-}
-
-.booking-form {
-    justify-content:flex-start;
 }
 
 .allauth-form a {

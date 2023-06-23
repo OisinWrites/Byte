@@ -5,45 +5,48 @@
 {% block content %}
 
 <div class="row">
-  <div class="booking-form col-md-2">
+  <div class="booking-page col-md-2">
     <div class="booking-heading">
       <p>Bookings</p>
     </div>
   </div>
-  <div class="booking-form col-md-6">
+  <div class="booking-page col-md-6">
     <h2>Request a Booking</h2>
     {% if user.is_authenticated %}
-    <p class="text-center">
-      We accept bookings from  <br>  
-      Wednesday to Sunday<br>
-      5pm to 9pm<br>
-      We accomodate groups of up to 6<br>
-      <u>Subject to Availability</u>
+      <p class="text-center">
+        We accept bookings from  <br>  
+        Wednesday to Sunday<br>
+        5pm to 9pm<br>
+        We accomodate groups of up to 6<br>
+        <u>Subject to Availability</u>
+      </p>
 
-    </p>
-    <form method="POST" id="booking-form">
-        {% csrf_token %}
-        {{ form|crispy }}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-      <button type="submit">Request Booking</button>
-    </form>
+      <form method="POST" class="booking-form">
+          {% csrf_token %}
+          {{ form|crispy }}        
+          
+          {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+          
+          <button class="booking-submit-button" type="submit">Request Booking</button>
+      </form>
+      
     {% else %}
-    <div> 
-      <p>Please
-        <a href="{% url 'account_signup' %}" class="my-0 account-logo"> sign in </a> 
-        to make a booking</p>
-    </div>
+      <div> 
+        <p>Please
+          <a href="{% url 'account_signup' %}" class="my-0 account-logo"> sign in </a> 
+          to make a booking</p>
+      </div>
     {% endif %}
   </div>
   
   {% if user.is_authenticated %}
-    <div class="booking-list booking-form col-md-4">
+    <div class="booking-list booking-page col-md-4">
       <div>
         {% if users_bookings %}
           <h3>My Bookings</h3>
@@ -82,4 +85,15 @@
 
 </div>
 
+<script>  
+// JavaScript code to update the value display element
+var slider = document.getElementById('id_size_of_party');
+var sliderValue = document.getElementById('slider_value');
+
+sliderValue.innerHTML = slider.value; // Initial value
+
+slider.oninput = function() {
+sliderValue.innerHTML = this.value;
+};
+</script>
 {% endblock %}
