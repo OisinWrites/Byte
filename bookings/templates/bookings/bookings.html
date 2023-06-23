@@ -34,7 +34,11 @@
               </ul>
           {% endif %}
           
-          <button class="booking-submit-button" type="submit">Request Booking</button>
+          <button class="booking-submit-button" type="submit">
+            <i class="fa-solid fa-bell-concierge"> </i>
+            <i class="fa-solid fa-bell-concierge fa-shake"></i>
+             Request Booking
+          </button>
       </form>
       
     {% else %}
@@ -50,8 +54,8 @@
   {% if user.is_authenticated %}
     <div class="booking-list booking-page col-md-4">
       <div class="text-center">
-        {% if users_bookings %}
-          <h3>My Bookings</h3>
+        <h3>My Bookings</h3>
+        {% if users_bookings %}          
           <p>Select a booking to edit it</p>
         {% else %}
           <p>You've no current bookings</p>

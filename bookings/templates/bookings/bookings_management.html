@@ -7,7 +7,7 @@
 {% if user.is_superuser %}
   <div class="row">
     <div class="booking-page col-sx-12 col-md-6">
-      <div class="text-center">
+      <div class="text-center manage-bookings">
         <div>
           <h2>Manage Bookings</h2>
           <form class="form-inline float-right">
@@ -23,36 +23,20 @@
         </div>
 
         {% if bookings %}
-        <div class="table-responsive booking-list-scroller">
-          <table class="table">
-            <thead>
-              <tr >
-                <th>User name</th>
-                <th>Size of party</th>
-                <th>Table ID</th>
-                <th>Start time</th>
-                <th>Email</th>
-                <th>Messages</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div class="booking-list-scroller">
+          <div class="container booking-book">
               {% for booking in bookings %}
-              <tr>
-                <td><a href="{% url 'edit_booking' booking_id=booking.id %}">{{ booking.user.username }}</a></td>
-                <td>{{ booking.size_of_party }}</td>
-                <td>{{ booking.table.number }}</td>
-                <td>{{ booking.start_time }}</td>
-                <td>{{ booking.email }}</td>
-                <td class="hover-message">
-                  <p>see message</p>
-                  <div class="hover-message-appear">
-                    <p>
-                      {{ booking.additional }}
-                    </p>
-                  </div>
-                </td>
-                <td><a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn btn-primary">Cancel</a></td>
-              </tr>
+              <div class="card booking-card">
+                <a href="{% url 'edit_booking' booking_id=booking.id %}">
+
+                  <div>{{ booking.start_time|date:"M d" }}</div>
+                  <div>{{ booking.user.username|slice:"-10:" }}</div>
+                  <div>Table # {{ booking.table.number }}</div>
+                  <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>                
+                  <div>{{ booking.start_time|time:"g:i A" }}</div>
+                
+                </a>
+              </div>             
               {% endfor %}
             </tbody>
           </table>

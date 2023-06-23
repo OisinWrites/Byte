@@ -261,26 +261,23 @@ def bookings_management(request):
     if filter_query == 'day':
         start_date = today
         end_date = next_day(start_date)
-        bookings = bookings.filter(start_time__range=(start_date, end_date))
+        bookings = bookings.filter(
+            start_time__range=(start_date, end_date)).order_by('start_time')
     elif filter_query == 'week':
         start_date = today
         end_date = start_date + timedelta(days=7)
-        bookings = bookings.filter(start_time__range=(start_date, end_date))
+        bookings = bookings.filter(
+            start_time__range=(start_date, end_date)).order_by('start_time')
     elif filter_query == 'all':
-
-        """Order the bookings by user name,
-            size of party, start time and date"""
-
-        bookings = bookings.order_by('user__username',
-                                     'size_of_party', 'start_time')
+        bookings = bookings.order_by('start_time')
 
     context = {
-        'table_form': form,
-        'bookings': bookings,
-        'filter_query': filter_query,
-        'search_query': search_query,
-        'tables': tables
-    }
+            'table_form': form,
+            'bookings': bookings,
+            'filter_query': filter_query,
+            'search_query': search_query,
+            'tables': tables
+        }
 
     return render(request, 'bookings/bookings_management.html', context)
 
