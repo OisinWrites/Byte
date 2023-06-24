@@ -328,6 +328,14 @@ def delete_table(request, table_id):
                 end_time__gt=start_time
             )
 
+            # Check if the table sizes are compatible
+            if size_of_party > int(table.size):
+                continue
+
+            # Check if the table size difference is valid
+            if int(table.size) - size_of_party > 2:
+                continue
+
             if not table_availabilities:
                 # Delete the slot, create a new one, and update the booking
                 TableAvailability.objects.filter(
@@ -350,6 +358,12 @@ def delete_table(request, table_id):
 
     print(bookings, slots, tables, successful_bookings)
 
-    old_table.delete()
+    if successful_bookings:
+        old_table.delete()
+        return redirect(reverse('bookings_management'))
+    else:
+        messages.error(request, "Failed to create new table availability. \
+            Deletion canceled.")
+        return redirect(reverse('bookings_management'))
 
     return redirect(reverse('bookings_management'))
