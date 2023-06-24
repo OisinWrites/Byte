@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from datetime import datetime, time, timedelta
 
 
 """
@@ -49,28 +50,51 @@ class Table(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # Delete corresponding table availability instances
-        TableAvailability.objects.filter(table=self).delete()
-
         # Fetch the bookings associated with the current table
         bookings = Booking.objects.filter(table=self)
 
-        # Repopulate with a new table for corresponding booking instances
-        new_table = Table.objects.exclude(pk=self.pk).first()
-
         for booking in bookings:
-            # Create a new table availability instance for the new table
-            new_table_availability = TableAvailability(
-                table=new_table,
-                start_time=booking.start_time,
-                end_time=booking.end_time,
-                booking_id=booking,
-                id_of_booking=booking.id
-            )
-            new_table_availability.save()
+            # Find a replacement table for the booking
+            size_of_party = booking.size_of_party
+            tables = Table.objects.filter(
+                size__gte=size_of_party).order_by('size')
+            start_time = booking.start_time
+            end_time = start_time + timedelta(minutes=105)
 
-        # Update the table reference for the bookings
-        bookings.update(table=new_table)
+            # Check table availability for the
+            # replacement table and start/end time
+            table_availabilities = TableAvailability.objects.filter(
+                table__in=tables,
+                start_time__lt=end_time,
+                end_time__gt=start_time
+            )
+
+            if table_availabilities:
+                # Replacement table is available,
+                # update booking and table availability
+                new_table = table_availabilities.first().table
+
+                # Update the table reference for the booking
+                booking.table = new_table
+                booking.save()
+
+                # Delete the old table availability instance
+                TableAvailability.objects.filter(
+                    id_of_booking=booking.id).delete()
+
+                # Create a new table availability
+                # instance for the replacement table
+                new_table_availability = TableAvailability(
+                    table=new_table,
+                    start_time=start_time,
+                    end_time=end_time,
+                    booking_id=booking,
+                    id_of_booking=booking.id
+                )
+                new_table_availability.save()
+
+        # Delete corresponding table availability instances
+        TableAvailability.objects.filter(table=self).delete()
 
         super().delete(*args, **kwargs)
 
