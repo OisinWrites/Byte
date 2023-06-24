@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from datetime import datetime, time, timedelta
 
 
 """
@@ -49,55 +48,6 @@ class Table(models.Model):
             self.number = Table.objects.get_lowest_available_number()
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-        # Fetch the bookings associated with the current table
-        bookings = Booking.objects.filter(table=self)
-
-        for booking in bookings:
-            # Find a replacement table for the booking
-            size_of_party = booking.size_of_party
-            tables = Table.objects.filter(
-                size__gte=size_of_party).order_by('size')
-            start_time = booking.start_time
-            end_time = start_time + timedelta(minutes=105)
-
-            # Check table availability for the
-            # replacement table and start/end time
-            table_availabilities = TableAvailability.objects.filter(
-                table__in=tables,
-                start_time__lt=end_time,
-                end_time__gt=start_time
-            )
-
-            if table_availabilities:
-                # Replacement table is available,
-                # update booking and table availability
-                new_table = table_availabilities.first().table
-
-                # Update the table reference for the booking
-                booking.table = new_table
-                booking.save()
-
-                # Delete the old table availability instance
-                TableAvailability.objects.filter(
-                    id_of_booking=booking.id).delete()
-
-                # Create a new table availability
-                # instance for the replacement table
-                new_table_availability = TableAvailability(
-                    table=new_table,
-                    start_time=start_time,
-                    end_time=end_time,
-                    booking_id=booking,
-                    id_of_booking=booking.id
-                )
-                new_table_availability.save()
-
-        # Delete corresponding table availability instances
-        TableAvailability.objects.filter(table=self).delete()
-
-        super().delete(*args, **kwargs)
-
 
 """The booking model
 Takes a table as a FK, generates an end time based on its start time
@@ -117,7 +67,7 @@ class Booking(models.Model):
     generating sequentially from 1, and being uneditable
     are not clashing with sames instances.
     """
-    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

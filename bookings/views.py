@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseBadRequest, HttpResponse
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.db.models.functions import Trunc
@@ -62,26 +62,27 @@ def bookings(request, booking_id=None):
                     )
                     """If not then saves the bookings and
                         creates and saved a slot"""
-                if not table_availabilities:
-                    booking.table = table
-                    booking.end_time = end_time
-                    booking.save()
-                    successful_bookings.append(booking)
-                    booking_instance = Booking.objects.get(id=booking.id)
-                    table_availability = TableAvailability(
-                        table=table,
-                        start_time=start_time,
-                        end_time=end_time,
-                        booking_id=booking
-                    )
-                    table_availability.save()
-                    messages.success(request, 'Your booking has been made.')
-                    return redirect('bookings')
-                    """Else error handling"""
-            messages.error(request, 'No table is available'
-                           ' for the requested'
-                           ' time and party size.'
-                           ' Please select a new time.')
+                    if not table_availabilities:
+                        booking.table = table
+                        booking.end_time = end_time
+                        booking.save()
+                        successful_bookings.append(booking)
+                        booking_instance = Booking.objects.get(id=booking.id)
+                        table_availability = TableAvailability(
+                            table=table,
+                            start_time=start_time,
+                            end_time=end_time,
+                            booking_id=booking
+                        )
+                        table_availability.save()
+                        messages.success(
+                            request, 'Your booking has been made.')
+                        return redirect('bookings')
+                        """Else error handling"""
+                messages.error(request, 'No table is available'
+                               ' for the requested'
+                               ' time and party size.'
+                               ' Please select a new time.')
         else:
             """Error handling if form invalid"""
             messages.error(request, 'There was an error with your booking.')
@@ -307,7 +308,48 @@ def bookings_management(request):
 
 
 def delete_table(request, table_id):
+    old_table = get_object_or_404(Table, id=table_id)
     table = get_object_or_404(Table, id=table_id)
-    table.delete()
-    messages.success(request, 'Your table has been deleted.')
+    bookings = Booking.objects.filter(table=table)
+    slots = TableAvailability.objects.filter(table=table)
+
+    tables = Table.objects.exclude(id=table.id).order_by('number')
+    successful_bookings = []
+
+    for booking in bookings:
+        start_time = booking.start_time
+        end_time = start_time + timedelta(minutes=105)
+        size_of_party = booking.size_of_party
+
+        for table in tables:
+            table_availabilities = TableAvailability.objects.filter(
+                table=table,
+                start_time__lt=end_time,
+                end_time__gt=start_time
+            )
+
+            if not table_availabilities:
+                # Delete the slot, create a new one, and update the booking
+                TableAvailability.objects.filter(
+                    booking_id=booking.id).delete()
+
+                booking.end_time = start_time + timedelta(minutes=105)
+                booking.table = table
+                booking.start_time = start_time
+                booking.save()
+
+                table_availability = TableAvailability(
+                    table=table,
+                    start_time=start_time,
+                    end_time=booking.end_time,
+                    booking_id=booking,
+                )
+                table_availability.save()
+
+                successful_bookings.append(booking)
+
+    print(bookings, slots, tables, successful_bookings)
+
+    old_table.delete()
+
     return redirect(reverse('bookings_management'))

@@ -4,13 +4,13 @@
 
 {% block content %}
 <div class="row">
-  <div class="booking-form col-md-2">
+  <div class="booking-page col-md-2">
     <div class="booking-heading name">
       <p>{{ user.username }}</p>
     </div>
   </div>
   {% if user.is_authenticated %}
-  <div class="booking-form col-md-6">
+  <div class="booking-page col-md-6">
     <h2>Edit Booking</h2>
     <p class="text-center">
         We accept bookings from  <br>  
@@ -25,7 +25,7 @@
     </form>
     
   </div>
-  <div class="booking-list booking-form col-md-4">
+  <div class="booking-list booking-page col-md-4">
     <h3>My Bookings</h3>
     {% for booking in current_bookings %}
       {% if booking.user.id == request.user.id %}
@@ -45,4 +45,15 @@
   {% endif %}
 </div>
 
+<script>  
+  // JavaScript code to update the value display element
+  var slider = document.getElementById('id_size_of_party');
+  var sliderValue = document.getElementById('slider_value');
+  
+  sliderValue.innerHTML = slider.value; // Initial value
+  
+  slider.oninput = function() {
+  sliderValue.innerHTML = this.value;
+  };
+  </script>
 {% endblock %}
