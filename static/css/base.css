@@ -316,12 +316,21 @@ nav ul li {
 }
   
 .draggable-item {
-    width: 100px;
-    height: 100px;
-    background-color: #ccc;
-    border: 1px solid #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    width:2rem;
+    height:2rem;
+    background-color: rgb(125, 207, 182);
     position: absolute;
-    cursor: move;
+    cursor: grab;
+    cursor: -webkit-grab;
+}
+
+.draggable-item:active {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
 }
 
 /* giving the text of the nav options as "see through" to the background */
