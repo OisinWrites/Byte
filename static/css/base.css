@@ -311,8 +311,9 @@ nav ul li {
     width:fit-content
 }
 
-#floor-plan {
-    max-height:60vh;
+.floor-plan {
+    max-height:60vh !important;
+    opacity: 0.6;
 }
   
 .draggable-item {

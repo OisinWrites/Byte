@@ -65,7 +65,7 @@
       </form>
 
       <div id="room-map">
-        <img class="col-12" id="floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
+        <img class="col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
         {% for table in tables %}
         <div class="draggable-item size{{ table.size }}" id="table_{{ table.number }}">{{ table.number }}.</div>
         {% endfor %}
@@ -73,10 +73,12 @@
 
         <div class="container table-list">
           {% for table in tables %}
-          <div class="table-item">
-            T {{ table.number }}|Seating for {{ table.size }} 
+          <div class="table-item d-flex align-items-center justify-content-center">
+            <h5>T {{ table.number }}|</h5>
+            <div class="d-flex align-items-center justify-content-center">
+              {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
             <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
-              X
+              <i class="fa-solid fa-delete-left"></i>
             </a>
           </div>
       {% endfor %}
