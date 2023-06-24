@@ -320,13 +320,29 @@ nav ul li {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    cursor: grab;
+    cursor: -webkit-grab;
+}
+
+.size2 {
     border-radius: 100%;
     width:2rem;
     height:2rem;
     background-color: rgb(125, 207, 182);
-    position: absolute;
-    cursor: grab;
-    cursor: -webkit-grab;
+}
+
+.size4 {
+    width:2rem;
+    height:2rem;
+    background-color: rgb(125, 207, 182);
+}
+
+.size6 {
+    border-radius: 10%;
+    width: 3rem;
+    height: 2rem;
+    background-color: rgb(125, 207, 182);
 }
 
 .draggable-item:active {
