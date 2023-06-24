@@ -61,15 +61,15 @@
       <form method="POST" id="table-form">
         {% csrf_token %}
         {{ table_form|crispy }}
-        <button type="submit">Add Table</button>
+        <button type="submit" onclick="refreshPage()">Add Table</button>
       </form>
 
       <div id="room-map">
         <img class="col-12" id="floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
-        <div class="draggable-item" id="table_1">1.</div>
-        <div class="draggable-item" id="table_2">2.</div>
-        <div class="draggable-item" id="table_3">3.</div>
-      </div>
+        {% for table in tables %}
+        <div class="draggable-item size{{ table.size }}" id="table_{{ table.number }}">{{ table.number }}.</div>
+        {% endfor %}
+        </div>
 
         <div class="container table-list">
           {% for table in tables %}
@@ -93,6 +93,10 @@
       slider.oninput = function() {
       sliderValue.innerHTML = this.value;
       };
+
+    function refreshPage() {
+      location.reload(); // Refresh the page
+    }
     </script>
 {% else %}
     <script>
@@ -188,6 +192,5 @@
 
     return !(bottom1 < top2 || top1 > bottom2 || right1 < left2 || left1 > right2);
   }
-</script>
 </script>
 {% endblock %}
