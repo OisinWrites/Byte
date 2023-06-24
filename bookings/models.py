@@ -49,33 +49,28 @@ class Table(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # Get all bookings associated with this table
+        # Delete corresponding table availability instances
+        TableAvailability.objects.filter(table=self).delete()
+
+        # Fetch the bookings associated with the current table
         bookings = Booking.objects.filter(table=self)
 
-        # Loop through the bookings and find an alternative table for each
+        # Repopulate with a new table for corresponding booking instances
+        new_table = Table.objects.exclude(pk=self.pk).first()
+
         for booking in bookings:
-            # Find a new table that is available at the same time
-            start_time = booking.start_time
-            end_time = booking.end_time
-            size_of_party = booking.size_of_party
+            # Create a new table availability instance for the new table
+            new_table_availability = TableAvailability(
+                table=new_table,
+                start_time=booking.start_time,
+                end_time=booking.end_time,
+                booking_id=booking,
+                id_of_booking=booking.id
+            )
+            new_table_availability.save()
 
-            # Order tables by size so that the smallest
-            # suitable table possible is selected first
-            tables = Table.objects.filter(
-                size__gte=size_of_party).order_by('size')
-
-            # Find an available table for the booking
-            for table in tables:
-                table_availabilities = TableAvailability.objects.filter(
-                    table=table,
-                    start_time__lt=end_time,
-                    end_time__gt=start_time,
-                )
-                if not table_availabilities:
-                    # Update the booking's table and save it
-                    booking.table = table
-                    booking.save()
-                    break
+        # Update the table reference for the bookings
+        bookings.update(table=new_table)
 
         super().delete(*args, **kwargs)
 
@@ -98,7 +93,7 @@ class Booking(models.Model):
     generating sequentially from 1, and being uneditable
     are not clashing with sames instances.
     """
-    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
