@@ -57,8 +57,6 @@
         <h3>My Bookings</h3>
         {% if users_bookings %}          
           <p>Select a booking to edit it</p>
-        {% else %}
-          <p>You've no current bookings</p>
         {% endif %}
       </div>
 
@@ -81,10 +79,10 @@
             </div>
           {% endif %}
         {% empty %}
-          <p>You haven't made any bookings yet.</p>
+          <p>You have no current bookings</p>
         {% endfor %}
       {% else %}
-        <p>You haven't made any bookings yet.</p>
+        <p>You have no current bookings</p>
       {% endif %}
       </div>
     

@@ -48,6 +48,37 @@ class Table(models.Model):
             self.number = Table.objects.get_lowest_available_number()
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        # Get all bookings associated with this table
+        bookings = Booking.objects.filter(table=self)
+
+        # Loop through the bookings and find an alternative table for each
+        for booking in bookings:
+            # Find a new table that is available at the same time
+            start_time = booking.start_time
+            end_time = booking.end_time
+            size_of_party = booking.size_of_party
+
+            # Order tables by size so that the smallest
+            # suitable table possible is selected first
+            tables = Table.objects.filter(
+                size__gte=size_of_party).order_by('size')
+
+            # Find an available table for the booking
+            for table in tables:
+                table_availabilities = TableAvailability.objects.filter(
+                    table=table,
+                    start_time__lt=end_time,
+                    end_time__gt=start_time,
+                )
+                if not table_availabilities:
+                    # Update the booking's table and save it
+                    booking.table = table
+                    booking.save()
+                    break
+
+        super().delete(*args, **kwargs)
+
 
 """The booking model
 Takes a table as a FK, generates an end time based on its start time
