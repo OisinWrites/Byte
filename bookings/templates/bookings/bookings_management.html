@@ -11,6 +11,7 @@
 
 {% if user.is_superuser %}
   <div class="row">
+
     <div class="booking-page col-sx-12 col-md-6">
       <div class="text-center manage-bookings">
         <div>
@@ -57,142 +58,64 @@
     </div> 
 
     <div class="booking-page col-sx-12 col-md-6">
-      <h2>Seating plan</h2>
-      <form method="POST" id="table-form">
-        {% csrf_token %}
-        {{ table_form|crispy }}
-        <button type="submit" onclick="refreshPage()">Add Table</button>
-      </form>
 
-      <div id="room-map">
-        <img class="col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
+      <div>
+        <h2>Seating plan</h2>
+        <form method="POST" id="table-form">
+          {% csrf_token %}
+          {{ table_form|crispy }}
+          <button type="submit" onclick="refreshPage()">Add Table</button>
+        </form>
+      </div>
+
+      <div>
+        <img  id="room-map" class="col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
         {% for table in tables %}
-        <div class="draggable-item size{{ table.size }}" id="table_{{ table.number }}">{{ table.number }}.</div>
+        <div class="col-12 draggable-item size{{ table.size }}" id="table_{{ table.number }}">{{ table.number }}.</div>
         {% endfor %}
+      </div>
+
+      <div class="container table-list">
+        {% for table in tables %}
+        <div class="table-item d-flex align-items-center justify-content-center">
+          <h5>T {{ table.number }}|</h5>
+          <div class="d-flex align-items-center justify-content-center">
+            {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
+          <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
+            <i class="fa-solid fa-delete-left"></i>
+          </a>
         </div>
+    {% endfor %}
+      </div>
 
-        <div class="container table-list">
-          {% for table in tables %}
-          <div class="table-item d-flex align-items-center justify-content-center">
-            <h5>T {{ table.number }}|</h5>
-            <div class="d-flex align-items-center justify-content-center">
-              {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
-            <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
-              <i class="fa-solid fa-delete-left"></i>
-            </a>
-          </div>
-      {% endfor %}
+      <div class="header-spacer"></div>
+      
     </div>
-    <div class="header-spacer"></div>
+
   </div>
-    <script>  
-      // JavaScript code to update the value display element
-      var slider = document.getElementById('id_size_of_party');
-      var sliderValue = document.getElementById('slider_value');
 
-      sliderValue.innerHTML = slider.value; // Initial value
+<script type="text/javascript">
+  function clearLocalStorage() {
+    localStorage.clear();
+  }
+  // JavaScript code to update the value display element
+  var slider = document.getElementById('id_size_of_party');
+  var sliderValue = document.getElementById('slider_value');
 
-      slider.oninput = function() {
-      sliderValue.innerHTML = this.value;
-      };
+  sliderValue.innerHTML = slider.value; // Initial value
 
-    function refreshPage() {
-      location.reload(); // Refresh the page
-    }
-    </script>
+  slider.oninput = function() {
+  sliderValue.innerHTML = this.value;
+  };
+
+function refreshPage() {
+  location.reload(); // Refresh the page
+}
+</script>
+{% include 'bookings/includes/draggable_items_for_map.html' %}
 {% else %}
     <script>
         window.location.href = "{% url 'home' %}";
     </script>
 {% endif %}
-<script>
-  $(document).ready(function() {
-    $(".draggable-item").each(function() {
-      makeDraggable($(this));
-    });
-
-    $("#table-form").submit(function(event) {
-      event.preventDefault();
-      var formData = $(this).serialize();
-      $.ajax({
-        url: $(this).attr("action"),
-        type: $(this).attr("method"),
-        data: formData,
-        success: function(response) {
-          var tableId = response.table_id;
-          var tableNumber = response.table_number;
-          var tableSize = response.table_size;
-          var newTable = $("<div>", { class: "draggable-item", id: "table_" + tableId, text: tableNumber });
-          $("#room-map").append(newTable);
-          makeDraggable(newTable);
-          var tableItem = $("<div>", { class: "table-item", text: "T " + tableNumber + "|Seating for " + tableSize });
-          tableItem.append($("<a>", { href: "/delete-table/" + tableId, class: "btn delete-button", text: "X" }));
-          $(".table-list").append(tableItem);
-          $("#table-form")[0].reset();
-        },
-        error: function(xhr, status, error) {
-          console.log(xhr.responseText);
-        }
-      });
-    });
-  });
-
-  function makeDraggable(element) {
-    var itemId = element.attr("id");
-    var storedPosition = localStorage.getItem(itemId);
-    if (storedPosition) {
-      var position = JSON.parse(storedPosition);
-      element.css({ left: position.left, top: position.top });
-    }
-
-    element.draggable({
-      containment: "#room-map",
-      grid: [10, 10],
-      snap: true,
-      snapTolerance: 10,
-      stop: function(event, ui) {
-        var itemId = element.attr("id");
-        var leftPosition = ui.position.left;
-        var topPosition = ui.position.top;
-
-        // Check for collision with other draggable items
-        var draggableItems = $(".draggable-item").not(element);
-        var collisionDetected = false;
-
-        draggableItems.each(function() {
-          if (isColliding(element, $(this))) {
-            collisionDetected = true;
-            return false; // Exit the loop early
-          }
-        });
-
-        if (collisionDetected) {
-          // Reset to original position
-          var storedPosition = JSON.parse(localStorage.getItem(itemId));
-          element.css({ left: storedPosition.left, top: storedPosition.top });
-        } else {
-          // Update position in local storage
-          localStorage.setItem(itemId, JSON.stringify({ left: leftPosition, top: topPosition }));
-        }
-      }
-    });
-  }
-
-  function isColliding(element1, element2) {
-    var offset1 = element1.offset();
-    var offset2 = element2.offset();
-
-    var top1 = offset1.top;
-    var left1 = offset1.left;
-    var bottom1 = top1 + element1.outerHeight();
-    var right1 = left1 + element1.outerWidth();
-
-    var top2 = offset2.top;
-    var left2 = offset2.left;
-    var bottom2 = top2 + element2.outerHeight();
-    var right2 = left2 + element2.outerWidth();
-
-    return !(bottom1 < top2 || top1 > bottom2 || right1 < left2 || left1 > right2);
-  }
-</script>
 {% endblock %}

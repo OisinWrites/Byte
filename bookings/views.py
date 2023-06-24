@@ -313,6 +313,10 @@ def delete_table(request, table_id):
     bookings = Booking.objects.filter(table=table)
     slots = TableAvailability.objects.filter(table=table)
 
+    if not bookings and not slots:
+        old_table.delete()
+        return redirect(reverse('bookings_management'))
+
     tables = Table.objects.exclude(id=table.id).order_by('number')
     successful_bookings = []
 
@@ -365,5 +369,3 @@ def delete_table(request, table_id):
         messages.error(request, "Failed to create new table availability. \
             Deletion canceled.")
         return redirect(reverse('bookings_management'))
-
-    return redirect(reverse('bookings_management'))

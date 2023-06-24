@@ -307,12 +307,7 @@ nav ul li {
     margin: 3rem;
 }
 
-#room-map {
-    width:fit-content
-}
-
 .floor-plan {
-    max-height:60vh !important;
     opacity: 0.6;
 }
   
@@ -320,9 +315,9 @@ nav ul li {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
     cursor: grab;
     cursor: -webkit-grab;
+    position: relative;
 }
 
 .size2 {
