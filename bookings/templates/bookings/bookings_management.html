@@ -12,10 +12,13 @@
 {% if user.is_superuser %}
   <div class="row">
 
-    <div class="booking-page col-sx-12 col-md-6">
+    <div class="booking-page col-12" id="bookings-section" style="display: none;">
       <div class="text-center">
+        <div class="col-md-12 text-center">
+          <button class="btn manage_button_big" onclick="showBookings()"><h2>Manage Bookings</h2></button>
+          <button class="btn manage_button_small" onclick="showSeatingPlan()"><h4>Seating Plan</h4></button>
+        </div>
         <div>
-          <h2>Manage Bookings</h2>
           <form class="form-inline float-right">
             <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
             <button class="btn my-2 my-sm-0" type="submit">Find Booking</button>
@@ -60,9 +63,13 @@
       </div>
     </div> 
 
-    <div class="booking-page col-sx-12 col-md-6">
+    <div class="booking-page col-12" id="seating-plan-section" style="display: block;">
 
       <div>
+        <div class="col-md-12 text-center">
+          <button class="btn manage_button_small" onclick="showBookings()"><h4>Manage Bookings</h4></button>
+          <button class="btn manage_button_big" onclick="showSeatingPlan()"><h2>Seating Plan</h2></button>
+        </div>
         <h2>Seating plan</h2>
         {% if tables.count == 12 %}
         <p>
@@ -78,22 +85,13 @@
         {% endif %}
       </div>
 
-      <div class="map" style="display: none;">
-        <img  class="room-map col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
-        {% for table in tables %}
-        <div class="draggable-item size{{ table.size }}"
-        id="table_{{ table.number }}"
-        data-table-id="{{ table.id }}"
-        style="left: '{{ table.left }}'; top: '{{ table.top }}'">
-          {{ table.number }}.
-        </div>
-        {% endfor %}
-      </div>
-      
-      <div class="container table-list">
+      <button class="btn" id="show" onclick="showMap()" style="display: block;"><h4>Show Floor Plan</h4></button>
+      <button class="btn" id="hide" onclick="hideMap()" style="display: none;"><h4>Hide Floor Plan</h4></button>
+
+      <div class="col-6 table-list">
         {% for table in tables %}
         <div class="table-item d-flex align-items-center justify-content-center">
-          <h5>T {{ table.number }}|</h5>
+          <h5 style="white-space: nowrap;">T {{ table.number }}|</h5>
           <div class="d-flex align-items-center justify-content-center">
             {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
           <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
@@ -103,16 +101,53 @@
         {% endfor %}
       </div>
 
-      <div class="header-spacer"></div>
-      
+      <div class="map col-6" id="map" style="display: none;">
+        <img  class="room-map floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
+        {% for table in tables %}
+        <div class="draggable-item size{{ table.size }}"
+        id="table_{{ table.number }}"
+        data-table-id="{{ table.id }}"
+        style="left: '{{ table.left }}'; top: '{{ table.top }}'">
+          {{ table.number }}.
+        </div>
+        {% endfor %}
+      </div>
+           
     </div>
 
   </div>
 
 <script type="text/javascript">
+  // <button class="btn" id="show" onclick="showMap()" style="display: block;"><h4>Show Floor Plan</h4></button>
+  //    <button class="btn" id="hide" onclick="hideMap()" style="display: none;"><h4>Hide Floor Plan</h4></button>
+  //    <div class="map" id="map" style="display: none;">
+  
+  function showMap() {
+    document.getElementById("map").style.display = "block";
+    document.getElementById("show").style.display = "none";
+    document.getElementById("hide").style.display = "block";
+  }
+
+  function hideMap() {
+    document.getElementById("map").style.display = "none";
+    document.getElementById("hide").style.display = "none";
+    document.getElementById("show").style.display = "block";
+  }
+
+  function showBookings() {
+    document.getElementById("bookings-section").style.display = "block";
+    document.getElementById("seating-plan-section").style.display = "none";
+  }
+
+  function showSeatingPlan() {
+    document.getElementById("bookings-section").style.display = "none";
+    document.getElementById("seating-plan-section").style.display = "block";
+  }
+
   function clearLocalStorage() {
     localStorage.clear();
   }
+
   // JavaScript code to update the value display element
   var slider = document.getElementById('id_size_of_party');
   var sliderValue = document.getElementById('slider_value');
@@ -123,14 +158,17 @@
   sliderValue.innerHTML = this.value;
   };
 
-function refreshPage() {
-  location.reload(); // Refresh the page
-}
+  function refreshPage() {
+    location.reload(); // Refresh the page
+  }
+
 </script>
 {% include 'bookings/includes/draggable_items_for_map.html' %}
+
+
 {% else %}
-    <script>
-        window.location.href = "{% url 'home' %}";
-    </script>
+  <script>
+      window.location.href = "{% url 'home' %}"; // To redirect not superusers
+  </script>
 {% endif %}
 {% endblock %}
