@@ -12,8 +12,8 @@
 {% if user.is_superuser %}
   <div class="row">
 
-    <div class="booking-page col-12" id="bookings-section" style="display: none;">
-      <div class="text-center">
+    <div class="booking-page col-12" id="bookings-section" style="display: block;">
+      <div class="text-center mx-3">
         <div class="col-md-12 text-center">
           <button class="btn manage_button_big" onclick="showBookings()"><h2>Manage Bookings</h2></button>
           <button class="btn manage_button_small" onclick="showSeatingPlan()"><h4>Seating Plan</h4></button>
@@ -63,14 +63,13 @@
       </div>
     </div> 
 
-    <div class="booking-page col-12" id="seating-plan-section" style="display: block;">
+    <div class="booking-page col-12" id="seating-plan-section" style="display: none;">
 
-      <div>
+      <div class="text-center mx-3">
         <div class="col-md-12 text-center">
           <button class="btn manage_button_small" onclick="showBookings()"><h4>Manage Bookings</h4></button>
           <button class="btn manage_button_big" onclick="showSeatingPlan()"><h2>Seating Plan</h2></button>
         </div>
-        <h2>Seating plan</h2>
         {% if tables.count == 12 %}
         <p>
           Room at full capacity.<br>
@@ -80,7 +79,7 @@
         <form method="POST" id="table-form">
           {% csrf_token %}
           {{ table_form|crispy }}
-          <button type="submit" onclick="refreshPage()">Add Table</button>
+          <button type="submit">Add Table</button>
         </form>
         {% endif %}
       </div>
@@ -137,11 +136,23 @@
   function showBookings() {
     document.getElementById("bookings-section").style.display = "block";
     document.getElementById("seating-plan-section").style.display = "none";
+    // Store the active section in localStorage
+    localStorage.setItem('activeSection', 'bookings');
+
   }
 
   function showSeatingPlan() {
     document.getElementById("bookings-section").style.display = "none";
     document.getElementById("seating-plan-section").style.display = "block";
+    // Store the active section in localStorage
+    localStorage.setItem('activeSection', 'seating-plan');
+  }
+
+  // Retrieve the active section from localStorage
+  const activeSection = localStorage.getItem('activeSection');
+
+  if (activeSection === "seating-plan") {
+    showSeatingPlan(); // Show the seating plan section if it was active
   }
 
   function clearLocalStorage() {
