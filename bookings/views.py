@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import JsonResponse
 from django.db.models import Q, Count, F
 from django.urls import reverse
 from django.utils.timezone import make_aware
@@ -123,7 +124,7 @@ def edit_booking(request, booking_id):
 
     """Handles a foreign user attempt to view the booking
         through url search with object id"""
-    if booking.user != request.user:
+    if booking.user != request.user and not request.user.is_superuser:
         raise Http404("Booking not found")
 
     """Initiates form validation as before on form submission"""
@@ -198,18 +199,26 @@ def edit_booking(request, booking_id):
 
 def delete_booking(request, booking_id):
     """Identify object by id"""
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-    """Finds and deletes by detail match"""
-    table_availability = TableAvailability.objects.filter(
-        table=booking.table,
-        start_time=booking.start_time,
-        end_time=booking.end_time
-    ).delete()
-    booking.delete()
-    """Returns success and reverses url, as current url no longer
-    valid as booking object id was populating the end of the url"""
-    messages.success(request, 'Your booking has been deleted.')
-    return redirect(reverse('bookings'))
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Check if the user is the booking user or a superuser
+    if booking.user == request.user or request.user.is_superuser:
+        """Finds and deletes by detail match"""
+        table_availability = TableAvailability.objects.filter(
+            table=booking.table,
+            start_time=booking.start_time,
+            end_time=booking.end_time
+        ).delete()
+        booking.delete()
+        """Returns success and reverses url, as the current url is no longer
+        valid as the booking object id was populating the end of the url"""
+        messages.success(request, 'Your booking has been deleted.')
+        return redirect(reverse('bookings'))
+    else:
+        # If the user is neither the booking user nor a superuser,
+        # handle the unauthorized access
+        messages.error(request, 'You are not authorized to delete this booking.')
+        return redirect(reverse('bookings'))
 
 
 """This is a convoluted view that essentially melds two purposes
@@ -218,6 +227,24 @@ def delete_booking(request, booking_id):
     filter methods. It allows the admin to view, create, and delete tables
     for the restaurant, but not edit them as quick deletiong and recreation
     was deemed sufficient for this particularly simple model."""
+
+
+def save_table_location(request):
+    if request.method == 'POST':
+        print("Hi Oisín")
+        table_id = request.POST.get('table_id')
+        location_x = request.POST.get('location_x')
+        location_y = request.POST.get('location_y')
+
+        # Save the table location to the database
+        table = Table.objects.get(id=table_id)
+        table.location_x = location_x
+        table.location_y = location_y
+        table.save()
+
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False})
 
 
 def bookings_management(request):

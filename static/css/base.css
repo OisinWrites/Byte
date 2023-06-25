@@ -307,8 +307,16 @@ nav ul li {
     margin: 3rem;
 }
 
+.map {
+    max-height: 500px;
+}
+
 .floor-plan {
     opacity: 0.6;
+}
+
+.room-map {
+    height: 480px !important;
 }
   
 .draggable-item {
@@ -317,7 +325,6 @@ nav ul li {
     justify-content: center;
     cursor: grab;
     cursor: -webkit-grab;
-    position: relative;
 }
 
 .size2 {

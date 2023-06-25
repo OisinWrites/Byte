@@ -12,4 +12,6 @@ urlpatterns = [
           views.delete_table, name='delete_table'),
      path('bookings/manage/',
           views.bookings_management, name='bookings_management'),
+     path('bookings/save_table_location/',
+          views.save_table_location, name='save_table_location'),
 ]

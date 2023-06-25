@@ -43,6 +43,9 @@
                         <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
                         <div>{{ booking.start_time|time:"g:i A" }}</div>
                       </a>
+                      <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+                        <i class="fa-solid fa-delete-left"></i>
+                      </a>
                   </div>
                 {% endfor %}
               </div>
@@ -61,20 +64,33 @@
 
       <div>
         <h2>Seating plan</h2>
+        {% if tables.count == 12 %}
+        <p>
+          Room at full capacity.<br>
+          Try deleting a table before adding another.
+        </p>
+        {% else %}
         <form method="POST" id="table-form">
           {% csrf_token %}
           {{ table_form|crispy }}
           <button type="submit" onclick="refreshPage()">Add Table</button>
         </form>
+        {% endif %}
       </div>
 
-      <div>
-        <img  id="room-map" class="col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
+      <div class="map">
+        <img  class="room-map col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
         {% for table in tables %}
-        <div class="col-12 draggable-item size{{ table.size }}" id="table_{{ table.number }}">{{ table.number }}.</div>
+        <div class="draggable-item size{{ table.size }}"
+        id="table_{{ table.number }}"
+        data-table-id="{{ table.id }}"
+        data-location-x="{{ table.location_x }}"
+        data-location-y="{{ table.location_y }}">
+          {{ table.number }}.
+        </div>
         {% endfor %}
       </div>
-
+      
       <div class="container table-list">
         {% for table in tables %}
         <div class="table-item d-flex align-items-center justify-content-center">
@@ -85,7 +101,7 @@
             <i class="fa-solid fa-delete-left"></i>
           </a>
         </div>
-    {% endfor %}
+        {% endfor %}
       </div>
 
       <div class="header-spacer"></div>

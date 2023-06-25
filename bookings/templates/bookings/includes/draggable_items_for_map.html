@@ -1,102 +1,32 @@
 <script type="text/javascript">
-    $(document).ready(function() {
-      $(".draggable-item").each(function() {
-        makeDraggable($(this));
-      });
-      $("#table-form").submit(function(event) {
-        event.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-          url: $(this).attr("action"),
-          type: $(this).attr("method"),
-          data: formData,
-          success: function(response) {
-            var tableId = response.table_id;
-            var tableNumber = response.table_number;
-            var tableSize = response.table_size;
-            var newTable = $("<div>", { class: "draggable-item", id: "table_" + tableId, text: tableNumber });
-            $("#room-map").append(newTable);
-            makeDraggable(newTable);
-            var tableItem = $("<div>", { class: "table-item", text: "T " + tableNumber + "|Seating for " + tableSize });
-            tableItem.append($("<a>", { href: "/delete-table/" + tableId, class: "btn delete-button", text: "X" }));
-            $(".table-list").append(tableItem);
-            $("#table-form")[0].reset();
-          },
-          error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-          }
-        });
-      });
-  
-      // Add event listener for window resize
-      $(window).resize(function() {
-        updateDivPositions();
-      });
-    });
-  
-    function makeDraggable(element) {
-      var itemId = element.attr("id");
-      var storedPosition = localStorage.getItem(itemId);
-      if (storedPosition) {
-        var position = JSON.parse(storedPosition);
-        element.css({ left: position.left, top: position.top });
+  $(document).ready(function() {
+    $(".draggable-item").draggable({
+      containment: "parent",
+      stop: function(event, ui) {
+        var tableId = $(this).data("table-id");
+        var newX = ui.position.left;
+        var newY = ui.position.top;
+        saveTableLocation(tableId, newX, newY);
       }
-  
-      element.draggable({
-        containment: "#room-map",
-        grid: [10, 10],
-        snap: true,
-        snapTolerance: 10,
-        stop: function(event, ui) {
-          var itemId = element.attr("id");
-          var leftPosition = ui.position.left;
-          var topPosition = ui.position.top;
-  
-          // Check for collision with other draggable items
-          var draggableItems = $(".draggable-item").not(element);
-          var collisionDetected = false;
-  
-          draggableItems.each(function() {
-            if (isColliding(element, $(this))) {
-              collisionDetected = true;
-              return false; // Exit the loop early
-            }
-          });
-  
-          if (collisionDetected) {
-            // Reset to original position
-            var storedPosition = JSON.parse(localStorage.getItem(itemId));
-            element.css({ left: storedPosition.left, top: storedPosition.top });
-          } else {
-            // Update position in local storage
-            localStorage.setItem(itemId, JSON.stringify({ left: leftPosition, top: topPosition }));
-          }
-        }
-      });
-    }
-  
-    function isColliding(element1, element2) {
-      var offset1 = element1.offset();
-      var offset2 = element2.offset();
-  
-      var top1 = offset1.top;
-      var left1 = offset1.left;
-      var bottom1 = top1 + element1.outerHeight();
-      var right1 = left1 + element1.outerWidth();
-  
-      var top2 = offset2.top;
-      var left2 = offset2.left;
-      var bottom2 = top2 + element2.outerHeight();
-      var right2 = left2 + element2.outerWidth();
-  
-      return !(bottom1 < top2 || top1 > bottom2 || right1 < left2 || left1 > right2);
-    }
-  
-    function updateDivPositions() {
-      $(".draggable-item").each(function() {
-        var itemId = $(this).attr("id");
-        var position = $(this).position();
-        localStorage.setItem(itemId, JSON.stringify({ left: position.left, top: position.top }));
-      });
-    }
-  </script>
+    });
+  });
+
+  function saveTableLocation(tableId, x, y) {
+    var url = 'https://8000-oisinwrites-byte-xx3cqnmui5k.ws-eu100.gitpod.io/bookings/bookings/save_table_location/';
+    var data = {
+      table_id: tableId,
+      location_x: x,
+      location_y: y,
+      csrfmiddlewaretoken: "{{ csrf_token }}",  // Include the CSRF token
+
+    };
+
+    $.post(url, data, function(response) {
+      if (response.success) {
+        console.log("Table location saved successfully.");
+      } else {
+        console.log("Failed to save table location.");
+      }
+    });
+  }
+</script>
