@@ -11,21 +11,50 @@
   </div>
   {% if user.is_authenticated %}
   <div class="booking-page col-md-6">
-    <h2>Edit Booking</h2>
-    <p class="text-center not_on_mobile">
-        We accept bookings from  <br>  
-        Wednesday to Sunday<br>
-        5pm to 9pm<br>
-        <u>Subject to Availability</u>
-    </p>
-    <form method="POST" id="booking-form">
-      {% csrf_token %}
-      {{ form|crispy }}
-      <button class="not_on_mobile" name="return_to_bookings" type="submit">Update Booking</button>
-      <button class="on_mobile" name="return_to_my_bookings" type="submit">Update Booking</button>
-      <button id="cancel-btn" type="button">Cancel</button>
-
-    </form>
+    {% if user.is_superuser %}
+    <h2>Booking Details</h2>
+    <div>
+      {% if booking %}
+      
+      <h4>{{ booking.user }} </h4>
+      <p>{{ booking.email }}</p>
+      <hr>
+      
+      <p id="collapse-for-edit">
+        {{ booking.start_time }}<br>
+        <strong>{{ booking.size_of_party }} </strong>Guests<br>
+        {% if booking.additional %}
+        {{ booking.additional }}
+        {% else %}
+        No additional information provided for this booking.
+        {% endif %}
+        <br>
+        <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+          Delete Booking
+        </a>
+        <button id="edit-button" class="btn edit-button">
+          Edit Booking
+        </button>
+      </p>
+      {% endif %}
+    </div>
+    {% endif %}
+    <div id="edit_booking" {% if user.is_superuser %}style="display: none;"{% endif %}>
+      <h2>Edit Booking</h2>
+      <p class="text-center not_on_mobile">
+          We accept bookings from  <br>  
+          Wednesday to Sunday<br>
+          5pm to 9pm<br>
+          <u>Subject to Availability</u>
+      </p>
+      <form method="POST" id="booking-form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="not_on_mobile" name="return_to_bookings" type="submit">Update Booking</button>
+        <button class="on_mobile" name="return_to_my_bookings" type="submit">Update Booking</button>
+        <button id="cancel-btn" type="button">Cancel</button>
+      </form>
+    </div>
     
   </div>
   <div class="booking-list booking-page not_on_mobile col-md-4">
@@ -58,5 +87,19 @@
   slider.oninput = function() {
   sliderValue.innerHTML = this.value;
   };
+
+  // Toggle visibility of the "Edit Booking" section
+  var editButton = document.getElementById('edit-button');
+  var editBookingSection = document.getElementById('edit_booking');
+  var collapse = document.getElementById('collapse-for-edit');
+  
+  editButton.addEventListener('click', function() {
+    collapse.style.display = 'none';
+    if (editBookingSection.style.display === 'none') {
+      editBookingSection.style.display = 'block';
+    } else {
+      editBookingSection.style.display = 'none';
+    }
+  });
   </script>
 {% endblock %}

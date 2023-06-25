@@ -217,6 +217,7 @@ def edit_booking(request, booking_id):
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
+        'booking': booking,
     }
 
     return render(request, 'bookings/edit_booking.html', context)
