@@ -14,6 +14,20 @@ from .forms import BookingForm, TableForm
 from .models import Booking, Table, TableAvailability
 
 
+def diary(request):
+    current_hour = datetime.now().hour
+    hours = [(current_hour + i) % 24 for i in range(16)]
+    # Retrieve bookings for the current day or a specific date
+    bookings = Booking.objects.filter(
+        user_id=request.user.id).order_by('start_time')
+
+    context = {
+        'hours': hours,
+        'bookings': bookings,
+    }
+    return render(request, 'bookings/the_diary.html', context)
+
+
 def bookings(request, booking_id=None):
     """Initialise empty list for bookings to populate later"""
     successful_bookings = []
@@ -23,8 +37,8 @@ def bookings(request, booking_id=None):
     if booking_id:
         booking = get_object_or_404(Booking, id=booking_id)
 
-    all_bookings = Booking.objects.filter(user_id=request.user.id
-                                          ).order_by('start_time')
+    all_bookings = Booking.objects.filter(
+        user_id=request.user.id).order_by('start_time')
 
     users_bookings = Booking.objects.filter(user=request.user)
 

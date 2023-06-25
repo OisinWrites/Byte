@@ -69,6 +69,9 @@
                 Contact
               </a>
               {% if user.is_superuser %}
+              <a class="nav-link burger" href="{% url 'diary' %}">
+                The Diary
+              </a>
               <a class="nav-link burger" href="{% url 'bookings_management' %}">
                 Bookings Management
               </a>
@@ -98,6 +101,9 @@
                   <div class="dropdown-menu drop border-0 account-drop" aria-labelledby="user-options">
                       {% if request.user.is_authenticated %}
                           {% if request.user.is_superuser %}
+                          <a class="nav-link burger" href="{% url 'diary' %}">
+                            The Diary
+                          </a>
                           <a href="{% url 'bookings_management' %}" class="dropdown-item burger">Bookings<br class="my-0"> Management</a>
                           {% endif %}
                           <a href="{% url 'account_logout' %}" class="dropdown-item burger">Logout</a>

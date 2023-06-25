@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Booking Diary</h1>
+
+  <div class="time-chart">
+    <div class="time-axis">
+      <!-- Display time slots on the vertical axis -->
+      {% for hour in hours %}
+        <div class="time-slot">
+          <span>{{ hour }}:00</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="bookings">
+      {% for booking in bookings %}
+      <div class="booking" style="top: {{ booking.start_time|time:"H" }}00px; height: {{ booking.start_time|timeuntil:booking.end_time|time:"H" }}00px;">
+        <div class="booking-info">
+            <p>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</p>
+            <p>Guest: {{ booking.user.username }}</p>
+            <p>Table #{{ booking.table.number }}</p>
+            <p>Party size: {{ booking.size_of_party }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
