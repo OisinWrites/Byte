@@ -1,0 +1,32 @@
+<div class="text-center">
+    <h3>My Bookings</h3>
+    {% if users_bookings %}          
+      <p>Select a booking to edit it</p>
+    {% endif %}
+  </div>
+
+  <div class="text-right">
+    {% if current_bookings %}
+    {% for booking in current_bookings %}
+      {% if booking.user == request.user %}
+        <div class="row my-0 current_bookings">
+          <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn edit-booking-btn">
+            {{ booking.start_time|date:"M d" }} at 
+            {{ booking.start_time|time:"g:i A" }} 
+            <br class="split-booking-line">
+            for 
+            {{ booking.size_of_party }}
+            {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
+          </a>
+          <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+            <i class="fa-solid fa-delete-left"></i>
+          </a>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>You have no current bookings</p>
+    {% endfor %}
+  {% else %}
+    <p>You have no current bookings</p>
+  {% endif %}
+  </div>

@@ -24,10 +24,9 @@ body {
     background: url('https://res.cloudinary.com/dwhennrjl/image/upload/v1686605231/static/media/background.jpg') no-repeat center center fixed;
     background-size: cover;
     background-position: center;
-    overflow-x: hidden;
     color:rgb(16, 111, 151) !important;
     padding-bottom: 8vh;
-    overflow-y: auto;
+    overflow: hidden
 }
 
 a {
@@ -45,7 +44,7 @@ a {
   }
 
 .row {
-    margin-bottom: 20vh;
+    margin: 0rem;
 }
 
 .header {
@@ -59,8 +58,7 @@ a {
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 100%;
-    max-width: 100vw;
+    width: 100vw;
 }
 
 .footer div {
@@ -303,10 +301,6 @@ nav ul li {
 
 /* ---- booking management page stylings ------ */
 
-.manage-bookings {
-    margin: 3rem;
-}
-
 .map {
     max-height: 500px;
 }
@@ -325,7 +319,6 @@ nav ul li {
     justify-content: center;
     cursor: grab;
     cursor: -webkit-grab;
-    position: absolute;
 }
 
 .size2 {
@@ -437,13 +430,16 @@ nav ul li {
 }
 /* styling the allauth forms uniformally */
 .allauth-form, .booking-page {
+    position: relative;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: rgb(255, 255, 255, 0.8);
     color:rgb(7, 45, 61);
-    padding: 2rem;
-    margin-bottom: 3rem;
+    padding-top: 2rem;
+    padding-right: 0rem;
+    padding-left: 0rem;
 }
 
 .allauth-form a {
@@ -469,26 +465,14 @@ nav ul li {
 
 /* disappears the circles from medium and larger screens */
 @media (max-width: 767px) {
-    .visible-md {
+    .visible-md, .byte-site, .account-logo p, .not_on_mobile {
       display: none;
-    }
-
-    .bh-hide {
-        display: none;
-    }
-
-    .byte-site {
-        display: none;
-    }
-
-    .account-logo p {
-        display: none;
     }
 }
 
 /* disappears the mobile block colours on larger devices */
 @media (min-width: 768px) {
-    .visible-sml {
+    .visible-sml, .on_mobile {
       display: none;
     }
 

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+  
+  {% if user.is_authenticated %}
+    <div class="booking-list booking-page col-md-12">
+      {% include 'bookings/includes/my_bookings_section.html' %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

@@ -111,6 +111,39 @@ def bookings(request, booking_id=None):
     return render(request, 'bookings/bookings.html', context)
 
 
+def my_bookings(request, booking_id=None):
+    """Initialise empty list for bookings to populate later"""
+    successful_bookings = []
+
+    """Initialises the booking variable to none, looks for new id"""
+    booking = None
+    if booking_id:
+        booking = get_object_or_404(Booking, id=booking_id)
+
+    all_bookings = Booking.objects.filter(user_id=request.user.id
+                                          ).order_by('start_time')
+
+    users_bookings = Booking.objects.filter(user=request.user)
+
+    """Creates list of bookings not older than current date for
+        logged in user"""
+    current_bookings = Booking.objects.filter(
+        Q(start_time__gte=timezone.now()) | Q(
+            user_id=request.user.id)).order_by('start_time')
+
+    """Context list to call on these variables from the template"""
+    context = {
+        'booking': booking,
+        'all_bookings': all_bookings,
+        'users_bookings': users_bookings,
+        'current_bookings': current_bookings,
+        'successful_bookings': successful_bookings,
+        'edit_booking': booking,
+        # pass the booking to the template if it exists
+    }
+    return render(request, 'bookings/user_bookings.html', context)
+
+
 def edit_booking(request, booking_id):
 
     """Creates the list of successful bookings"""

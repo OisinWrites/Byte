@@ -61,6 +61,9 @@
               <a class="nav-link burger" href="{% url 'bookings' %}">
                 Bookings
               </a>
+              <a class="nav-link burger on_mobile" href="{% url 'my_bookings' %}">
+                My Bookings
+              </a>              
               {% endif %}
               <a class="nav-link burger" href="{% url 'contact' %}">
                 Contact
@@ -81,7 +84,7 @@
   
           <div class="header-account">
             <ul class="list-inline list-unstyled text-center text-lg-right my-0 account">
-              <li class="list-inline-item dropdown dropdown-menu-right">
+              <li class="list-inline-item dropdown">
                   <a class="account-logo nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="text-center">
                         <span><i class="fas fa-user fa-lg"></i></span>
@@ -99,7 +102,7 @@
                           {% endif %}
                           <a href="{% url 'account_logout' %}" class="dropdown-item burger">Logout</a>
                       {% else %}
-                          <a href="{% url 'account_signup' %}" class="dropdown-item burger">Register</a>
+                          <a href="{% url 'account_signup' %}" class="dropdown-item burger">Regi8ster</a>
                           <a href="{% url 'account_login' %}" class="dropdown-item burger">Login</a>
                       {% endif %}
                   </div>
@@ -149,7 +152,7 @@
     {% block content %}
     {% endblock %}
     <footer>
-      <div class="footer container d-flex justify-content-around align-items-center">
+      <div class="footer d-flex justify-content-around align-items-center">
         <div class="byte-site">
           <a href="{% url 'home' %}" class="footer-logo website">www.BYTE.Restaurant.com</a>
         </div>
