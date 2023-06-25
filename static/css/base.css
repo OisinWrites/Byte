@@ -437,7 +437,7 @@ nav ul li {
     align-items: center;
     background-color: rgb(255, 255, 255, 0.8);
     color:rgb(7, 45, 61);
-    padding-top: 2rem;
+    padding-block: 2rem;
     padding-right: 0rem;
     padding-left: 0rem;
 }
