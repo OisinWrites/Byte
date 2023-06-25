@@ -78,14 +78,13 @@
         {% endif %}
       </div>
 
-      <div class="map">
+      <div class="map" style="display: none;">
         <img  class="room-map col-12 floor-plan" src="/static/media/floorplan-min.jpg" alt="Byte table map">
         {% for table in tables %}
         <div class="draggable-item size{{ table.size }}"
         id="table_{{ table.number }}"
         data-table-id="{{ table.id }}"
-        data-location-x="{{ table.location_x }}"
-        data-location-y="{{ table.location_y }}">
+        style="left: '{{ table.left }}'; top: '{{ table.top }}'">
           {{ table.number }}.
         </div>
         {% endfor %}

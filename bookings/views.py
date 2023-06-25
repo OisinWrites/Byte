@@ -217,7 +217,8 @@ def delete_booking(request, booking_id):
     else:
         # If the user is neither the booking user nor a superuser,
         # handle the unauthorized access
-        messages.error(request, 'You are not authorized to delete this booking.')
+        messages.error(
+            request, 'You are not authorized to delete this booking.')
         return redirect(reverse('bookings'))
 
 
@@ -233,13 +234,13 @@ def save_table_location(request):
     if request.method == 'POST':
         print("Hi Oisín")
         table_id = request.POST.get('table_id')
-        location_x = request.POST.get('location_x')
-        location_y = request.POST.get('location_y')
+        left = request.POST.get('left')  # Retrieve left value
+        top = request.POST.get('top')    # Retrieve top value
 
         # Save the table location to the database
         table = Table.objects.get(id=table_id)
-        table.location_x = location_x
-        table.location_y = location_y
+        table.left = left  # Update left value
+        table.top = top    # Update top value
         table.save()
 
         return JsonResponse({'success': True})
@@ -267,6 +268,15 @@ def bookings_management(request):
                           next_day.month, next_day.day, 0, 0, 0))
 
     tables = Table.objects.all().order_by('number')
+
+    # Retrieve the table location data
+    table_locations = []
+    for table in tables:
+        table_locations.append({
+            'table_id': table.id,
+            'left': table.left,
+            'top': table.top
+        })
 
     """Set the date range for filter"""
     now = datetime.now()
@@ -318,7 +328,8 @@ def bookings_management(request):
         'grouped_results': grouped_results,
         'filter_query': filter_query,
         'search_query': search_query,
-        'tables': tables
+        'tables': tables,
+        'table_locations': table_locations,
     }
 
     return render(request, 'bookings/bookings_management.html', context)

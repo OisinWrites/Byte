@@ -37,6 +37,8 @@ class Table(models.Model):
     number = models.IntegerField(unique=True, blank=True,
                                  null=True, editable=False)
     size = models.CharField(max_length=1, choices=TABLE_SIZES)
+    left = models.DecimalField(max_digits=10, decimal_places=6)
+    top = models.DecimalField(max_digits=10, decimal_places=6)
 
     objects = TableManager()
 

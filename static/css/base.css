@@ -325,6 +325,7 @@ nav ul li {
     justify-content: center;
     cursor: grab;
     cursor: -webkit-grab;
+    position: absolute;
 }
 
 .size2 {
