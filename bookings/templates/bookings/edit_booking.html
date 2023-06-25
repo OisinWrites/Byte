@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="booking-page col-md-2">
+  <div class="booking-page not_on_mobile col-md-2">
     <div class="booking-heading name">
       <p>{{ user.username }}</p>
     </div>
@@ -21,11 +21,12 @@
     <form method="POST" id="booking-form">
       {% csrf_token %}
       {{ form|crispy }}
-      <button type="submit">Update Booking</button>
+      <button class="not_on_mobile" name="return_to_bookings" type="submit">Update Booking</button>
+      <button class="on_mobile" name="return_to_my_bookings" type="submit">Update Booking</button>
     </form>
     
   </div>
-  <div class="booking-list booking-page col-md-4">
+  <div class="booking-list booking-page not_on_mobile col-md-4">
     <h3>My Bookings</h3>
     {% for booking in current_bookings %}
       {% if booking.user.id == request.user.id %}

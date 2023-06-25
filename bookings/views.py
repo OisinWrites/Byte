@@ -145,86 +145,78 @@ def my_bookings(request, booking_id=None):
 
 
 def edit_booking(request, booking_id):
-
-    """Creates the list of successful bookings"""
     successful_bookings = []
-
-    """Searches for id"""
     booking = get_object_or_404(Booking, id=booking_id)
+    all_bookings = Booking.objects.filter(
+        user_id=request.user.id).order_by('start_time')
 
-    all_bookings = Booking.objects.filter(user_id=request.user.id
-                                          ).order_by('start_time')
-
-    """Handles a foreign user attempt to view the booking
-        through url search with object id"""
     if booking.user != request.user and not request.user.is_superuser:
         raise Http404("Booking not found")
 
-    """Initiates form validation as before on form submission"""
     if request.method == 'POST':
         form = BookingForm(request, request.POST, instance=booking)
         if form.is_valid():
             booking = form.save(commit=False)
             start_time = form.cleaned_data['start_time']
             if start_time < timezone.now():
-                messages.error(request,
-                               "Whoops! You're already late"
-                               " for dinner. "
-                               "Choose a day that hasn't happened yet."
-                               )
-            end_time = start_time + timedelta(minutes=105)
-            size_of_party = form.cleaned_data['size_of_party']
-            tables = Table.objects.filter(size__gte=size_of_party) \
-                .order_by('size')
-            for table in tables:
-                table_availabilities = TableAvailability.objects.filter(
-                    table=table,
-                    start_time__lt=end_time,
-                    end_time__gt=start_time
-                )
-                if not table_availabilities:
-                    """When the booking is edited by time, the old
-                    time slot needs to be edited, or replaced.
-                    This code opts to delete the slot, in any case,
-                    even if the edit is for party size only"""
-                    TableAvailability.objects.filter(
-                        id_of_booking=booking.id).delete()
-
-                    booking.end_time = start_time + timedelta(minutes=105)
-                    booking.table = table
-                    booking.start_time = start_time
-                    booking.save()
-
-                    table_availability = TableAvailability(
+                messages.error(
+                    request, "Whoops! You're already late for dinner. "
+                             "Choose a day that hasn't happened yet.")
+            else:
+                end_time = start_time + timedelta(minutes=105)
+                size_of_party = form.cleaned_data['size_of_party']
+                tables = Table.objects.filter(
+                    size__gte=size_of_party).order_by('size')
+                for table in tables:
+                    table_availabilities = TableAvailability.objects.filter(
                         table=table,
-                        start_time=start_time,
-                        end_time=booking.end_time,
-                        booking_id=booking,
+                        start_time__lt=end_time,
+                        end_time__gt=start_time
                     )
-                    table_availability.save()
-                    """Booking edit saved, and new time slot created"""
-                    successful_bookings.append(booking)
+                    if not table_availabilities:
+                        TableAvailability.objects.filter(
+                            id_of_booking=booking.id).delete()
+
+                        booking.end_time = start_time + timedelta(minutes=105)
+                        booking.table = table
+                        booking.start_time = start_time
+                        booking.save()
+
+                        table_availability = TableAvailability(
+                            table=table,
+                            start_time=start_time,
+                            end_time=booking.end_time,
+                            booking_id=booking,
+                        )
+                        table_availability.save()
+
+                        successful_bookings.append(booking)
+
+                if successful_bookings:
                     messages.success(request, 'Your booking has been updated.')
-                    return redirect('bookings')
-            messages.error(request, 'No table is available'
-                           ' for the requested'
-                           ' time and party size.'
-                           ' Please select a new time.')
+
+                    if 'return_to_bookings' in request.POST:
+                        return redirect('bookings')
+                    elif 'return_to_my_bookings' in request.POST:
+                        return redirect('my_bookings')
+                else:
+                    messages.error(request, 'No table is available for the '
+                                   'requested time and party size. '
+                                   'Please select a new time.')
         else:
             messages.error(request, 'There was an error with your booking.')
     else:
         form = BookingForm(request, instance=booking)
 
     current_bookings = Booking.objects.filter(
-        Q(start_time__gte=timezone.now()) | Q(
-            user_id=request.user.id)).order_by('start_time')
+        Q(start_time__gte=timezone.now()) | Q(user_id=request.user.id)
+    ).order_by('start_time')
 
     context = {
         'form': form,
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        # pass the booking to the template if it exists
     }
 
     return render(request, 'bookings/edit_booking.html', context)
