@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.http import JsonResponse
-from django.db.models import Q, Count, F
+from django.db.models import Q, Count, F, Sum
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.db.models.functions import Trunc
@@ -15,16 +16,67 @@ from .models import Booking, Table, TableAvailability
 
 
 def diary(request):
-    current_hour = datetime.now().hour
-    hours = [(current_hour + i) % 24 for i in range(16)]
-    # Retrieve bookings for the current day or a specific date
-    bookings = Booking.objects.filter(
-        user_id=request.user.id).order_by('start_time')
+    def next_day(date):
+        """Returns the next day from a given date."""
+        next_day = date + timedelta(days=1)
+        return make_aware(datetime(next_day.year,
+                          next_day.month, next_day.day, 0, 0, 0))
+
+    tables = Table.objects.all().order_by('number')
+
+    """Set the date range for filter"""
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    next_week = today + timedelta(days=7)
+
+    """Filter bookings by not earlier than the current day"""
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    bookings = Booking.objects.filter(start_time__gte=today)
+
+    """Get search query from request"""
+    search_query = request.GET.get('search', '')
+
+    """Get filter query from request"""
+    filter_query = request.GET.get('filter', '')
+
+    """Filter bookings by user name if search query is provided"""
+    if search_query:
+        bookings = bookings.filter(user__username__icontains=search_query)
+
+    """Filter bookings by day or week if filter query is provided"""
+    if filter_query == 'day':
+        start_date = today
+        end_date = start_date + timedelta(days=1)
+        bookings = bookings.filter(
+            start_time__range=(start_date, end_date)).order_by('start_time')
+    elif filter_query == 'week':
+        start_date = today
+        end_date = start_date + timedelta(days=7)
+        bookings = bookings.filter(
+            start_time__range=(start_date, end_date)).order_by('start_time')
+
+    """
+    Annotate the query set
+    with a truncated start_time field
+    (day-level precision)
+    """
+    bookings = bookings.annotate(day=Trunc('start_time', 'day'))
+
+    """Perform grouping by day and count the number of bookings per day"""
+    grouped_results = bookings.values('day').annotate(count=Count('id'))
+
+    for result in grouped_results:
+        result['bookings'] = bookings.filter(start_time__date=result['day'])
+        result['total_covers'] = result['bookings'].aggregate(
+            total_covers=Sum('size_of_party'))['total_covers']
 
     context = {
-        'hours': hours,
-        'bookings': bookings,
+        'grouped_results': grouped_results,
+        'filter_query': filter_query,
+        'search_query': search_query,
     }
+
     return render(request, 'bookings/the_diary.html', context)
 
 
@@ -125,6 +177,7 @@ def bookings(request, booking_id=None):
     return render(request, 'bookings/bookings.html', context)
 
 
+@login_required
 def my_bookings(request, booking_id=None):
     """Initialise empty list for bookings to populate later"""
     successful_bookings = []
@@ -132,22 +185,38 @@ def my_bookings(request, booking_id=None):
     """Initialises the booking variable to none, looks for new id"""
     booking = None
     if booking_id:
-        booking = get_object_or_404(Booking, id=booking_id)
+        booking = get_object_or_404(Booking, id=booking_id, user=request.user)
 
-    all_bookings = Booking.objects.filter(user_id=request.user.id
-                                          ).order_by('start_time')
+    all_bookings = Booking.objects.filter(
+        user=request.user).order_by('start_time')
 
-    users_bookings = Booking.objects.filter(user=request.user)
+    users_bookings = all_bookings
+
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    bookings = Booking.objects.filter(user=request.user, start_time__gte=today)
 
     """Creates list of bookings not older than current date for
         logged in user"""
-    current_bookings = Booking.objects.filter(
-        Q(start_time__gte=timezone.now()) | Q(
-            user_id=request.user.id)).order_by('start_time')
+    current_bookings = bookings.order_by('start_time')
+
+    """
+    Annotate the query set
+    with a truncated start_time field
+    (day-level precision)
+    """
+    bookings = bookings.annotate(day=Trunc('start_time', 'day'))
+
+    """Perform grouping by day and count the number of bookings per day"""
+    grouped_results = bookings.values('day').annotate(count=Count('id'))
+
+    for result in grouped_results:
+        result['bookings'] = bookings.filter(start_time__date=result['day'])
 
     """Context list to call on these variables from the template"""
     context = {
         'booking': booking,
+        'grouped_results': grouped_results,
         'all_bookings': all_bookings,
         'users_bookings': users_bookings,
         'current_bookings': current_bookings,
@@ -266,7 +335,7 @@ def delete_booking(request, booking_id):
     so as to confine the admin CRUD abilities to a single html file.
     This view iterates the existing bookings, through search and
     filter methods. It allows the admin to view, create, and delete tables
-    for the restaurant, but not edit them as quick deletiong and recreation
+    for the restaurant, but not edit them as quick deletion and recreation
     was deemed sufficient for this particularly simple model."""
 
 

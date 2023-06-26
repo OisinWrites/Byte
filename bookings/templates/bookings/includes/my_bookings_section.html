@@ -1,32 +1,33 @@
 <div class="text-center">
-    <h3>My Bookings</h3>
-    {% if users_bookings %}          
-      <p>Select a booking to edit it</p>
-    {% endif %}
-  </div>
-
-  <div class="text-right">
-    {% if current_bookings %}
-    {% for booking in current_bookings %}
-      {% if booking.user == request.user %}
-        <div class="row my-0 current_bookings">
-          <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn edit-booking-btn">
-            {{ booking.start_time|date:"M d" }} at 
-            {{ booking.start_time|time:"g:i A" }} 
-            <br class="split-booking-line">
-            for 
-            {{ booking.size_of_party }}
-            {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
-          </a>
-          <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
-            <i class="fa-solid fa-delete-left"></i>
-          </a>
-        </div>
-      {% endif %}
-    {% empty %}
-      <p>You have no current bookings</p>
-    {% endfor %}
-  {% else %}
-    <p>You have no current bookings</p>
+  <h3>{{ user.username }}'s Bookings</h3>
+  <hr>
+  {% if users_bookings %}          
+    <p>Select a booking to edit it</p>
   {% endif %}
-  </div>
+</div>
+
+{% if grouped_results %}
+  {% if current_bookings %}
+    <div class="booking-list-scroller">
+    <div class="container">
+      {% for result in grouped_results %}
+        <h3>{{ result.day|date:"F d" }}</h3>
+        <div class="booking-book">
+          {% for booking in result.bookings %}
+            <div class="card booking-card">
+              <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                <div>{{ booking.start_time|date:"M d" }} at {{ booking.start_time|time:"g:i A" }}</div>
+                <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
+              </a>
+            </div> 
+          {% endfor %}
+        </div>
+        <hr>
+      {% endfor %}
+    </div>
+    </div>
+  {% endif %}
+  {% else %}
+    <p class="my-0">You've no current bookings, <br>but you can make one on our </p> 
+      <a class="nav-link burger my-0" href="{% url 'bookings' %}"> bookings page!</a>
+{% endif %}

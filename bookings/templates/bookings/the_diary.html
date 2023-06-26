@@ -1,29 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Booking Diary</h1>
+  {% if user.is_superuser %}
+  <div class="row">
 
-  <div class="time-chart">
-    <div class="time-axis">
-      <!-- Display time slots on the vertical axis -->
-      {% for hour in hours %}
-        <div class="time-slot">
-          <span>{{ hour }}:00</span>
-        </div>
-      {% endfor %}
+    <div class="booking-page not_on_mobile col-md-2">
+      <div class="booking-heading">
+        <p style="white-space: nowrap;">The Diary</p>
+      </div>
     </div>
 
-    <div class="bookings">
-      {% for booking in bookings %}
-      <div class="booking" style="top: {{ booking.start_time|time:"H" }}00px; height: {{ booking.start_time|timeuntil:booking.end_time|time:"H" }}00px;">
-        <div class="booking-info">
-            <p>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</p>
-            <p>Guest: {{ booking.user.username }}</p>
-            <p>Table #{{ booking.table.number }}</p>
-            <p>Party size: {{ booking.size_of_party }}</p>
+    <div class="booking-page col-sx-12 col-md-10 id="bookings-section" style="display: block;">
+      <div class="text-center mx-3">
+
+        <h1 class="on_mobile">The Diary</h1>
+
+        <div>
+          <form class="form-inline float-right">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
+            <button class="btn my-2 my-sm-0" type="submit">Find Booking</button>
+          </form>
+        </div>
+
+        <div class="btn-group mr-2" role="group">
+          <a href="?filter=all" class="btn">All</a>
+          <a href="?filter=day" class="btn">Today</a>
+          <a href="?filter=week" class="btn">This week</a>
+        </div>
+        <hr>
+
+        {% if grouped_results %}
+          <div class="booking-list-scroller">
+            <div class="container">
+              {% for result in grouped_results %}
+              <h3>{{ result.day|date:"F d" }}</h3>
+              <p>Covers: {{ result.total_covers }}</p>
+              <div class="booking-book">
+                {% for booking in result.bookings %}
+                  <div class="card booking-card">
+                      <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                        <div>{{ booking.user.username|slice:"-10:" }}</div>
+                        <div>Table # {{ booking.table.number }}</div>
+                        <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
+                        <div>{{ booking.start_time|time:"g:i A" }}</div>
+                      </a>
+                  </div>
+                {% endfor %}
+              </div>
+              <hr>
+              {% endfor %}
+            </div>
           </div>
-        </div>
-      {% endfor %}
+          {% else %}
+          <p>No bookings found.</p>
+          {% endif %}
+
+      </div>
     </div>
+
   </div>
+  {% endif %}
+
 {% endblock %}

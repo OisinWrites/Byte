@@ -46,9 +46,6 @@
                         <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
                         <div>{{ booking.start_time|time:"g:i A" }}</div>
                       </a>
-                      <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
-                        <i class="fa-solid fa-delete-left"></i>
-                      </a>
                   </div>
                 {% endfor %}
               </div>
