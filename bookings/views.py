@@ -184,7 +184,7 @@ def bookings(request, booking_id=None):
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        # pass the booking to the template if it exists
+        
     }
     return render(request, 'bookings/bookings.html', context)
 
@@ -244,6 +244,7 @@ def edit_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
     all_bookings = Booking.objects.filter(
         user_id=request.user.id).order_by('start_time')
+    users_bookings = Booking.objects.filter(user=request.user)
 
     if booking.user != request.user and not request.user.is_superuser:
         raise Http404("Booking not found")
@@ -303,16 +304,33 @@ def edit_booking(request, booking_id):
     else:
         form = BookingForm(request, instance=booking)
 
+        """Creates list of bookings not older than current date for
+        logged in user"""
     current_bookings = Booking.objects.filter(
-        Q(start_time__gte=timezone.now()) | Q(user_id=request.user.id)
-    ).order_by('start_time')
+        Q(start_time__gte=timezone.now()) | Q(
+            user_id=request.user.id)).order_by('start_time')
+
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    bookings = Booking.objects.filter(user=request.user, start_time__gte=today)
+
+    bookings = bookings.annotate(day=Trunc('start_time', 'day'))
+
+    grouped_results = bookings.values('day').annotate(count=Count('id'))
+
+    for result in grouped_results:
+        result['bookings'] = bookings.filter(start_time__date=result['day'])
 
     context = {
+        'booking': booking,
+        'all_bookings': all_bookings,
+        'users_bookings': users_bookings,
+        'grouped_results': grouped_results,
         'form': form,
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        'booking': booking,
+        
     }
 
     return render(request, 'bookings/edit_booking.html', context)

@@ -31,13 +31,13 @@
           {% endif %}
           <br>
           <div>
-            <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+            <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button booking-submit-button">
               Delete Booking
             </a>
-            <button id="edit-button" class="btn edit-button" type="button">
+            <button id="edit-button" class="btn edit-button booking-submit-button" type="button">
               Edit Booking
             </button>
-            <button class="cancel-btn" type="button">Cancel</button>
+            <button class="cancel-btn btn booking-submit-button" type="button">Cancel</button>
           </div>
         </p>
         </div>
@@ -56,33 +56,18 @@
       <form method="POST" id="booking-form">
         {% csrf_token %}
         {{ form|crispy }}
-        <button class="not_on_mobile" name="return_to_bookings" type="submit">Update Booking</button>
-        <button class="on_mobile" name="return_to_my_bookings" type="submit">Update Booking</button>
-        <button class="cancel-btn" type="button">Cancel</button>
+        <button class="not_on_mobile booking-submit-button" name="return_to_bookings" type="submit">Update Booking</button>
+        <button class="on_mobile booking-submit-button" name="return_to_my_bookings" type="submit">Update Booking</button>
+        <button class="cancel-btn booking-submit-button" type="button">Cancel</button>
       </form>
     </div>
     
   </div>
 
   <div class="booking-list booking-page not_on_mobile col-md-4">
-    <h3>My Bookings</h3>
-    <div class="booking-list-scroller container  padded-bottom">
-      {% for booking in current_bookings %}
-      {% if booking.user.id == request.user.id %}
-      <div class="row my-0 current_bookings">
-        <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn edit-booking-btn">
-          {{ booking.start_time|date:"M d" }} at 
-          {{ booking.start_time|time:"g:i A" }} for 
-          {{ booking.size_of_party }}
-          {% if booking.size_of_party == 1 %} guest{% else %} guests{% endif %}
-        </a>
-      </div>
-      {% endif %}
-    {% empty %}
-      <p>You haven't made any bookings yet.</p>
-    {% endfor %}
-    </div>
+    {% include 'bookings/includes/my_bookings_section.html' %}
   </div>
+  
   {% endif %}
 </div>
 

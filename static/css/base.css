@@ -30,6 +30,10 @@ body {
     overflow-y:auto;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+    color: rgb(16, 111, 151);
+}
+
 li {
     text-decoration: none;
 }
@@ -270,12 +274,17 @@ nav ul li {
     color: rgb(16, 111, 151);
 }
 
-.booking-submit-button {
-    float: right;
+.form-control {
+    opacity: 85%;
+}
+
+.booking-submit-button, input, .button {
     text-decoration: none;
     border:none;
     background: none;
     color: rgb(16, 111, 151);
+    border: 4px;
+    border-color: rgb(16, 111, 151);
 }
 
 .booking-submit-button .fa-shake {

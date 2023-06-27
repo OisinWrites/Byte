@@ -43,7 +43,7 @@
                       <a href="{% url 'edit_booking' booking_id=booking.id %}">
                         <div>{{ booking.user.username|slice:"-10:" }}</div>
                         <div>Table # {{ booking.table.number }}</div>
-                        <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
+                        <div class="booking-submit-button">{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
                         <div>{{ booking.start_time|time:"g:i A" }}</div>
                       </a>
                   </div>
