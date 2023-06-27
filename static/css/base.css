@@ -276,6 +276,10 @@ nav ul li {
     display: none;
 }
 
+.padded-bottom {
+    padding-bottom: 4rem;
+}
+
 .booking-book {
     display: flex;
     justify-content: flex-start;
@@ -462,6 +466,24 @@ nav ul li {
 .delete-button {
     color:rgb(219, 83, 117);
 }
+
+/*  ------ Diary page stylings------ */
+
+.diary-container {
+    overflow-x: hidden;
+}
+
+.scrollable-area {
+    overflow-x: auto;
+    display:flex;
+}
+
+.diary-item {
+    flex: 0 0 auto;
+    width: 6rem;
+}
+
+
 
 /* disappears the circles from medium and larger screens */
 @media (max-width: 767px) {

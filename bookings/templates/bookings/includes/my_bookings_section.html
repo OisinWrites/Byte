@@ -9,7 +9,7 @@
 {% if grouped_results %}
   {% if current_bookings %}
     <div class="booking-list-scroller">
-    <div class="container">
+    <div class="container padded-bottom">
       {% for result in grouped_results %}
         <h3>{{ result.day|date:"F d" }}</h3>
         <div class="booking-book">

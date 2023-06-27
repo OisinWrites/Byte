@@ -50,6 +50,9 @@ class BookingForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['user_id'].initial = request.user.id
         self.fields['size_of_party'].initial = 2  # Set initial value to 2
+        self.fields['start_time'].widget.date_options = {
+            'daysOfWeekDisabled': [0, 1],
+        }
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
         self.helper.form_method = 'post'

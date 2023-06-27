@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="booking-page col-sx-12 col-md-10 id="bookings-section" style="display: block;">
+    <div class="booking-page col-sx-12 col-md-10" id="bookings-section" style="display: block;">
       <div class="text-center mx-3">
 
         <h1 class="on_mobile">The Diary</h1>
@@ -30,30 +30,31 @@
         <hr>
 
         {% if grouped_results %}
-          <div class="booking-list-scroller">
-            <div class="container">
-              {% for result in grouped_results %}
-              <h3>{{ result.day|date:"F d" }}</h3>
-              <p>Covers: {{ result.total_covers }}</p>
-              <div class="booking-book">
-                {% for booking in result.bookings %}
-                  <div class="card booking-card">
-                      <a href="{% url 'edit_booking' booking_id=booking.id %}">
-                        <div>{{ booking.user.username|slice:"-10:" }}</div>
-                        <div>Table # {{ booking.table.number }}</div>
-                        <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
-                        <div>{{ booking.start_time|time:"g:i A" }}</div>
-                      </a>
-                  </div>
-                {% endfor %}
+          <div class="booking-list-scroller container diary-container padded-bottom">
+            {% for result in grouped_results %}
+              <div class="diary-header">
+                <h3>{{ result.day|date:"F d" }}</h3>
+                <p>Covers: {{ result.total_covers }}</p>
               </div>
-              <hr>
-              {% endfor %}
-            </div>
+                <div class="scrollable-area booking-row">
+                  {% for booking in result.bookings %}
+                  <div class="card booking-card diary-item">
+                    <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                      <div>{{ booking.user.username|slice:"-10:" }}</div>
+                      <div>Table # {{ booking.table.number }}</div>
+                      <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
+                      <div>{{ booking.start_time|time:"g:i A" }}</div>
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+              
+            
+            {% endfor %}
           </div>
-          {% else %}
-          <p>No bookings found.</p>
-          {% endif %}
+        {% else %}
+        <p>No bookings found.</p>
+        {% endif %}
 
       </div>
     </div>

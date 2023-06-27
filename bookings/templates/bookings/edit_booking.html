@@ -13,7 +13,7 @@
   <div class="booking-page col-md-6">
     {% if user.is_superuser %}
     <h2>Booking Details</h2>
-    <div>
+    <div class="card booking-card">
       {% if booking %}
       
       <h4>{{ booking.user }} </h4>
@@ -24,17 +24,19 @@
         {{ booking.start_time }}<br>
         <strong>{{ booking.size_of_party }} </strong>Guests<br>
         {% if booking.additional %}
-        {{ booking.additional }}
+        <small>{{ booking.additional }}</small>
         {% else %}
         No additional information provided for this booking.
         {% endif %}
         <br>
-        <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
-          Delete Booking
-        </a>
-        <button id="edit-button" class="btn edit-button">
-          Edit Booking
-        </button>
+        <div>
+          <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+            Delete Booking
+          </a>
+          <button id="edit-button" class="btn edit-button">
+            Edit Booking
+          </button>
+        </div>
       </p>
       {% endif %}
     </div>

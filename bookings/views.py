@@ -163,11 +163,23 @@ def bookings(request, booking_id=None):
         Q(start_time__gte=timezone.now()) | Q(
             user_id=request.user.id)).order_by('start_time')
 
+    now = datetime.now()
+    today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
+    bookings = Booking.objects.filter(user=request.user, start_time__gte=today)
+
+    bookings = bookings.annotate(day=Trunc('start_time', 'day'))
+
+    grouped_results = bookings.values('day').annotate(count=Count('id'))
+
+    for result in grouped_results:
+        result['bookings'] = bookings.filter(start_time__date=result['day'])
+
     """Context list to call on these variables from the template"""
     context = {
         'booking': booking,
         'all_bookings': all_bookings,
         'users_bookings': users_bookings,
+        'grouped_results': grouped_results,
         'form': form,
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
