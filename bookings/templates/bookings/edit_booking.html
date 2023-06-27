@@ -11,7 +11,7 @@
   </div>
   {% if user.is_authenticated %}
   <div class="booking-page col-md-6">
-    {% if user.is_superuser %}
+    {% if user.is_superuser or booking.user.id == request.user.id %}
     <div id="collapse-for-edit">
       {% if booking %}
       <h2>Booking Details</h2>
@@ -37,30 +37,28 @@
             <button id="edit-button" class="btn edit-button" type="button">
               Edit Booking
             </button>
-            <button id="cancel-btn" class="btn" type="button">
-              Cancel
-            </button>
+            <button class="cancel-btn" type="button">Cancel</button>
           </div>
         </p>
         </div>
       {% endif %}
     </div>
     {% endif %}
-    <div id="edit_booking" {% if user.is_superuser %}style="display: none;"{% endif %}>
+    <div id="edit_booking" style="display: none;">
       <h2>Edit Booking</h2>
-      <p>for {{ user.username }}</p>
       <p class="text-center not_on_mobile">
           We accept bookings from  <br>  
           Wednesday to Sunday<br>
           5pm to 9pm<br>
           <u>Subject to Availability</u>
       </p>
+      <h5>{{ user.username }}</h5>
       <form method="POST" id="booking-form">
         {% csrf_token %}
         {{ form|crispy }}
         <button class="not_on_mobile" name="return_to_bookings" type="submit">Update Booking</button>
         <button class="on_mobile" name="return_to_my_bookings" type="submit">Update Booking</button>
-        <button id="cancel-btn" type="button">Cancel</button>
+        <button class="cancel-btn" type="button">Cancel</button>
       </form>
     </div>
     
@@ -68,7 +66,8 @@
 
   <div class="booking-list booking-page not_on_mobile col-md-4">
     <h3>My Bookings</h3>
-    {% for booking in current_bookings %}
+    <div class="booking-list-scroller container  padded-bottom">
+      {% for booking in current_bookings %}
       {% if booking.user.id == request.user.id %}
       <div class="row my-0 current_bookings">
         <a href="{% url 'edit_booking' booking_id=booking.id %}" class="btn edit-booking-btn">
@@ -82,6 +81,7 @@
     {% empty %}
       <p>You haven't made any bookings yet.</p>
     {% endfor %}
+    </div>
   </div>
   {% endif %}
 </div>
@@ -110,5 +110,19 @@
       editBookingSection.style.display = 'none';
     }
   });
+
+  // Get all elements with the class "myButton"
+  var buttons = document.getElementsByClassName("cancel-btn");
+
+  // Iterate over the buttons and add a click event listener to each
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", handleClick);
+  }
+
+  // The function to be executed when the button is clicked
+  function handleClick() {
+      history.go(-1);
+  }
+
   </script>
 {% endblock %}

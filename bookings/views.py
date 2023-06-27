@@ -107,7 +107,7 @@ def bookings(request, booking_id=None):
             if start_time < timezone.now():
                 messages.error(request,
                                "Whoops! You're already late"
-                               " for dinner. "
+                               " for dinner."
                                "Choose a day that hasn't happened yet."
                                )
             else:
@@ -144,7 +144,7 @@ def bookings(request, booking_id=None):
                         table_availability.save()
                         messages.success(
                             request, 'Your booking has been made.')
-                        return redirect('bookings')
+                        return redirect('edit_booking', booking_id=booking.id)
                         """Else error handling"""
                 messages.error(request, 'No table is available'
                                ' for the requested'

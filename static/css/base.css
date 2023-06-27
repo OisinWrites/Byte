@@ -16,7 +16,7 @@ header {
 }
 
 .header-spacer {
-    padding-top: 236.59px;
+    padding-top: 188.58px;
 }
 
 body {
@@ -26,16 +26,21 @@ body {
     background-position: center;
     color:rgb(16, 111, 151) !important;
     padding-bottom: 8vh;
-    overflow: hidden
+    overflow-x: hidden;
+    overflow-y:auto;
+}
+
+li {
+    text-decoration: none;
 }
 
 a {
     text-decoration: none;
-  }
+}
   
-  a:hover {
+a:hover {
     text-decoration: none;
-  }
+}
 
 .hr-style {
     border-top: 1px solid black;
@@ -126,7 +131,29 @@ a {
 .pop-up {
     position: absolute;
     max-height: 4vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 9999;
+}
+
+.byte-theme {
+    width: max-content;
+    background-color:rgb(219, 83, 117, 0.95);
+    border:0;
+    color: rgb(0, 178, 202);
+    font-size: 1.5rem;
+    padding-right: -4rem !important;
+    max-width: 80vw;
+}
+
+.alert-dismissible {
+    padding-right: 0;
+    padding-inline: 2rem;
+}
+
+.x-button {
+    float: right;
+    background-color: rgb(185, 103, 103, 0.0);
 }
 
 .hover-message-appear {
@@ -201,8 +228,8 @@ nav ul li {
 
 .booking-heading {
     transform: rotate(270deg);
-    font-size: 8rem;
-    margin-top: 10vw;
+    font-size: 5rem;
+    margin-block: 50%;
     margin-left: 1rem;
 }
 
@@ -215,7 +242,7 @@ nav ul li {
     display: none;
 }
 
-.booking-form label {
+.booking-form label, label {
     color:rgb(219, 83, 117);
 }
 

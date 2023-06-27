@@ -86,6 +86,23 @@
               BYTE
             </h1>
           </a>
+
+          <div>
+            {% if messages %}
+            <div class="container pop-up">
+                <div class="col-md-8">
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show byte-theme" id="msg" role="alert">
+                        {{ message | safe }}
+                        <button type="button" class="btn-close x-button byte-theme" data-bs-dismiss="alert" aria-label="Close">
+                          <i class="fa-solid fa-square-xmark fa-bounce"></i>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+          </div>
   
           <div class="header-account">
             <ul class="list-inline list-unstyled text-center text-lg-right my-0 account">
@@ -136,25 +153,6 @@
     </header>
 
     <div class="header-spacer"></div>
-
-    <div>
-      {% if messages %}
-      <div class="container pop-up">
-          <div class="row">
-              <div class="col-md-8 offset-md-2">
-                  {% for message in messages %}
-                  <div class="alert {{ message.tags }} alert-dismissible fade show" id="msg" role="alert">
-                      {{ message | safe }}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        <i class="fa-solid fa-square-xmark fa-bounce"></i>
-                      </button>
-                  </div>
-                  {% endfor %}
-              </div>
-          </div>
-      </div>
-      {% endif %}
-    </div>
 
     {% block page_header %}
     {% endblock %}
@@ -212,9 +210,18 @@
 
       startTimer();
 
-        document.getElementById('cancel-btn').addEventListener('click', function() {
-            history.go(-1);
-        });
+      // Get all elements with the class "myButton"
+      var buttons = document.getElementsByClassName("cancel-btn");
+
+      // Iterate over the buttons and add a click event listener to each
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", handleClick);
+      }
+
+      // The function to be executed when the button is clicked
+      function handleClick() {
+          history.go(-1);
+      }
     </script>
       {% endblock %}
   </body>

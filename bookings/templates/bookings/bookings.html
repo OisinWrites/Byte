@@ -27,15 +27,7 @@
       <form method="POST" class="booking-form">
           {% csrf_token %}
           {{ form|crispy }}        
-          
-          {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                  {% endfor %}
-              </ul>
-          {% endif %}
-          
+                   
           <button class="booking-submit-button" type="submit">
             <i class="fa-solid fa-bell-concierge"> </i>
             <i class="fa-solid fa-bell-concierge fa-shake"></i>
