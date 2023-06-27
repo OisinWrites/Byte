@@ -117,6 +117,8 @@ a {
     font-size: 2.2rem;
 }
 
+/* Styling for messages */
+
 .messages-spacing-ghost {
     height: 6vh;
 }
@@ -124,6 +126,7 @@ a {
 .pop-up {
     position: absolute;
     max-height: 4vh;
+    z-index: 9999;
 }
 
 .hover-message-appear {

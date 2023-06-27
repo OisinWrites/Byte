@@ -13,22 +13,8 @@
     <div class="booking-page col-sx-12 col-md-10" id="bookings-section" style="display: block;">
       <div class="text-center mx-3">
 
-        <h1 class="on_mobile">The Diary</h1>
-
-        <div>
-          <form class="form-inline float-right">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search by guest" name="search">
-            <button class="btn my-2 my-sm-0" type="submit">Find Booking</button>
-          </form>
-        </div>
-
-        <div class="btn-group mr-2" role="group">
-          <a href="?filter=all" class="btn">All</a>
-          <a href="?filter=day" class="btn">Today</a>
-          <a href="?filter=week" class="btn">This week</a>
-        </div>
-        <hr>
-
+        <h1 class="on_mobile">The Diary<hr></h1>
+        
         {% if grouped_results %}
           <div class="booking-list-scroller container diary-container padded-bottom">
             {% for result in grouped_results %}
@@ -40,10 +26,10 @@
                   {% for booking in result.bookings %}
                   <div class="card booking-card diary-item">
                     <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                      <div>{{ booking.start_time|time:"H:i" }}</div>
                       <div>{{ booking.user.username|slice:"-10:" }}</div>
-                      <div>Table # {{ booking.table.number }}</div>
                       <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
-                      <div>{{ booking.start_time|time:"g:i A" }}</div>
+                      <div>Table # {{ booking.table.number }}</div>                   
                     </a>
                   </div>
                   {% endfor %}

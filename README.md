@@ -271,7 +271,16 @@ Plans for Models
 | 1. The hamburger dropdown menu is now working properly. 2. All icons have been made larger, and the text beneath account is removed at this screen size, the website name in the footer is changed to an icon also. 3. The "sign up to book" text has been reduced to the text "sign up" in order to fit. | 1. The text in the circle divs has been changed to the hot pink of the theme's color palette, but, as shown on the contact option, they revert to the cut out style on hover. 2. The website icon reverts to the site name at medium screen sizes also. 3. The dropdown from the hamburger is more legible, instead of the opaque theme, it repeats the pink and blue of palette and the font is larger. Its also given a tidier margin from the burger icon. | 1. For desktop the burger has been removed as a nav bar would be more appropriate, but not yet implemented. 2. The circle divs have had their responsive scaling capped at 1200px screen width. As have the footer icons. 3. Additionally, the account icon should be further right. The circle divs could stack to the left under the h1, the space could be used to show reviews or the content from other pages. The footer icons would look better if they were bunched to the right of the screen. |
 
 
-        4: As a user, I want a user-friendly booking form with intuitive inputs.
+#### 4: As a user, I want a user-friendly booking form with intuitive inputs.
+
+| Booking Form Mobile | Booking Form Larger Screens |
+|---------------------|-----------------------------|
+| ![Booking form for mobile](static/media/epic_and_user_story_testing/epic1/booking-form-automatic.png) | ![Booking form for large screens](static/media/epic_and_user_story_testing/epic1/booking-form-large-screens.png) |
+| This is our booking form on mobile. It requires three inputs, a date & time, party size, and an optional message. Other information is populated automatically from the user model. The party-size slider automatically starts on 2. | For larger screens, a user's bookings are shown on the right, and a verticle graphic of the page on the left which is a theme throughout several site sections. Additionally, details of the opening times and party-size policy are listed above the form. |
+| Date & Time Widget | Party size Slider Widget |
+| The form uses a Django forms widget, DateTimeInput. It offers users a way of selecting their date in a clear format. The field could be further enhanced if the invalid choices could be removed or made unselectable, such as Mondays, Tuesdays, and out of business hours. | The widget slider makes it clear to users the limited party-size and has made previous invlaid input handling redundant, as only accepted values can be made. The slider value is reflected in real-time through javaScript. |
+
+
         5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
         6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
 

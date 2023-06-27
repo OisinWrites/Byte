@@ -6,43 +6,49 @@
 <div class="row">
   <div class="booking-page not_on_mobile col-md-2">
     <div class="booking-heading name">
-      <p>{{ user.username }}</p>
+      <p>{{ user.username|slice:":-6" }}</p>
     </div>
   </div>
   {% if user.is_authenticated %}
   <div class="booking-page col-md-6">
     {% if user.is_superuser %}
-    <h2>Booking Details</h2>
-    <div class="card booking-card">
+    <div id="collapse-for-edit">
       {% if booking %}
+      <h2>Booking Details</h2>
       
-      <h4>{{ booking.user }} </h4>
-      <p>{{ booking.email }}</p>
-      <hr>
-      
-      <p id="collapse-for-edit">
-        {{ booking.start_time }}<br>
-        <strong>{{ booking.size_of_party }} </strong>Guests<br>
-        {% if booking.additional %}
-        <small>{{ booking.additional }}</small>
-        {% else %}
-        No additional information provided for this booking.
-        {% endif %}
-        <br>
-        <div>
-          <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
-            Delete Booking
-          </a>
-          <button id="edit-button" class="btn edit-button">
-            Edit Booking
-          </button>
+      <div class="card booking-card">
+        <h4>{{ booking.user }} </h4>
+        <p>{{ booking.email }}</p>
+        <hr>
+        
+        <p>
+          {{ booking.start_time }}<br>
+          <strong>{{ booking.size_of_party }} </strong>Guests<br>
+          {% if booking.additional %}
+          <small>{{ booking.additional }}</small>
+          {% else %}
+          No additional information provided for this booking.
+          {% endif %}
+          <br>
+          <div>
+            <a href="{% url 'delete_booking' booking_id=booking.id %}" class="btn delete-button">
+              Delete Booking
+            </a>
+            <button id="edit-button" class="btn edit-button" type="button">
+              Edit Booking
+            </button>
+            <button id="cancel-btn" class="btn" type="button">
+              Cancel
+            </button>
+          </div>
+        </p>
         </div>
-      </p>
       {% endif %}
     </div>
     {% endif %}
     <div id="edit_booking" {% if user.is_superuser %}style="display: none;"{% endif %}>
       <h2>Edit Booking</h2>
+      <p>for {{ user.username }}</p>
       <p class="text-center not_on_mobile">
           We accept bookings from  <br>  
           Wednesday to Sunday<br>
@@ -59,6 +65,7 @@
     </div>
     
   </div>
+
   <div class="booking-list booking-page not_on_mobile col-md-4">
     <h3>My Bookings</h3>
     {% for booking in current_bookings %}
