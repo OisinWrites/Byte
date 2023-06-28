@@ -277,12 +277,49 @@ Plans for Models
 |---------------------|-----------------------------|
 | ![Booking form for mobile](static/media/epic_and_user_story_testing/epic1/booking-form-automatic.png) | ![Booking form for large screens](static/media/epic_and_user_story_testing/epic1/booking-form-large-screens.png) |
 | This is our booking form on mobile. It requires three inputs, a date & time, party size, and an optional message. Other information is populated automatically from the user model. The party-size slider automatically starts on 2. | For larger screens, a user's bookings are shown on the right, and a verticle graphic of the page on the left which is a theme throughout several site sections. Additionally, details of the opening times and party-size policy are listed above the form. |
+
 | Date & Time Widget | Party size Slider Widget |
+|--------------------|--------------------------|
+|![Date & Time input widget](static/media/epic_and_user_story_testing/epic1/booking-form-date-time-widget.png) | ![Party Slider](/static/media/epic_and_user_story_testing/epic1/booking-form-pax-slider.png) |
 | The form uses a Django forms widget, DateTimeInput. It offers users a way of selecting their date in a clear format. The field could be further enhanced if the invalid choices could be removed or made unselectable, such as Mondays, Tuesdays, and out of business hours. | The widget slider makes it clear to users the limited party-size and has made previous invlaid input handling redundant, as only accepted values can be made. The slider value is reflected in real-time through javaScript. |
 
 
-        5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
-        6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
+#### 5: As a user, I want visually appealing and informative feedback messages when interacting with the site.
+
+| User action feedback Messages |
+|-------------------------------|
+| The project employs descriptive error and success messages throughout. The messages disappear themselves, so as not to be overly intrusive, but intuitively, they persist on cursor hover. They also include a dismiss button, in the form of a whimsical, bouncing fav icon, seen mid-jump in some screengrabs below. |
+| General error with booking |
+| ![booking error message](/static/media/epic_and_user_story_testing/epic1/error-with-booking.png) |
+| Handling error for selection of past dates |
+| ![invalid-start-date](/static/media/epic_and_user_story_testing/epic1/invalid-start-date.png) |
+| Successful deletion of a booking |
+| ![successful booking deletion](/static/media/epic_and_user_story_testing/epic1/success-delete.png) |
+| Successfuly editing of a booking |
+| ![successful booking edit](/static/media/epic_and_user_story_testing/epic1/successful-update.png) |
+
+#### 6: As a user, I want a visually appealing and informative dashboard to manage my bookings.
+
+
+| User Bookings Dashboard | Mobile Dashboard |
+|-------------------------|------------------|
+| ![single booking on desk dash](/static/media/epic_and_user_story_testing/epic1/first-booking.png) | ![single booking on mobile dashboard](/static/media/epic_and_user_story_testing/epic1/mobile-first-booking.png) |
+| The user bookings dash on larger screens is a section of the bookings page for larger screens. On mobile the section is hidden and the hamburger displays a new link to the user bookings page. The user's name is autofilled at the top, reflecting logged in status and add personalisation to the site. The user is directed to select any booking they wish to edit. The bookings card is customised to display only necessary information, whereas the bookings card the admin sees display the user names, this is unnecessary for a regular user. |
+
+| When a user finds themselves on their bookings page without any active bookings this state is displayed back to them and they are invited to make a booking with a link to the relevant page. |
+|--------------------|
+| ![no bookings for user](/static/media/epic_and_user_story_testing/epic1/no-bookings-in-list.png) |
+
+The list of bookings is set in a scrollable container allowing the page to remain static. All y scroll lists are padded at the end to ensure users can see the full list. Below are images of the list as it was originally, and now updated to homogenise with the rest of the site. While the diary has an x-scroll for each day or week, as well as a y-scroll allowing lists of day after day, week after week, this functionality isn't necessary for a single user who is less likely to have multiple bookings for a given day or week. Such an instance is handled by wrapping the items with flexbox, as demonstrated below.
+
+|![old-list-mid-scroll](/static/media/epic_and_user_story_testing/epic1/scrollable-booking-list-mid.png) | ![old-list-scroll-end](/static/media/epic_and_user_story_testing/epic1/scrollable-booking-list-end.png) |
+|----------------------------|--------------------------------|
+|![new-list-with-wrap](/static/media/epic_and_user_story_testing/epic1/card-list-updated.png)|![new-list-padded-bottom](/static/media/epic_and_user_story_testing/epic1/card-list-update-end.png)|
+
+| On click of a booking card the user is directed to a bookings detail template, populated with the details of the given booking. They have the option to delete the booking, redirecting them back to bookings. They can edit the booking which replaces their current section with the booking form pre-populated with the given bookings values. On either section they have the option to cancel the operation, which will bring them back to their previous page. |
+|---------------------------------------------------------------|
+| ![details view](/static/media/epic_and_user_story_testing/epic1/bokins-details-view-updated.png) |
+| ![edit-view](/static/media/epic_and_user_story_testing/epic1/edit-view.png) |
 
 ### E2: Table Booking Functionality
 

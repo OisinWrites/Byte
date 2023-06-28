@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.db.models.functions import Trunc
 
+
 from datetime import datetime, time, timedelta
 
 from .forms import BookingForm, TableForm
@@ -184,7 +185,6 @@ def bookings(request, booking_id=None):
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        
     }
     return render(request, 'bookings/bookings.html', context)
 
@@ -247,7 +247,9 @@ def edit_booking(request, booking_id):
     users_bookings = Booking.objects.filter(user=request.user)
 
     if booking.user != request.user and not request.user.is_superuser:
-        raise Http404("Booking not found")
+        messages.error(
+            request, "You may not access another user's booking information")
+        return redirect('home')
 
     if request.method == 'POST':
         form = BookingForm(request, request.POST, instance=booking)
@@ -330,7 +332,6 @@ def edit_booking(request, booking_id):
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        
     }
 
     return render(request, 'bookings/edit_booking.html', context)
@@ -355,10 +356,10 @@ def delete_booking(request, booking_id):
         return redirect(reverse('bookings'))
     else:
         # If the user is neither the booking user nor a superuser,
-        # handle the unauthorized access
+        # handle the unauthorised access
         messages.error(
-            request, 'You are not authorized to delete this booking.')
-        return redirect(reverse('bookings'))
+            request, 'You are not authorised to delete this booking.')
+        return redirect(reverse('home'))
 
 
 """This is a convoluted view that essentially melds two purposes
@@ -485,6 +486,10 @@ def bookings_management(request):
 
 
 def delete_table(request, table_id):
+    if not request.user.is_superuser:
+        messages.error(
+            request, "You are not authorised to delete a table.")
+        return redirect('home')
     old_table = get_object_or_404(Table, id=table_id)
     table = get_object_or_404(Table, id=table_id)
     bookings = Booking.objects.filter(table=table)

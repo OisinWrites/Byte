@@ -333,6 +333,10 @@ nav ul li {
     color:rgb(219, 83, 117) !important;
 }
 
+.padded-bottom .card:hover, .booking-list-scroller .card:hover {
+    border-color: rgb(219, 83, 117);
+}
+
 .edit-booking-btn:hover {
     color: rgb(219, 83, 117);
 }
