@@ -67,6 +67,28 @@ def diary(request):
     """Perform grouping by day and count the number of bookings per day"""
     grouped_results = bookings.values('day').annotate(count=Count('id'))
 
+    """ Keywords for children, vegetarian, and allergy bookings """
+    family_keywords = ["kids", "children", "family"]
+    veg_keywords = ["vegetarian", "vegan", "plant-based", "veggie"]
+    allergy_keywords = ["allergy", "allergies", "dietary restrictions"]
+
+    bookings_with_family = []
+    bookings_with_veg = []
+    bookings_with_allergy = []
+
+    for booking in bookings:
+        additional_info = (
+            booking.additional.lower() if booking.additional else "")
+        if additional_info:
+            if any(keyword in additional_info for keyword in family_keywords):
+                bookings_with_family.append(booking)
+
+            if any(keyword in additional_info for keyword in veg_keywords):
+                bookings_with_veg.append(booking)
+
+            if any(keyword in additional_info for keyword in allergy_keywords):
+                bookings_with_allergy.append(booking)
+
     for result in grouped_results:
         result['bookings'] = bookings.filter(start_time__date=result['day'])
         result['total_covers'] = result['bookings'].aggregate(
@@ -76,6 +98,9 @@ def diary(request):
         'grouped_results': grouped_results,
         'filter_query': filter_query,
         'search_query': search_query,
+        'bookings_with_family': bookings_with_family,
+        'bookings_with_veg': bookings_with_veg,
+        'bookings_with_allergy': bookings_with_allergy
     }
 
     return render(request, 'bookings/the_diary.html', context)
@@ -460,6 +485,28 @@ def bookings_management(request):
     """Perform grouping by day and count the number of bookings per day"""
     grouped_results = bookings.values('day').annotate(count=Count('id'))
 
+    # Keywords for children, vegetarian, and allergy bookings
+    family_keywords = ["kids", "children", "family"]
+    veg_keywords = ["vegetarian", "vegan", "plant-based", "veggie"]
+    allergy_keywords = ["allergy", "allergies", "dietary restrictions"]
+
+    bookings_with_family = []
+    bookings_with_veg = []
+    bookings_with_allergy = []
+
+    for booking in bookings:
+        additional_info = (
+            booking.additional.lower() if booking.additional else "")
+        if additional_info:
+            if any(keyword in additional_info for keyword in family_keywords):
+                bookings_with_family.append(booking)
+
+            if any(keyword in additional_info for keyword in veg_keywords):
+                bookings_with_veg.append(booking)
+
+            if any(keyword in additional_info for keyword in allergy_keywords):
+                bookings_with_allergy.append(booking)
+
     for result in grouped_results:
         result['bookings'] = bookings.filter(start_time__date=result['day'])
 
@@ -470,6 +517,9 @@ def bookings_management(request):
         'search_query': search_query,
         'tables': tables,
         'table_locations': table_locations,
+        'bookings_with_family': bookings_with_family,
+        'bookings_with_veg': bookings_with_veg,
+        'bookings_with_allergy': bookings_with_allergy
     }
 
     return render(request, 'bookings/bookings_management.html', context)
@@ -548,6 +598,7 @@ def delete_table(request, table_id):
         old_table.delete()
         return redirect(reverse('bookings_management'))
     else:
-        messages.error(request, "Failed to create new table availability. \
+        messages.error(request, "There are bookings that are dependant \
+            on that table. Try creating a new one before deleting another. \
             Deletion canceled.")
         return redirect(reverse('bookings_management'))

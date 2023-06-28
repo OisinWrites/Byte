@@ -91,7 +91,7 @@ class TableForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column('size', css_class='form-group col-md-6 mb-0'),
-                css_class='form-row'
+                css_class='form-row align-items-center'
             ),
         )
 

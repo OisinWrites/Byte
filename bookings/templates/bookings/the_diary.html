@@ -26,6 +26,20 @@
                   {% for booking in result.bookings %}
                   <div class="card booking-card diary-item">
                     <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                      {% if booking.additional %}
+                        <i class="fa-regular fa-message"></i>
+                        {% else %}
+                        <i class="fa-solid fa-ghost blank"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_family %}
+                        <i class="fa-solid fa-baby-carriage"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_veg %}
+                        <i class="fa-solid fa-leaf"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_allergy %}
+                        <i class="fa-solid fa-wheat-awn"></i>
+                        {% endif %}
                       <div>{{ booking.start_time|time:"H:i" }}</div>
                       <div>{{ booking.user.username|slice:"-10:" }}</div>
                       <div>{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>

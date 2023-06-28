@@ -41,6 +41,20 @@
                 {% for booking in result.bookings %}
                   <div class="card booking-card">
                       <a href="{% url 'edit_booking' booking_id=booking.id %}">
+                        {% if booking.additional %}
+                        <i class="fa-regular fa-message"></i>
+                        {% else %}
+                        <i class="fa-solid fa-ghost blank"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_family %}
+                        <i class="fa-solid fa-baby-carriage"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_veg %}
+                        <i class="fa-solid fa-leaf"></i>
+                        {% endif %}
+                        {% if booking in bookings_with_allergy %}
+                        <i class="fa-solid fa-wheat-awn"></i>
+                        {% endif %}
                         <div>{{ booking.user.username|slice:"-10:" }}</div>
                         <div>Table # {{ booking.table.number }}</div>
                         <div class="booking-submit-button">{{ booking.size_of_party }} <i class="fa-solid fa-user-group"></i></div>
@@ -67,48 +81,58 @@
           <button class="btn manage_button_small" onclick="showBookings()"><h4>Manage Bookings</h4></button>
           <button class="btn manage_button_big" onclick="showSeatingPlan()"><h2>Seating Plan</h2></button>
         </div>
-        {% if tables.count == 12 %}
-        <p>
-          Room at full capacity.<br>
-          Try deleting a table before adding another.
-        </p>
-        {% else %}
-        <form method="POST" id="table-form">
-          {% csrf_token %}
-          {{ table_form|crispy }}
-          <button type="submit">Add Table</button>
-        </form>
-        {% endif %}
       </div>
 
-      <button class="btn" id="show" onclick="showMap()" style="display: block;"><h4>Show Floor Plan</h4></button>
-      <button class="btn" id="hide" onclick="hideMap()" style="display: none;"><h4>Hide Floor Plan</h4></button>
+      <div class="table-list">
 
-      <div class="col-6 table-list">
-        {% for table in tables %}
-        <div class="table-item d-flex align-items-center justify-content-center">
-          <h5 style="white-space: nowrap;">T {{ table.number }}|</h5>
-          <div class="d-flex align-items-center justify-content-center">
-            {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
-          <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
-            <i class="fa-solid fa-delete-left"></i>
-          </a>
+        <div class="table-section-1">
+          <div class="table-form-section">
+            {% if tables.count == 12 %}
+            <p>
+              Room at full capacity.<br>
+              Try deleting a table before adding another.
+            </p>
+            {% else %}
+            <form method="POST" id="table-form">
+              {% csrf_token %}
+              {{ table_form|crispy }}              
+              <button class="btn booking-submit-button button" type="submit">Add Table</button>
+            </form>
+            {% endif %}
+          </div>
+          
+          <div class="table-set-section booking-list-scroller">
+            {% for table in tables %}
+            <div class="table-item d-flex align-items-center justify-content-center">
+              <h5 style="white-space: nowrap;">T {{ table.number }}|</h5>
+              <div class="d-flex align-items-center justify-content-center">
+                {{ table.size }}<i class="fa-solid fa-user-group"></i></div> 
+              <a href="{% url 'delete_table' table_id=table.id %}" class="btn delete-button">
+                <i class="fa-solid fa-delete-left"></i>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
         </div>
-        {% endfor %}
-      </div>
+       
+        <div class="floor-plan-section">
 
-      <div class="map col-6" id="map" style="display: none;">
-        <img  class="room-map floor-plan"
-        src="https://res.cloudinary.com/dwhennrjl/image/upload/v1687958590/static/media/floorplan-min.83e153d3d16f.jpg"
-        alt="Byte table map">
-        {% for table in tables %}
-        <div class="draggable-item size{{ table.size }}"
-        id="table_{{ table.number }}"
-        data-table-id="{{ table.id }}"
-        style="left: '{{ table.left }}'; top: '{{ table.top }}'">
-          {{ table.number }}.
+          <button class="btn" id="show" onclick="showMap()" style="display: block;"><h4>Show Floor Plan</h4></button>
+          <button class="btn" id="hide" onclick="hideMap()" style="display: none;"><h4>Hide Floor Plan</h4></button>
+    
+          <div id="map" style="display: none;">
+            {% for table in tables %}
+            <div class="draggable-item size{{ table.size }}"
+            id="table_{{ table.number }}"
+            data-table-id="{{ table.id }}"
+            style="left: '{{ table.left }}'; top: '{{ table.top }}'">
+              {{ table.number }}.
+            </div>
+            {% endfor %}
+          </div>
+
         </div>
-        {% endfor %}
+
       </div>
            
     </div>

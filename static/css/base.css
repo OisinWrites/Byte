@@ -226,6 +226,12 @@ nav ul li {
 
 /* ---- bookings page stylings ------ */
 
+#bookings-link {
+    float: none !important;
+    white-space: nowrap;
+    font-size: 1.4rem;
+}
+
 .btn {
     transition: none !important;
 }
@@ -269,7 +275,7 @@ nav ul li {
     margin-left: 1.2rem;
 }
 
-.fa-user-group {
+.fa-user-group, .booking-card i {
     margin-left: .4rem;
     color: rgb(16, 111, 151);
 }
@@ -279,12 +285,12 @@ nav ul li {
 }
 
 .booking-submit-button, input, .button {
-    text-decoration: none;
-    border:none;
-    background: none;
     color: rgb(16, 111, 151);
-    border: 4px;
-    border-color: rgb(16, 111, 151);
+    font-size: 1.4rem;
+}
+
+.booking-submit-button:hover, .button:hover {
+    color: rgb(16, 111, 151, 0.8) !important;
 }
 
 .booking-submit-button .fa-shake {
@@ -348,16 +354,24 @@ nav ul li {
 
 /* ---- booking management page stylings ------ */
 
-.map {
-    max-height: 500px;
+.blank {
+    opacity:0;
 }
 
 .floor-plan {
     opacity: 0.6;
 }
 
-.room-map {
-    height: 240px !important;
+#map {
+    background: url("https://res.cloudinary.com/dwhennrjl/image/upload/v1687958590/static/media/floorplan-min.83e153d3d16f.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;    
+    height: 500px;
+    width: 320px;
+    position: absolute;
+    float:right;
+    margin-inline: 3.5rem;
 }
   
 .draggable-item {
@@ -391,6 +405,48 @@ nav ul li {
 .draggable-item:active {
     cursor: grabbing;
     cursor: -webkit-grabbing;
+}
+
+#seating-plan-section {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.table-section-1 {
+    margin: 1rem;
+}
+
+.table-form-section {
+    padding:1rem;
+    width: 15vw;
+}
+
+.table-set-section {
+    width: 35vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+#table-form {
+    max-width: 8rem;
+}
+
+.table-set {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.table-list {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.table-item {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* giving the text of the nav options as "see through" to the background */
@@ -493,17 +549,8 @@ nav ul li {
     color:rgb(7, 45, 61);
 }
 
-.table-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-}
-
-.table-item {
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#div_id_size {
+    max-width: 6rem;
 }
 
 .delete-button {

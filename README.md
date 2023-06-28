@@ -69,110 +69,6 @@
     User Story 1: Utilise and implement django's Allauth library for all user account operations.
     User Story 2: Customise the allauth templates to style them so that they feel a part of the site.
 
-# Credits
-
-- Favicon 
-https://favicon.io/favicon-generator/
-Creating custom icon for project
-
-- Coolors
-https://coolors.co/
-Creating complimentary palette for project
-
-- StackOverflow
-- CHATGPT
-For error query and solving
-
-# Deployment
-
-## Local Deployment from Github
-
-    Clone the repository: Go to the repository on GitHub and click on the "Code" button. Select "HTTPS" and copy the URL. Open your terminal or command prompt and navigate to the directory where you want to store the repository. Use the git clone command followed by the copied URL to clone the repository to your local machine.
-
-    Install dependencies: If the project requires any dependencies, you need to install them on your local machine. The project should have a requirements.txt file. In the development terminal use the command line $ "pip3 install -r requirements.txt" to automatically populate the environment with the listed dependancies.
-
-    Configure environment variables: Create an env.py file. Import os at the top of the file and list variables as follows:
-    os.environ.setdefault("SECRET_KEY", "Oisin")
-    os.environ.setdefault("DEBUG", "True")
-    os.environ.setdefault("IP", "0.0.0.0.")
-    os.environ.setdefault("PORT", "8000")
-    os.environ.setdefault("DEVELOPMENT", "True")
-    os.environ.setdefault("DB_URL", "sqlite3:///byte")
-    os.environ.setdefault("ALLOWED_HOSTS", "localhost")
-
-    Run the project: Once you have installed the dependencies and set up the environment variables, you can run the project. In the terminal window, run the command line &"python3 manage.py runserver."
-
-## Deployment to Heroku
-
-    Log into Heroku account. Click "NEW" on the Dashboard, select "Create new app" from the drop-down. Give the app a unique name, and click "Create app" to confirm.
-
-    Log into ElephantSQL. Click "Create New Instance" on the Dashboard. Give your new plan a Name, select the Tiny Turtle (free) plan, the Tags field can be left blank. Select Region: EU-West-1 (Ireland). Then click "Review", confirm details, and click "Create instance".
-
-    Return to the ElephantSQL Dashboard and click "database instance name" for this project, in the URL section, click the copy icon to copy the database URL.
-
-    In the project workspace create a env.py file, ensure this is listed in the .gitignore file. In the env.py file write import os. After a blank line type:  os.environ["DATABASE_URL"] = "<copiedURLfromElephanSQL>". This will need a secret key as Django application so beneath the url type:  os.environ["SECRET_KEY"] = "any_secret_key". And save the file.
-
-    In settings.py add the followng code to the Path import:  import os
-    import dj_database_url
-    if os.path.isfile('env.py'):
-        import env
-    A little further down, remove the insecure secret key provided by Django. Instead, we will reference the variable in the env.py file, so change your SECRET_KEY variable to the following:  SECRET_KEY = os.environ.get('SECRET_KEY').
-    Next in settings.py, where you find the following:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-    Replace with: 
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    }
-
-    Save the settings file and run the terminal command "python3 manage.py migrate".
-    Follow this up and add, commit, push the project to gihub.
-
-    Return to the Heroku Dashboard and select the Settings tab. Add some config vars:
-    DATABASE_URL with the value of the copied url from ElephantSQL,
-    SECRET_KEY with value of the secret create in env.py file.
-    PORT with value of 8000.
-
-    To connect Cloudinary to the Heroku project, set up a free account on Cloudinary.
-    On the Cloudinary dashboard select Copy To Clipboard next to API Environment Variables.
-
-    In the env.py file, add at the bottom, os.environ["CLOUDINARY_URL"] = "Value copied less the beginning part of CLOUDINARY_URL="
-    Copy this value again without the prefix and return to Heroku settings, Config Vars.
-
-    Add new Config Var:
-    CLOUDINARY_URL  with value of copied text.
-
-    In settings.py under INSTALLED_APPS: above 'django.contrib.staticfiles', add 'cloudinary_storage', below 'django.contrib.staticfiles', and 'cloudinary'.
-
-    Near the end of settings file below STATIC_URL = '/static/' add
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-    STATICFILES_DIR = [os.path.join(BASE_DIR,'static')]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-    MEDIA_URL = '/media/'
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-    At the top of settings.py, under BASE_DIR type
-    TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-
-    Scroll to half way down to TEMPLATES =, and in the 'DIRS': [] line, between the square brackets type TEMPLATES_DIR.
-
-    Scroll back up, and below DEBUG = True, skip a line and type: 
-    ALLOWED_HOSTS = ['*herokuappname*.herokuapp.com', 'localhost']
-
-    Create three directories in the top level, next to manage.py file: templates, media, and static. Additionally create a Procfile. Inside the Procfile add the line:
-    web: gunicorn appname.wsgi
-
-    Save, add, commit, and push the project.
-
-    In the Heroku Dashboard, click on the Deploy tab, click on the option to Deploy through Github, this may need to be set up if its your first time. Search your repositories for the project. Scroll to the bottom of the page and select Deploy Branch.
-
-    Once the the app is deployed successfully, the Open App button will bring you to the working application.
-
 # UX/UI
 
 Example sites for restaurant home pages
@@ -323,15 +219,36 @@ The list of bookings is set in a scrollable container allowing the page to remai
 
 ### E2: Table Booking Functionality
 
-#### 1: As a user, I want to be able to book a table for a specific time and party size.
-        2: As a user, I want to see the availability of tables for a specific date and time.
-        3: As a user, I want to receive real-time availability updates when selecting a date and time.
-        4: As a user, I want the option to choose from available tables based on my party size.
-        5: As a user, I want to be able to select additional preferences or requirements for my booking.
+#### 1: As a user, I want to be able to book a table for a specific time and party size.    
 
-        E3: Booking Management
+    A user can book for groups of up to 6 people. They can select from times when the restaurant is open. If their booking does not conflict with another booking and there is an available table, the booking will be made successfully.
 
-    Stories:
+#### 2: As a user, I want to see the availability of tables for a specific date and time.
+
+    While the project affirms booking success or failure due to lack of availabiliy, it does not implement a view to show users the restaurant's availabilities. 
+#### 3: As a user, I want to receive real-time availability updates when selecting a date and time.
+
+    Updates are limited to clicking of the booking submit button. In theory an attempt to create a booking could be made each time the user input a value into the booking form fields, and give immediate feedback on the success or failure of the pending booking. Further, unacceptable values of date time and party size could be removed from the widget options. For instance a user may choose a Friday for their booking. All time slots are available, and they select the prefered time, and then widget slider is reduced to options up to 4 as there is only 1 table of 4 available for the selected time.
+
+####  4: As a user, I want the option to choose from available tables based on my party size.
+
+    Tables are assigned automatically rather than user's being given the option. The selection proccess attempts to match tables to the most appropriate table sizes. For instance with a party of three the view will iterate through availabilities of tables of 4 before looking at tables of 6.
+    
+#### 5: As a user, I want to be able to select additional preferences or requirements for my booking.
+
+| User's can leave a message with their booking. It is an open character field, and readable by the admin. I would like to include a feature that identified key words and phrases in this field and returned a value on the bookings card, to highlight message contents. For instance searching for terms, 'veggie', 'vegetarian', 'vegan', 'meat', and then displaying an icon on the bookings card. The value of this would be to highlight customer requirements, and ensure they are less likely to be forgotten when messages may go unread. |
+
+| Additional information field for the booking form, and used in the edit form. | The message as readable by the admin in the details section | Upgraded for better visibility |
+|-------------------|------------------|--------|
+|![booking form field for additional](/static/media/epic_and_user_story_testing/epic1/additonal-information-field.png) | ![Message location for restaurant](/static/media/epic_and_user_story_testing/epic1/booking-details-message.png) | ![Upgraded with bootstrap](/static/media/epic_and_user_story_testing/epic1/upgraded-details-message.png) |
+
+| I've now implemented that feature to highlight booking requirements to the admin. Requirements are present in both the booking management template and The Diary template. | They are created by searching through the additional attribute value for bookings, if there is one, by keywords in the views. |
+|---------------------------------------|-------------------------------------------|
+| ![booking card icons](/static/media/epic_and_user_story_testing/epic1/icons-for-keywords.png) | ![keyword dictionary in views](/static/media/epic_and_user_story_testing/epic1/keyword-dictionary.png) |
+
+
+### E3: Booking Management
+
         1: As a user, I want to view my bookings and their details.
         2: As a user, I want to edit or update my existing bookings.
         3: As a user, I want to cancel or delete my bookings.
@@ -339,17 +256,15 @@ The list of bookings is set in a scrollable container allowing the page to remai
         5: As an owner, I want to confirm or reject bookings made by users.
         6: As an owner, I want to manage and update the availability of tables for different time slots.
 
-        E4: Intelligent Booking System
+### E4: Intelligent Booking System
 
-    Stories:
         1: As an owner, I want to prevent double bookings of tables and time slots.
         2: As an owner, I want to handle concurrent booking requests without conflicts.
         3: As an owner, I want to implement automatic table assignment based on availability and party size.
         4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
 
-        E5: Security and Privacy
+###  E5: Security and Privacy
 
-    Stories:
         1: As a user and owner, I want secure authentication and authorization mechanisms.
         2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
         3: As a user and owner, I want secure communication over HTTPS.
@@ -368,3 +283,135 @@ The list of bookings is set in a scrollable container allowing the page to remai
     Stories:
         1: Utilise and implement django's Allauth library for all user account operations.
         2: Customise the allauth templates to style them so that they feel a part of the site.
+
+# Deployment
+
+## Local Deployment from Github
+
+    To deploy a Django application built on GitHub locally, you can follow these general steps:
+
+1. Clone the Repository: Start by cloning the GitHub repository that contains your Django application code onto your local machine. You can use the following command in your terminal or command prompt:
+```
+git clone <repository_url>
+```
+
+2. Set Up the Environment: Create a virtual environment to isolate the dependencies of your Django application. Navigate to the project directory and create a virtual environment by running the appropriate command for your operating system:
+```
+python3 -m venv myenv       # For macOS and Linux
+python -m venv myenv        # For Windows
+```
+Activate the virtual environment:
+```
+source myenv/bin/activate  # For macOS and Linux
+myenv\Scripts\activate     # For Windows
+```
+
+3. Install Dependencies: With the virtual environment activated, install the required dependencies by using the package manager pip. Ensure you navigate to the project directory where the `requirements.txt` file is located, and then run:
+```
+pip install -r requirements.txt
+```
+
+4. Configure the Database: If your Django application uses a database, configure the database settings in the `settings.py` file within your project. You'll need to provide the necessary credentials and connection details for your local database server (e.g., PostgreSQL, MySQL, SQLite).
+
+5. Run Database Migrations: Apply the database migrations to set up the database schema. Run the following command in the terminal:
+```
+python manage.py migrate
+```
+
+6. Create a Superuser (Optional): If your application utilizes Django's authentication system, you may want to create a superuser to access the admin interface or perform administrative tasks. Use the following command and follow the prompts to create a superuser:
+```
+python manage.py createsuperuser
+```
+
+7. Run the Development Server: Start the Django development server with the following command:
+```
+python manage.py runserver
+```
+This will launch the server locally, and you can access your application by opening a web browser and navigating to `http://localhost:8000/`.
+
+These steps provide a general outline for deploying a Django application built on GitHub locally. However, keep in mind that additional configuration may be required based on the specifics of your project, such as static file handling, media file setup, or custom settings. Make sure to consult the project documentation or README file for any additional instructions specific to your application.
+
+## Deployment to Heroku
+
+    Log into Heroku account. Click "NEW" on the Dashboard, select "Create new app" from the drop-down. Give the app a unique name, and click "Create app" to confirm.
+
+    Log into ElephantSQL. Click "Create New Instance" on the Dashboard. Give your new plan a Name, select the Tiny Turtle (free) plan, the Tags field can be left blank. Select Region: EU-West-1 (Ireland). Then click "Review", confirm details, and click "Create instance".
+
+    Return to the ElephantSQL Dashboard and click "database instance name" for this project, in the URL section, click the copy icon to copy the database URL.
+
+    In the project workspace create a env.py file, ensure this is listed in the .gitignore file. In the env.py file write import os. After a blank line type:  os.environ["DATABASE_URL"] = "<copiedURLfromElephanSQL>". This will need a secret key as Django application so beneath the url type:  os.environ["SECRET_KEY"] = "any_secret_key". And save the file.
+
+    In settings.py add the followng code to the Path import:  import os
+    import dj_database_url
+    if os.path.isfile('env.py'):
+        import env
+    A little further down, remove the insecure secret key provided by Django. Instead, we will reference the variable in the env.py file, so change your SECRET_KEY variable to the following:  SECRET_KEY = os.environ.get('SECRET_KEY').
+    Next in settings.py, where you find the following:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    Replace with: 
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
+
+    Save the settings file and run the terminal command "python3 manage.py migrate".
+    Follow this up and add, commit, push the project to gihub.
+
+    Return to the Heroku Dashboard and select the Settings tab. Add some config vars:
+    DATABASE_URL with the value of the copied url from ElephantSQL,
+    SECRET_KEY with value of the secret create in env.py file.
+    PORT with value of 8000.
+
+    To connect Cloudinary to the Heroku project, set up a free account on Cloudinary.
+    On the Cloudinary dashboard select Copy To Clipboard next to API Environment Variables.
+
+    In the env.py file, add at the bottom, os.environ["CLOUDINARY_URL"] = "Value copied less the beginning part of CLOUDINARY_URL="
+    Copy this value again without the prefix and return to Heroku settings, Config Vars.
+
+    Add new Config Var:
+    CLOUDINARY_URL  with value of copied text.
+
+    In settings.py under INSTALLED_APPS: above 'django.contrib.staticfiles', add 'cloudinary_storage', below 'django.contrib.staticfiles', and 'cloudinary'.
+
+    Near the end of settings file below STATIC_URL = '/static/' add
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+    STATICFILES_DIR = [os.path.join(BASE_DIR,'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    MEDIA_URL = '/media/'
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+    At the top of settings.py, under BASE_DIR type
+    TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
+    Scroll to half way down to TEMPLATES =, and in the 'DIRS': [] line, between the square brackets type TEMPLATES_DIR.
+
+    Scroll back up, and below DEBUG = True, skip a line and type: 
+    ALLOWED_HOSTS = ['*herokuappname*.herokuapp.com', 'localhost']
+
+    Create three directories in the top level, next to manage.py file: templates, media, and static. Additionally create a Procfile. Inside the Procfile add the line:
+    web: gunicorn appname.wsgi
+
+    Save, add, commit, and push the project.
+
+    In the Heroku Dashboard, click on the Deploy tab, click on the option to Deploy through Github, this may need to be set up if its your first time. Search your repositories for the project. Scroll to the bottom of the page and select Deploy Branch.
+
+    Once the the app is deployed successfully, the Open App button will bring you to the working application.
+
+# Credits
+
+- Favicon 
+https://favicon.io/favicon-generator/
+Creating custom icon for project
+
+- Coolors
+https://coolors.co/
+Creating complimentary palette for project
+
+- StackOverflow
+- CHATGPT
+For error query and solving

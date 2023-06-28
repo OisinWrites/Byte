@@ -28,6 +28,14 @@
     </div>
   {% endif %}
   {% else %}
-    <p class="my-0">You've no current bookings, <br>but you can make one on our </p> 
-      <a class="nav-link burger my-0" href="{% url 'bookings' %}"> bookings page!</a>
+    <p class="my-0">You've no current bookings</p>
+    <br>
+    <div class="on_mobile">
+      <p>
+        You can make one on our 
+        <a class="text-center nav-link burger my-0" id="bookings-link" href="{% url 'bookings' %}">
+          bookings page!
+        </a>
+      </p> 
+    </div>
 {% endif %}
