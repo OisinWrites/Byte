@@ -413,5 +413,6 @@ https://coolors.co/
 Creating complimentary palette for project
 
 - StackOverflow
-- CHATGPT
-For error query and solving
+
+- https://www.trainspotters.co.uk/projects/pizza-east-london-lighting-project-pizza-east/
+Background image

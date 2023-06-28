@@ -123,6 +123,7 @@ def bookings(request, booking_id=None):
     """Code triggeered by form submission.
         Saves instance of the form as the booking variable,
         takes in the current user."""
+
     if request.method == 'POST':
         form = BookingForm(request, request.POST, instance=booking)
         if form.is_valid():
@@ -137,24 +138,32 @@ def bookings(request, booking_id=None):
                                "Choose a day that hasn't happened yet."
                                )
             else:
+
                 """Generates end time from start time for use by availabilities
                     model to create a time slot"""
+
                 end_time = start_time + timedelta(minutes=105)
                 size_of_party = form.cleaned_data['size_of_party']
+
                 """Order tables by size so that the smallest suitable
                     table possible is selected first"""
+
                 tables = Table.objects.filter(size__gte=size_of_party) \
                     .order_by('size')
+
                 """Checks if booking request clashes
                     with existing booking slot"""
+
                 for table in tables:
                     table_availabilities = TableAvailability.objects.filter(
                         table=table,
                         start_time__lt=end_time,
                         end_time__gt=start_time,
                     )
+
                     """If not then saves the bookings and
                         creates and saved a slot"""
+
                     if not table_availabilities:
                         booking.table = table
                         booking.end_time = end_time
@@ -171,20 +180,27 @@ def bookings(request, booking_id=None):
                         messages.success(
                             request, 'Your booking has been made.')
                         return redirect('edit_booking', booking_id=booking.id)
+
                         """Else error handling"""
+
                 messages.error(request, 'No table is available'
                                ' for the requested'
                                ' time and party size.'
                                ' Please select a new time.')
         else:
+
             """Error handling if form invalid"""
+
             messages.error(request, 'There was an error with your booking.')
     else:
+
         """Where no id is found form returns to initial state"""
+
         form = BookingForm(request, instance=booking)
 
     """Creates list of bookings not older than current date for
         logged in user"""
+
     current_bookings = Booking.objects.filter(
         Q(start_time__gte=timezone.now()) | Q(
             user_id=request.user.id)).order_by('start_time')
@@ -201,6 +217,7 @@ def bookings(request, booking_id=None):
         result['bookings'] = bookings.filter(start_time__date=result['day'])
 
     """Context list to call on these variables from the template"""
+
     context = {
         'booking': booking,
         'all_bookings': all_bookings,
@@ -216,10 +233,13 @@ def bookings(request, booking_id=None):
 
 @login_required
 def my_bookings(request, booking_id=None):
+
     """Initialise empty list for bookings to populate later"""
+
     successful_bookings = []
 
     """Initialises the booking variable to none, looks for new id"""
+
     booking = None
     if booking_id:
         booking = get_object_or_404(Booking, id=booking_id, user=request.user)
@@ -235,6 +255,7 @@ def my_bookings(request, booking_id=None):
 
     """Creates list of bookings not older than current date for
         logged in user"""
+
     current_bookings = bookings.order_by('start_time')
 
     """
@@ -242,15 +263,18 @@ def my_bookings(request, booking_id=None):
     with a truncated start_time field
     (day-level precision)
     """
+
     bookings = bookings.annotate(day=Trunc('start_time', 'day'))
 
     """Perform grouping by day and count the number of bookings per day"""
+
     grouped_results = bookings.values('day').annotate(count=Count('id'))
 
     for result in grouped_results:
         result['bookings'] = bookings.filter(start_time__date=result['day'])
 
     """Context list to call on these variables from the template"""
+
     context = {
         'booking': booking,
         'grouped_results': grouped_results,
@@ -259,7 +283,6 @@ def my_bookings(request, booking_id=None):
         'current_bookings': current_bookings,
         'successful_bookings': successful_bookings,
         'edit_booking': booking,
-        # pass the booking to the template if it exists
     }
     return render(request, 'bookings/user_bookings.html', context)
 
@@ -333,6 +356,7 @@ def edit_booking(request, booking_id):
 
         """Creates list of bookings not older than current date for
         logged in user"""
+
     current_bookings = Booking.objects.filter(
         Q(start_time__gte=timezone.now()) | Q(
             user_id=request.user.id)).order_by('start_time')
@@ -363,36 +387,37 @@ def edit_booking(request, booking_id):
 
 
 def delete_booking(request, booking_id):
+
     """Identify object by id"""
+
     booking = get_object_or_404(Booking, id=booking_id)
 
     # Check if the user is the booking user or a superuser
+
     if booking.user == request.user or request.user.is_superuser:
+
         """Finds and deletes by detail match"""
+
         table_availability = TableAvailability.objects.filter(
             table=booking.table,
             start_time=booking.start_time,
             end_time=booking.end_time
         ).delete()
         booking.delete()
+
         """Returns success and reverses url, as the current url is no longer
         valid as the booking object id was populating the end of the url"""
+
         messages.success(request, 'Your booking has been deleted.')
         return redirect(reverse('bookings'))
     else:
+
         # If the user is neither the booking user nor a superuser,
         # handle the unauthorised access
+
         messages.error(
             request, 'You are not authorised to delete this booking.')
         return redirect(reverse('home'))
-
-
-"""This is a convoluted view that essentially melds two purposes
-    so as to confine the admin CRUD abilities to a single html file.
-    This view iterates the existing bookings, through search and
-    filter methods. It allows the admin to view, create, and delete tables
-    for the restaurant, but not edit them as quick deletion and recreation
-    was deemed sufficient for this particularly simple model."""
 
 
 def save_table_location(request):
@@ -403,6 +428,7 @@ def save_table_location(request):
         top = request.POST.get('top')    # Retrieve top value
 
         # Save the table location to the database
+
         table = Table.objects.get(id=table_id)
         table.left = left  # Update left value
         table.top = top    # Update top value
@@ -416,6 +442,7 @@ def save_table_location(request):
 def bookings_management(request):
 
     """Handles the table creation form of just the table size input."""
+
     if request.method == 'POST':
         form = TableForm(request.POST)
         if form.is_valid():
@@ -427,7 +454,9 @@ def bookings_management(request):
         form = TableForm()
 
     def next_day(date):
+
         """Returns the next day from a given date."""
+
         next_day = date + timedelta(days=1)
         return make_aware(datetime(next_day.year,
                           next_day.month, next_day.day, 0, 0, 0))
@@ -435,6 +464,7 @@ def bookings_management(request):
     tables = Table.objects.all().order_by('number')
 
     # Retrieve the table location data
+
     table_locations = []
     for table in tables:
         table_locations.append({
@@ -444,26 +474,32 @@ def bookings_management(request):
         })
 
     """Set the date range for filter"""
+
     now = datetime.now()
     today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
     next_week = today + timedelta(days=7)
 
     """Filter bookings by not earlier than the current day"""
+
     now = datetime.now()
     today = make_aware(datetime(now.year, now.month, now.day, 0, 0, 0))
     bookings = Booking.objects.filter(start_time__gte=today)
 
     """Get search query from request"""
+
     search_query = request.GET.get('search', '')
 
     """Get filter query from request"""
+
     filter_query = request.GET.get('filter', '')
 
     """Filter bookings by user name if search query is provided"""
+
     if search_query:
         bookings = bookings.filter(user__username__icontains=search_query)
 
     """Filter bookings by day or week if filter query is provided"""
+
     if filter_query == 'day':
         start_date = today
         end_date = start_date + timedelta(days=1)
@@ -479,13 +515,16 @@ def bookings_management(request):
     Annotate the query set
     with a truncated start_time field
     (day-level precision)
+
     """
     bookings = bookings.annotate(day=Trunc('start_time', 'day'))
 
     """Perform grouping by day and count the number of bookings per day"""
+
     grouped_results = bookings.values('day').annotate(count=Count('id'))
 
     # Keywords for children, vegetarian, and allergy bookings
+
     family_keywords = ["kids", "children", "family"]
     veg_keywords = ["vegetarian", "vegan", "plant-based", "veggie"]
     allergy_keywords = ["allergy", "allergies", "dietary restrictions"]

@@ -27,7 +27,7 @@ body {
     color:rgb(16, 111, 151) !important;
     padding-bottom: 8vh;
     overflow-x: hidden;
-    overflow-y:auto;
+    overflow-y: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -59,6 +59,31 @@ a:hover {
 .header {
     height: 136.59px;
     color: rgb(0, 178, 202);
+}
+
+.main-logo-link {
+    position: absolute;
+    margin-left: -75vw;
+    font-size: 150%;
+}
+
+.byte {
+    font-size: 3.8rem;
+    margin-bottom: -1rem;
+    color: rgb(0, 178, 202);
+    font-size: 400%;
+}
+
+.main-logo-link p {
+    background-color: rgb(219, 83, 117);
+    color: rgb(0, 178, 202);
+    padding: 2px;
+    padding-left: .5rem;
+}
+
+.header-account {
+    position: absolute;
+    margin-left: 70vw;
 }
 
 .footer {
@@ -114,12 +139,6 @@ a:hover {
 
 .burger:hover {
     background-color:rgba(255, 255, 255, 0.1);
-}
-
-.byte {
-    font-weight: 900;
-    font-size: 8rem;
-    color: rgb(0, 178, 202);
 }
 
 .account-logo {
@@ -511,6 +530,10 @@ nav ul li {
 
 /* Review card stylings */
 
+.middle-size-review div{
+    max-height: 40vh;
+}
+
 .row {
     max-height: 40vh;
 }
@@ -574,10 +597,9 @@ nav ul li {
 }
 
 
-
 /* disappears the circles from medium and larger screens */
 @media (max-width: 767px) {
-    .visible-md, .byte-site, .account-logo p, .not_on_mobile {
+    .visible-md, .byte-site, .account-logo p, .not_on_mobile, .middle-size-review {
       display: none;
     }
 }
@@ -603,11 +625,6 @@ nav ul li {
         margin-bottom: 1vh;
     }
 
-    .byte {
-        font-weight: 700;
-        font-size: 6rem;
-    }
-
     .foot-icon {
         font-size: 2.5rem;
     }
@@ -622,9 +639,10 @@ nav ul li {
     .header-lg, nav {
         display: none;
     }
-
-    body {
-        margin-bottom: 20vh;
+    
+    .main-logo-link {
+        position: relative;
+        margin-left: 0;
     }
 }
 
@@ -640,12 +658,6 @@ nav ul li {
 
     .burger-icon {
         display: none;
-    }
-
-    .byte {
-        margin-left: -40vw;
-        margin-top: 2vh;
-        font-size: 12rem;
     }
 
     .visible-md {
@@ -695,7 +707,7 @@ nav ul li {
         -webkit-text-fill-color: transparent;
     }
 
-    .visible-md {
+    .visible-md, .middle-size-review {
         display: none;
     }
 
