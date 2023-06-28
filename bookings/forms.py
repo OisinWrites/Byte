@@ -36,7 +36,7 @@ class BookingForm(forms.ModelForm):
             'size_of_party': SliderNumberInput(
                 attrs={'type': 'range', 'min': 1, 'max': 6,
                        'class': 'party-size-slider'}),
-            'additional': forms.Textarea(attrs={'rows': 5, 'cols': 30}),
+            'additional': forms.Textarea(attrs={'rows': 4, 'cols': 30}),
         }
 
         labels = {

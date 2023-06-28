@@ -27,7 +27,7 @@ body {
     color:rgb(16, 111, 151) !important;
     padding-bottom: 8vh;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -118,7 +118,7 @@ a:hover {
 
 .burger-icon {
     background-color: rgb(0, 178, 202) !important;
-    color:rgb(0, 178, 202) !important;
+    color:rgb(219, 83, 117);
 }
 
 .drop {
@@ -165,7 +165,6 @@ a:hover {
     border:0;
     color: rgb(0, 178, 202);
     font-size: 1.5rem;
-    padding-right: -4rem !important;
     max-width: 80vw;
 }
 
@@ -739,6 +738,10 @@ nav ul li {
 @media (max-height: 850px) {
     .foot-icon {
         font-size: 300%;
+    }
+
+    body {
+        padding-bottom: 20rem;
     }
 }
 

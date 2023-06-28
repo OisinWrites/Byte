@@ -72,21 +72,37 @@
 # UX/UI
 
 Example sites for restaurant home pages
-![example-site-mobile](static/media/model-site-mobile-min.jpg)
-![example-site-midscreen-1](static/media/model-site-midscreen-min.jpg)
-![example-site-midscreen-2](static/media/model-site-midscreen2-min.jpg)
-![example-site-desktop](static/media/model-site-desktop-min.jpg)
-Wireframes for project mock-up
-![wireframe-mobile](static/media/mobile-wireframe-min.jpg)
-![wireframe-desktop](static/media/desktop-wireframe-min.jpg)
+
+| ![example-site-mobile](static/media/model-site-mobile-min.jpg)| ![example-site-midscreen-1](static/media/model-site-midscreen-min.jpg) | ![example-site-midscreen-2](static/media/model-site-midscreen2-min.jpg) | ![example-site-desktop](static/media/model-site-desktop-min.jpg) |
+|----------------------------|------------------|----------------------|-------------|
+| Wireframes for project mock-up |
+| ![wireframe-mobile](static/media/mobile-wireframe-min.jpg) | ![wireframe-desktop](static/media/desktop-wireframe-min.jpg) |
 
 # Logic
 
-Booking logic Flowchart
-![booking-logic-flowchart](static/media/booking-logic-flowchart.jpg)
+|Booking logic Flowchart|
+|-----------------------|
+|![booking-logic-flowchart](static/media/booking-logic-flowchart.jpg)|
 
-Plans for Models
-![model-plans](static/media/model-plans.jpg)
+The user selects a day and time, and a party size. Initial handling for the day and time prompt the user to select a future date, and in this case not a Monday or Tuesday, and a time within the 5-9 oping hours of the restaurant.
+
+Once inputs are intitally valid, the view calculates the end time as 105minutes, an hour and three quarters, after the start time. It then checks through existing tables for a conflicting booking where the existing bookings start time is earlier than the new bookings end, or its end later than the new start.
+
+It iterates through tables in an order based on party-size. It will seek to put a party of 1 or 2 and a 2 seater table first, before iterating through larger tables.
+
+As soon as it finds a valid time slot a table availability model instance is created, tying the booking instance and table instance together. 
+
+To edit a booking the same operation is performed. The old table availability model is deleted and a new one generated. Similarly, if an admin deletes a table, all bookings for that table will attempt to migrate to other tables, but if a valid table availability, or time slot cannot be establish then the deleteion operation is cancelled and the admin informed.
+
+Deletion of models is controlled by security measures in the views. A deletion of a booking or table is not possible through url manipulaton. The relevant views are controlled by if statements. If an attempt to trigger the delete table view by any other than a superuser, or to delete a view by any other than a superuser or the booking owner, that user is redirected to the index with an explanation message.
+
+Equally, pages meant for admins or pages, personal to a user, such as edit of their specific bookings are secured by if statements, and an unwelcome user is booted to the index.
+
+There is a nice feature where user's additonal infor and dietary requirements fields for bookings are scanned for keywords. Terms such as veggie or allergies will result in an informative icon being present on the booking card for the admin to see. This improves the reliability of the message attribute, and gives great value to the restaurant owner and their customers as customer service and satisfaction levels will benefit from this stronger line of communication.
+
+|Plans for Models|
+|----------------|
+|![model-plans](static/media/model-plans.jpg)|
 
 # Testing
 
@@ -253,8 +269,8 @@ The list of bookings is set in a scrollable container allowing the page to remai
         2: As a user, I want to edit or update my existing bookings.
         3: As a user, I want to cancel or delete my bookings.
         4: As an owner, I want to view all bookings made at my restaurant.
-        5: As an owner, I want to confirm or reject bookings made by users.
-        6: As an owner, I want to manage and update the availability of tables for different time slots.
+    5: As an owner, I want to confirm or reject bookings made by users.
+    6: As an owner, I want to manage and update the availability of tables for different time slots.
 
 ### E4: Intelligent Booking System
 
@@ -270,17 +286,15 @@ The list of bookings is set in a scrollable container allowing the page to remai
         3: As a user and owner, I want secure communication over HTTPS.
         4: As a user and owner, I want protection against common security vulnerabilities
 
-        E6: Error Handling and Feedback
+### E6: Error Handling and Feedback
 
-    Stories:
         1: As a user and owner, I want meaningful and descriptive error messages for input validation.
         2: As a user and owner, I want informative feedback messages for successful actions.
         3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
         4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
 
-        E7: User Registration and Account Management
-        
-    Stories:
+### E7: User Registration and Account Management
+
         1: Utilise and implement django's Allauth library for all user account operations.
         2: Customise the allauth templates to style them so that they feel a part of the site.
 
