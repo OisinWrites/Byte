@@ -1,7 +1,9 @@
 # BYTE: Restaurant Booking Site
 
-    This is a restaurant reservation web application using Python with Django, and a Postgres relational database.
-    The site has a model view controller to allow customers to make bookings following CRUD principles, and to give administrative access to the site owner only.
+|This is a restaurant reservation web application made using Python's Django Framework.
+The project aims to create a comprehensive booking app that approaches real-world application. Error handling is comprehensive. Reservation times are organic, where 1hr 45min booking slots can be made for anytime within opening hours, and new bookings will fit around existing while tables continue to have availability. The owner is given extensive control of the system via table creation and deletion, access to booking and user details, and is provided with a diary listing the days bookings throughout the calendar year and beyond. Important booking information, where provided is highlighted to the owner through the diary. With this app, celiacs and vegetarians won't be forgotten, and the high-chairs will be ready!|
+|------------------------------------------------|
+|![Multi device mockup](/static/media/mockup.png)|
 
 # Site Goals
 
@@ -11,9 +13,10 @@
 
 # Agile Development
 
-- This project follow Agile principles and methodologies through assessing the Clear Value Proposition of User Stories
+- This project follows Agile Development principles and methodologies by assessing the Clear Value Proposition of User Stories. Detailed testing of stories is included in the testing section of this README
 
-- The User Stories are catalogued using github's issues and projects features. The project is linked to the repository for this project, and set to public, and it should be visible to the assessment panel.
+- The User Stories are catalogued using github's issues and projects features. The project is linked to the repository for this project, and set to public, and it should be visible to the assessment panel. 
+ https://github.com/users/OisinWrites/projects/3
 
 ## Epics and User Stories
 
@@ -152,7 +155,7 @@ There is a nice feature where user's additonal infor and dietary requirements fi
     Issue: Unable to make a second booking for a time when a booking already exists, even if there are empty tables.
     Resolve: I think that the code is identifying that there is an overlapping instance so returns error, rather than repeat the check for other available tables.
 
-## Testing for all user stories
+## Testing for user stories
 
 ### E1: User-Friendly Restaurant Booking Site
 
@@ -242,6 +245,7 @@ The list of bookings is set in a scrollable container allowing the page to remai
 #### 2: As a user, I want to see the availability of tables for a specific date and time.
 
     While the project affirms booking success or failure due to lack of availabiliy, it does not implement a view to show users the restaurant's availabilities. 
+
 #### 3: As a user, I want to receive real-time availability updates when selecting a date and time.
 
     Updates are limited to clicking of the booking submit button. In theory an attempt to create a booking could be made each time the user input a value into the booking form fields, and give immediate feedback on the success or failure of the pending booking. Further, unacceptable values of date time and party size could be removed from the widget options. For instance a user may choose a Friday for their booking. All time slots are available, and they select the prefered time, and then widget slider is reduced to options up to 4 as there is only 1 table of 4 available for the selected time.
@@ -265,38 +269,95 @@ The list of bookings is set in a scrollable container allowing the page to remai
 
 ### E3: Booking Management
 
-        1: As a user, I want to view my bookings and their details.
-        2: As a user, I want to edit or update my existing bookings.
-        3: As a user, I want to cancel or delete my bookings.
-        4: As an owner, I want to view all bookings made at my restaurant.
-    5: As an owner, I want to confirm or reject bookings made by users.
-    6: As an owner, I want to manage and update the availability of tables for different time slots.
+#### 1: As a user, I want to view my bookings and their details.
+#### 2: As a user, I want to edit or update my existing bookings.
+#### 3: As a user, I want to cancel or delete my bookings
+See test for Epic 1 User Story 6
+
+####  4: As an owner, I want to view all bookings made at my restaurant.
+
+| Superuser can see all bookings and their details in the bookings management page. There is also a Diary page for working with the bookings day to day.
+#### 5: As an owner, I want to confirm or reject bookings made by users.
+Owners can delete bookings. The site could be enhanced to confirm bookings via user emails, or reject bookings with an offering of an ammended booking, a hold model could be used as a stand in for a booking, that wouldn't show up in the diary until the ammendment was accepted by the customer.
+#### 6: As an owner, I want to manage and update the availability of tables for different time slots.
+While tables can be deleted, removing tables from booking logic rotation for specific times rather than altogether is not implemented. A table model could be given an additonal attribute of 'in rotation' as a boolean and table-availabitity logic could search a list of only those tables. Alternatively, ghost bookings could be created to withhold a tables availability for certain times. The tables would behave as booked but no booking would come up in the diary. Say the restaurant held 3 tables for walk-ins only for Friday and Saturday only, to accomodate newcomers on the busier days.
+
+|Admin page for bookings | For Table Management | For Diary: the site at work for business use during the day |
+|-----------|--------------|-------------|
+|![admin bookings](/static/media/epic_and_user_story_testing/epic1/manage-bookings.png)|![admin tables](/static/media/epic_and_user_story_testing/epic1/manage-tables.png)|![admin diary](/static/media/epic_and_user_story_testing/epic1/manage-diary.png)|
+
 
 ### E4: Intelligent Booking System
 
-        1: As an owner, I want to prevent double bookings of tables and time slots.
-        2: As an owner, I want to handle concurrent booking requests without conflicts.
-        3: As an owner, I want to implement automatic table assignment based on availability and party size.
-        4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
+#### 1: As an owner, I want to prevent double bookings of tables and time slots.
+#### 2: As an owner, I want to handle concurrent booking requests without conflicts.
+#### 3: As an owner, I want to implement automatic table assignment based on availability and party size.
+#### 4: As an owner, I want to handle reservation overlaps or conflicts gracefully.
+
+- section repeated from logic section. Explanation of thoguht process to handle bookings, error management, real world implementation, and consideration of business needs.
+
+The user selects a day and time, and a party size. Initial handling for the day and time prompt the user to select a future date, and in this case not a Monday or Tuesday, and a time within the 5-9 oping hours of the restaurant.
+
+Once inputs are intitally valid, the view calculates the end time as 105minutes, an hour and three quarters, after the start time. It then checks through existing tables for a conflicting booking where the existing bookings start time is earlier than the new bookings end, or its end later than the new start.
+
+It iterates through tables in an order based on party-size. It will seek to put a party of 1 or 2 and a 2 seater table first, before iterating through larger tables.
+
+As soon as it finds a valid time slot a table availability model instance is created, tying the booking instance and table instance together. 
+
+To edit a booking the same operation is performed. The old table availability model is deleted and a new one generated. Similarly, if an admin deletes a table, all bookings for that table will attempt to migrate to other tables, but if a valid table availability, or time slot cannot be establish then the deleteion operation is cancelled and the admin informed.
+
+Deletion of models is controlled by security measures in the views. A deletion of a booking or table is not possible through url manipulaton. The relevant views are controlled by if statements. If an attempt to trigger the delete table view by any other than a superuser, or to delete a view by any other than a superuser or the booking owner, that user is redirected to the index with an explanation message.
+
+Equally, pages meant for admins or pages, personal to a user, such as edit of their specific bookings are secured by if statements, and an unwelcome user is booted to the index.
+
+There is a nice feature where user's additonal infor and dietary requirements fields for bookings are scanned for keywords. Terms such as veggie or allergies will result in an informative icon being present on the booking card for the admin to see. This improves the reliability of the message attribute, and gives great value to the restaurant owner and their customers as customer service and satisfaction levels will benefit from this stronger line of communication.
 
 ###  E5: Security and Privacy
 
-        1: As a user and owner, I want secure authentication and authorization mechanisms.
-        2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
-        3: As a user and owner, I want secure communication over HTTPS.
-        4: As a user and owner, I want protection against common security vulnerabilities
+#### 1: As a user and owner, I want secure authentication and authorization mechanisms.
+#### 2: As a user and owner, I want my personal and sensitive information to be securely stored and encrypted.
+#### 3: As a user and owner, I want secure communication over HTTPS.
+#### 4: As a user and owner, I want protection against common security vulnerabilities
+
+Passwords and account information are secured with the framework of Django's Allauth Library
+Below are security measures for protecting the sites models. The bookings made by users are kept private to them, and there is handling to disrupt attempts to delete bookings throguh URL manipulation.
+Superuser admin views cannot be accessed by regular users.
+Superusers have access to users bookings.
+URL manipulation attempts bounce a user to the index/homepage.
+Navigating to a template of another users information, or a superuser page, bounces the user to the homepage with an error message explanation.
+
+| User verification example in template | User or Superuser verification example in view |
+|-----------------------------------------|-------------------------------|
+|![verify user template](/static/media/qualification-of-super-in-template.png)|![verify user or superuser in view](/static/media/qualification-of-user-or-super-in-view.png)|
+
+| User or Superuser verification example in template |
+|---------------------------------------------------|
+|![verify user or superuser in template](/static/media/qualification-of-user-or-super-in-template.png)|
+
+| Template handling |
+|-------------------|
+|![javaScript to boot malicious player](/static/media/js-to-boot.png)|
+| View handling with messages for malicious attempts |
+|![booking message](/static/media/booking-delete-attempt-message.jpg)|
+|![table message](/static/media/table-delete-attempt-message.png)|
 
 ### E6: Error Handling and Feedback
 
-        1: As a user and owner, I want meaningful and descriptive error messages for input validation.
-        2: As a user and owner, I want informative feedback messages for successful actions.
-        3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
-        4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
+#### 1: As a user and owner, I want meaningful and descriptive error messages for input validation.
+#### 2: As a user and owner, I want informative feedback messages for successful actions.
+#### 3: As a user and owner, I want clear error handling and fallback mechanisms for unexpected situations.
+#### 4: As a user and owner, I want detailed logs of errors and exceptions for troubleshooting and debugging.
 
 ### E7: User Registration and Account Management
 
-        1: Utilise and implement django's Allauth library for all user account operations.
-        2: Customise the allauth templates to style them so that they feel a part of the site.
+#### 1: Utilise and implement django's Allauth library for all user account operations.
+#### 2: Customise the allauth templates to style them so that they feel a part of the site.
+
+Custom Allauth templates
+
+ Sign up | Sign in | Sign out |
+|--------------|------------|-------------|
+| ![custom-sign-up](/static/media/epic_and_user_story_testing/epic1/allauth-custom-sign-up.png) | ![custon-sign-in](/static/media/epic_and_user_story_testing/epic1/allauth-custom-sign-in.png) | ![custom-sign-out](/static/media/epic_and_user_story_testing/epic1/allauth-custom-sign-out.png) | 
 
 # Deployment
 
@@ -413,6 +474,7 @@ These steps provide a general outline for deploying a Django application built o
     Save, add, commit, and push the project.
 
     In the Heroku Dashboard, click on the Deploy tab, click on the option to Deploy through Github, this may need to be set up if its your first time. Search your repositories for the project. Scroll to the bottom of the page and select Deploy Branch.
+
 
     Once the the app is deployed successfully, the Open App button will bring you to the working application.
 

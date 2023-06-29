@@ -114,26 +114,7 @@
             {% endfor %}
           </div>
         </div>
-       
-        <div class="floor-plan-section">
-
-          <button class="btn" id="show" onclick="showMap()" style="display: block;"><h4>Show Floor Plan</h4></button>
-          <button class="btn" id="hide" onclick="hideMap()" style="display: none;"><h4>Hide Floor Plan</h4></button>
-    
-          <div id="map" style="display: none;">
-            {% for table in tables %}
-            <div class="draggable-item size{{ table.size }}"
-            id="table_{{ table.number }}"
-            data-table-id="{{ table.id }}"
-            style="left: '{{ table.left }}'; top: '{{ table.top }}'">
-              {{ table.number }}.
-            </div>
-            {% endfor %}
-          </div>
-
-        </div>
-
-      </div>
+       </div>
            
     </div>
 

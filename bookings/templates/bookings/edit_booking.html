@@ -72,7 +72,10 @@
   <div class="booking-list booking-page not_on_mobile col-md-4">
     {% include 'bookings/includes/my_bookings_section.html' %}
   </div>
-  
+  {% else %}
+  <script>
+      window.location.href = "{% url 'home' %}"; // To redirect unauthenticated users
+  </script>
   {% endif %}
 </div>
 
