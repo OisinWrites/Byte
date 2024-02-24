@@ -31,10 +31,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY', '')
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET', '')
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['byte-restaurant-bookings.herokuapp.com',
-                 '8000-oisinwrites-byte-xx3cqnmui5k.ws-eu101.gitpod.io']
+                 '127.0.0.1']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 

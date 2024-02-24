@@ -109,6 +109,24 @@
             </div>
             {% endif %}
           </div>
+
+          <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                      <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="superuser_btn" class="btn btn-outline-primary rounded-circle btn-lg">
+                          <i class="fa-solid fa-eye btn-lg"></i>
+                          
+                        </button>
+                      </form>
+                      
+                    </div>
+                </div>
+            </div>
+          </div>  
+          
   
           <div class="header-account">
             <ul class="list-inline list-unstyled text-center text-lg-right my-0 account">
