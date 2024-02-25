@@ -1,4 +1,18 @@
 /* styling for base elements */
+
+.eye {
+    color:rgb(219, 83, 117);
+    white-space: nowrap;
+}
+
+.supervision {
+    background-color: aliceblue;
+    position:fixed;
+    bottom: 4rem;
+    right: 0;
+    width: 12rem;
+}
+
 html {
     font-size: 16px;
     color:rgb(16, 111, 151) !important;
@@ -124,7 +138,8 @@ a:hover {
 .drop {
     border-radius: 0;
     margin-top: 2rem;
-    background-color:rgb(219, 83, 117);
+    left: 0;
+    background-color:rgb(29, 83, 117);
     font-size: 2rem;
 }
 

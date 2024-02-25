@@ -167,4 +167,21 @@
     </div>
   
   </div>
+
+  <div class="container supervision">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="text-center">
+              <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="superuser_btn" class="btn eye btn-lg">
+                  <i class="fa-solid fa-eye eye btn-lg"></i>
+                  <h4 class="eye">Superuser View</h4>
+                </button>
+              </form>
+            </div>
+        </div>
+    </div>
+  </div>
+
 {% endblock %}
